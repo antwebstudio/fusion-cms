@@ -9,9 +9,10 @@ use Fusion\Concerns\HasActivity;
 use Fusion\Database\Eloquent\Model;
 use Spatie\Activitylog\Models\Activity;
 
-class {class} extends Model
+class {class} extends Model implements \CyrildeWit\EloquentViewable\Contracts\Viewable 
 {
     use HasActivity;
+    use \CyrildeWit\EloquentViewable\InteractsWithViews;
 
 	/**
      * The table associated with the model.

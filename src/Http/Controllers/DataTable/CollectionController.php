@@ -12,7 +12,8 @@ class CollectionController extends DataTableController
         if (request()->route('collection')) {
             return Matrix::findOrFail(request()->route('collection'))
                 ->getBuilder()
-                ->query();
+                ->query()
+				->withViewsCount(null, null, true, 'views_count');
         } else {
             return Matrix::query();
         }
@@ -23,6 +24,7 @@ class CollectionController extends DataTableController
         return [
             'name',
             'slug',
+			'views_count',
         ];
     }
 
@@ -39,6 +41,7 @@ class CollectionController extends DataTableController
         return [
             'name',
             'slug',
+			'views_count',
         ];
     }
 
