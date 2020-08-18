@@ -2,10 +2,10 @@
 
 namespace Fusion\Http\Controllers\API;
 
+use Menu;
 use Fusion\Events\ServingFusion;
 use Fusion\Http\Controllers\Controller;
 use Fusion\Http\Resources\NavigationResource;
-use Menu;
 
 class NavigationController extends Controller
 {
@@ -17,7 +17,7 @@ class NavigationController extends Controller
     public function index()
     {
         $this->authorize('access.controlPanel');
-
+        
         event(ServingFusion::class);
 
         $roots = Menu::get('admin')->roots();
@@ -30,13 +30,19 @@ class NavigationController extends Controller
     /**
      * Extract links and their children from menu collection.
      *
-     * @param \Caffeinated\Menus\MenuItem $node
-     *
+     * @param  \Caffeinated\Menus\MenuItem  $node
      * @return \Illuminate\Support\Collection
      */
     protected function extractLinks($node)
     {
         $linkCollection = collect();
+		
+		$linkCollection->push([
+			'title'    => 'Orders',
+			'to'       => '/orders',
+			'icon'     => '',
+			'divider'  => false,
+		]);
 
         foreach ($node as $item) {
             if ($item->hasChildren()) {
