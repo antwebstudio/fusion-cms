@@ -15,6 +15,7 @@ return [
                 'options'     => ['smtp' => 'SMTP', 'sparkpost' => 'SparkPost', 'mailgun' => 'Mailgun', 'mandrill' => 'Mandrill', 'log' => 'Log'],
                 'default'     => 'smtp',
                 'override'    => 'mail.driver',
+                'required'    => true,
             ],
             [
                 'name'        => 'From Address',
@@ -22,6 +23,7 @@ return [
                 'description' => 'All e-mails to users will come from this e-mail address.',
                 'default'     => 'server@example.com',
                 'override'    => 'mail.from.address',
+                'required'    => true,
             ],
             [
                 'name'        => 'From Name',
@@ -29,13 +31,7 @@ return [
                 'description' => 'E-mail sent out to users will be attributed with this name.',
                 'default'     => 'Wendell',
                 'override'    => 'mail.from.name',
-            ],
-            [
-                'name'        => 'Send Test Email',
-                'handle'      => 'mail_test',
-                'description' => 'Send a test email using the currently configured mail settings.',
-                'type'        => 'partial',
-                'options'     => ['view' => 'mail::partials.settings.test_email'],
+                'required'    => true,
             ],
         ],
         'SMTP' => [
@@ -98,27 +94,28 @@ return [
                 'handle'      => 'mail_subject_user_registered',
                 'description' => 'Email subject for user welcome message.',
                 'default'     => 'Welcome!',
+                'required'    => true,
             ],
             [
                 'name'        => 'User Verification Subject',
                 'handle'      => 'mail_subject_user_verification',
                 'description' => 'Email subject for user verification.',
                 'default'     => 'Please verify your email',
+                'required'    => true,
             ],
             [
                 'name'        => 'Forgot Password Subject',
                 'handle'      => 'mail_subject_user_reset_password',
                 'description' => 'Email subject for requesting a password reset.',
                 'default'     => 'Password Reset Request',
+                'required'    => true,
             ],
         ],
         'Test' => [
             [
-                'type'      => 'component',
                 'name'      => 'Mail Test',
                 'handle'    => 'mail_test_component',
                 'component' => 'settings-mail-test',
-                'required'  => false,
             ],
         ],
     ],

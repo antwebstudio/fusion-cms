@@ -48,14 +48,14 @@
         <component v-if="form.type" :is="form.type.id + '-fieldtype-settings'" v-model="form"></component>
 
         <template slot="footer">
-            <p-button class="ml-2" @click="cancel">Cancel</p-button>
-            <p-button theme="primary" class="ml-2" @click.prevent="submit">Save</p-button>
+            <p-button class="button--primary" @click.prevent="submit">Save</p-button>
+            <p-button class="button--secondary mr-2" @click="cancel">Cancel</p-button>
         </template>
    </p-modal>
 </template>
 
 <script>
-    import Form from '../forms/Form'
+    import Form from '../services/Form'
 
     export default {
         name: 'field-editor',
@@ -79,7 +79,7 @@
                 this.form = new Form(_.cloneDeep(value))
             }
         },
-        
+
         methods: {
             submit() {
                 this.form.post('/api/fields/validate')

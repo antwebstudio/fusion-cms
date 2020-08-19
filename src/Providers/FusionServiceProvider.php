@@ -2,16 +2,17 @@
 
 namespace Fusion\Providers;
 
-use Fusion\Facades\Theme;
 use Fusion\Models\User;
 use Fusion\Models\Role;
+use Fusion\Facades\Addon;
+use Fusion\Facades\Theme;
 use Fusion\Models\Mailable;
-use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
 
 class FusionServiceProvider extends ServiceProvider
 {
@@ -22,48 +23,17 @@ class FusionServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerProviders();
-        $this->registerMigrations();
-        $this->registerPublishing();
-        $this->registerViews();
-        $this->registerRoutes();
-        $this->registerGates();
-
-        Passport::routes();
+        $this->bootMigrations();
+        $this->bootPublishing();
+        $this->bootViews();
+        $this->bootRoutes();
+        $this->bootGates();
+        $this->bootCustomRules();
 
         if (app_installed()) {
-            $this->registerTheme();
+            $this->bootAddons();
+            $this->bootTheme();
         }
-    }
-
-    /**
-     * Register the permission gates.
-     *
-     * @return void
-     */
-    protected function registerGates()
-    {
-        Gate::before(function (?User $user, $ability) {
-            /**
-             * Authenticated users undergo auth check
-             *  based on their assigned Role.
-             * 
-             */
-            if ($user) {
-                return $user->isOwner() or
-                       $user->hasPermissionTo($ability)
-                       ? true : null;
-            }
-
-            /**
-             * Unauthenticated users undergo auth check.
-             *  based on `guest` Role.
-             * 
-             */
-            return Role::whereName('guest')
-                ->firstOrFail()
-                ->hasPermissionTo($ability);
-        });
     }
 
     /**
@@ -74,25 +44,88 @@ class FusionServiceProvider extends ServiceProvider
     public function register()
     {
         if (! defined('FUSION_VERSION')) {
-            define('FUSION_VERSION', '6.0.0-beta.5');
+            define('FUSION_VERSION', '6.0.0-beta.10');
         }
 
+        $this->registerProviders();
         $this->registerFusion();
         $this->registerConfig();
-        $this->registerTelescope();
-
-        $kernel = $this->app->make(\Illuminate\Contracts\Http\Kernel::class);
-        $kernel->prependMiddlewareToGroup('api', \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class);
+        $this->registerMiddleware();
 
         $this->commands([
+            \Fusion\Console\Addons\RollbackCommand::class,
+            \Fusion\Console\Addons\DiscoverCommand::class,
+            \Fusion\Console\Addons\DisableCommand::class,
+            \Fusion\Console\Addons\MigrateCommand::class,
+            \Fusion\Console\Addons\RefreshCommand::class,
+            \Fusion\Console\Addons\EnableCommand::class,
+            \Fusion\Console\Addons\ResetCommand::class,
+            \Fusion\Console\Addons\ListCommand::class,
+            \Fusion\Console\MakeAddonCommand::class,
+            \Fusion\Console\MakeThemeCommand::class,
             \Fusion\Console\UninstallCommand::class,
             \Fusion\Console\InstallCommand::class,
-            \Fusion\Console\MakeThemeCommand::class,
             \Fusion\Console\PublishCommand::class,
             \Fusion\Console\RefreshCommand::class,
             \Fusion\Console\FlushCommand::class,
             \Fusion\Console\SyncCommand::class,
         ]);
+    }
+
+    /**
+     * Register middleware.
+     *
+     * @return void
+     */
+    protected function registerMiddleware()
+    {
+        $kernel = $this->app->make(\Illuminate\Contracts\Http\Kernel::class);
+
+        $kernel->prependMiddlewareToGroup('api', \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class);
+
+        $kernel->pushMiddleware(\Fusion\Http\Middleware\DecodeFormData::class);
+    }
+
+    /**
+     * Register the permission gates.
+     *
+     * @return void
+     */
+    protected function bootGates()
+    {
+        Gate::before(function (?User $user, $ability) {
+            /**
+             * Authenticated users undergo auth check
+             *  based on their assigned Role.
+             *
+             */
+            if ($user) {
+                return $user->isOwner() or
+                       $user->hasPermissionTo($ability)
+                       ? true : null;
+            }
+
+            /**
+             * Unauthenticated users undergo auth check.
+             *  based on `guest` Role.
+             *
+             */
+            return Role::whereName('guest')
+                ->firstOrFail()
+                ->hasPermissionTo($ability);
+        });
+    }
+
+    /**
+     * Register custom rule extensions.
+     *
+     * @return void
+     */
+    protected function bootCustomRules()
+    {
+        Validator::extend('securepassword', 'Fusion\Rules\SecurePassword@passes');
+        Validator::extend('serverrequirements', 'Fusion\Rules\ServerRequirements@passes');
+        Validator::extend('permissionrequirements', 'Fusion\Rules\PermissionRequirements@passes');
     }
 
     /**
@@ -115,24 +148,18 @@ class FusionServiceProvider extends ServiceProvider
      */
     private function registerProviders()
     {
+        $this->app->register(AddonServiceProvider::class);
         $this->app->register(BladeServiceProvider::class);
         $this->app->register(EventServiceProvider::class);
-        $this->app->register(SettingsServiceProvider::class);
         $this->app->register(FieldtypeServiceProvider::class);
+        $this->app->register(SettingServiceProvider::class);
         $this->app->register(ThemeServiceProvider::class);
-    }
 
-    /**
-     * Register Laravel Telescope when in the local environment.
-     *
-     * @return void
-     */
-    private function registerTelescope()
-    {
-        if ($this->app->isLocal()) {
-            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
-            $this->app->register(TelescopeServiceProvider::class);
-        }
+        // Not sure why Laravel doesn't register this against
+        // the class name as well ¯\_(ツ)_/¯
+        $this->app->singleton(\Illuminate\Database\Migrations\Migrator::class, function ($app) {
+            return $app['migrator'];
+        });
     }
 
     /**
@@ -140,7 +167,7 @@ class FusionServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    private function registerViews()
+    private function bootViews()
     {
         View::getFinder()->prependLocation(fusion_path('resources/views'));
     }
@@ -150,21 +177,29 @@ class FusionServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    private function registerPublishing()
+    private function bootPublishing()
     {
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                fusion_path('/public') => public_path('vendor/fusion'),
-            ], 'fusion-assets');
+        $this->publishes([
+            fusion_path('/public') => public_path('vendor/fusion'),
+        ], 'fusion-assets');
 
-            $this->publishes([
-                fusion_path('/config/fusion.php') => config_path('fusion.php'),
-            ], 'fusion-config');
+        $this->publishes([
+            fusion_path('/config/fusion.php') => config_path('fusion.php'),
+        ], 'fusion-config');
 
-            $this->publishes([
-                fusion_path('/themes') => base_path('themes'),
-            ], 'fusion-themes');
-        }
+        $this->publishes([
+            fusion_path('/themes') => base_path('themes'),
+        ], 'fusion-themes');
+    }
+
+    /**
+     * Register the available addons.
+     *
+     * @return void
+     */
+    private function bootAddons()
+    {
+        Addon::register();
     }
 
     /**
@@ -172,7 +207,7 @@ class FusionServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    private function registerTheme()
+    private function bootTheme()
     {
         Theme::activate(setting('system.theme'));
     }
@@ -182,11 +217,9 @@ class FusionServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    private function registerMigrations()
+    private function bootMigrations()
     {
-        if ($this->app->runningInConsole()) {
-            $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
-        }
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
     }
 
     /**
@@ -197,11 +230,19 @@ class FusionServiceProvider extends ServiceProvider
     private function registerConfig()
     {
         $this->mergeConfigFile(
+            __DIR__.'/../../config/session.php', 'session'
+        );
+
+        $this->mergeConfigFile(
             __DIR__.'/../../config/analytics.php', 'analytics'
         );
 
         $this->mergeConfigFile(
             __DIR__.'/../../config/fusion.php', 'fusion'
+        );
+
+        $this->mergeConfigFile(
+            __DIR__.'/../../config/installer.php', 'installer'
         );
 
         $this->mergeConfigFile(
@@ -215,7 +256,7 @@ class FusionServiceProvider extends ServiceProvider
 
     /**
      * Merge in `fusioncms` config values.
-     * 
+     *
      * @param  string $key
      * @param  string $path
      * @return void
@@ -232,7 +273,7 @@ class FusionServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    private function registerRoutes()
+    private function bootRoutes()
     {
         Route::mixin(new \Laravel\Ui\AuthRouteMethods());
 
@@ -313,12 +354,8 @@ class FusionServiceProvider extends ServiceProvider
             return \Fusion\Models\Fieldset::findOrFail($id);
         });
 
-        Route::bind('module', function($slug) {
-            if (! \Caffeinated\Modules\Facades\Module::exists($slug)) {
-                throw new \Caffeinated\Modules\Exceptions\ModuleNotFoundException($slug);
-            }
-
-            return \Caffeinated\Modules\Facades\Module::where('slug', $slug);
+        Route::bind('addon', function($slug) {
+            return \Fusion\Facades\Addon::where('slug', $slug)->first();
         });
     }
 

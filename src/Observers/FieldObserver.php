@@ -17,10 +17,12 @@ class FieldObserver
      */
     public function created(Field $field)
     {
+        $fieldtype = fieldtypes()->get($field->type);
+        $fieldtype->onSaved($field);
+
         $fieldset   = $field->section->fieldset;
         $containers = $this->getFieldsettables($fieldset);
 
-        $fieldtype    = fieldtypes()->get($field->type);
         $relationship = $fieldtype->getRelationship();
         $column       = $fieldtype->getColumn('type');
         $settings     = $fieldtype->getColumn('settings') ?? [];
@@ -46,6 +48,9 @@ class FieldObserver
      */
     public function updated(Field $field)
     {
+        $fieldtype = fieldtypes()->get($field->type);
+        $fieldtype->onSaved($field);
+        
         $fieldset   = $field->section->fieldset;
         $containers = $this->getFieldsettables($fieldset);
 
@@ -100,10 +105,12 @@ class FieldObserver
      */
     public function deleted(Field $field)
     {
+        $fieldtype = fieldtypes()->get($field->type);
+        $fieldtype->onDeleted($field);
+
         $fieldset   = $field->section->fieldset;
         $containers = $this->getFieldsettables($fieldset);
 
-        $fieldtype    = fieldtypes()->get($field->type);
         $relationship = $fieldtype->getRelationship();
         $column       = $fieldtype->getColumn('type');
         $settings     = $fieldtype->getColumn('settings') ?? [];
@@ -121,6 +128,7 @@ class FieldObserver
                 }
             });
         }
+
     }
 
     /**

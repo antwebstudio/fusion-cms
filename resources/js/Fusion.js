@@ -1,43 +1,44 @@
 import router from './router'
-import store from './vuex'
+import store from './store'
 import Vue from 'vue'
 import VueMq from 'vue-mq'
 import VueHead from 'vue-head'
-import Proton from '../vendor/proton'
+
+import * as Directives from './directives'
+import * as Plugins from './plugins'
+
 import forms from './mixins/forms'
+import setting from './mixins/setting'
 
 export default class Fusion {
   constructor (config) {
     this.config = config
     this.router = router
     this.store = store
-    this.bus = new Vue()
     this.vue = null
 
-    Vue.prototype.$bus = this.bus
-
-    Vue.use(Proton)
     Vue.use(require('vue-moment'))
     Vue.use(VueHead)
     Vue.use(VueMq, {
       breakpoints: {
-        sm: 767,
-        md: 991,
-        lg: 1199,
-        xl: 1599,
+        sm: 576,
+        md: 768,
+        lg: 992,
+        xl: 1200,
         xxl: Infinity
       }
     })
 
-    Vue.mixin({
-      methods: {
-        setting (key) {
-          return this.$store.getters['settings/getSetting'](key)
-        }
-      }
+    Vue.mixin(forms)
+    Vue.mixin(setting)
+
+    Object.values(Directives).forEach((Directive) => {
+      Vue.use(Directive)
     })
 
-    Vue.mixin(forms)
+    Object.values(Plugins).forEach((Plugin) => {
+      Vue.use(Plugin)
+    })
 
     this.bootingCallbacks = []
     this.bootedCallbacks = []

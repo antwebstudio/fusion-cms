@@ -1,0 +1,41 @@
+.header {
+    @apply text-white fixed w-full top-0 z-10;
+    background: #191b1f;
+
+    @screen lg {
+        background: linear-gradient(90deg, #191b1f 0%, #191b1f 225px, #2d323b 33%, #363e4e 66%, #445d6d 100%);
+        transition: padding 0.5s $transition-effect;
+
+        .nav-active & { padding-left: $nav-width-desktop; }
+    }
+
+    &__container {
+        @apply flex flex-row justify-between items-center w-full px-3;
+        height: 55px;
+    }
+
+    &__logo {
+        @apply relative;
+        padding: rem(10px);
+
+        @screen lg {
+            @apply flex items-center justify-center absolute top-0 h-full z-10;
+            width: $nav-width-desktop;
+            left: -$nav-width-desktop;
+        }
+    }
+
+    &__toggle {}
+
+    &__account {}
+}
+
+.site-body {
+    @apply  flex flex-col flex-1;
+    margin-top: 55px;
+    transition: padding 0.5s $transition-effect;
+
+    @screen lg {
+        .nav-active & { padding-left: $nav-width-desktop; }
+    }
+}

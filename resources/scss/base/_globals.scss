@@ -1,0 +1,18 @@
+html {
+    // Scale rem values
+    font-size: 14px;
+
+    @screen sm { font-size: 16px; }
+}
+
+body { @apply text-gray-800; }
+
+.admin {
+    @apply flex flex-col min-h-screen font-sans tracking-wide leading-loose;
+
+    &.prevent-scroll { overflow: hidden; }
+
+    &__content {
+        @apply flex flex-col flex-auto w-full; 
+    }
+}

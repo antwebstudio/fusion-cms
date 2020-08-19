@@ -18,6 +18,19 @@ if (! function_exists('javascript')) {
     }
 }
 
+if (! function_exists('theme_preview')) {
+    /**
+     * Determines if the current request has the theme customizer
+     * header present or not.
+     *
+     * @return bool
+     */
+    function theme_preview()
+    {
+        return request()->session()->has('customizing');
+    }
+}
+
 if (! function_exists('theme')) {
     /**
      * Fetches the theme property from the manifest file.
@@ -53,23 +66,10 @@ if (! function_exists('theme_option')) {
         $theme  = Theme::active();
         $values = collect();
 
-        if (request()->has('preview')) {
-            $preview = collect(json_decode(request()->get('preview'), true));
-            $values  = $values->merge($preview);
+        if (theme_preview()) {
+            $values = collect(request()->attributes->get('customize'));
         } else {
-            $optionsFilePath = storage_path('themes/'.$theme->get('namespace').'.json');
-
-            if (! File::exists($optionsFilePath)) {
-                $defaults = collect($theme->get('options'))->mapWithKeys(function($section, $handle) {
-                    $options = collect($section['fields'])->mapWithKeys(function($option, $field) {
-                        return [$field => $option['default'] ?? null];
-                    });
-
-                    return [$handle => $options];
-                });
-
-                File::put($optionsFilePath, json_encode($defaults, JSON_PRETTY_PRINT));
-            }
+            $optionsFilePath = storage_path('app/themes/'.$theme->get('namespace').'.json');
 
             $options = collect(json_decode(File::get($optionsFilePath), true));
             $values  = $values->merge($options);

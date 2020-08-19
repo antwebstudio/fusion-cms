@@ -1,0 +1,11 @@
+.row {
+    @apply flex flex-wrap -mx-2;
+
+    @screen xl { @apply -mx-3; }
+}
+
+.col { 
+    @apply px-2; 
+
+    @screen xl { @apply px-3; }
+}

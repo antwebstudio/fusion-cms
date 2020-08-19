@@ -11,6 +11,16 @@
 |
 */
 
+Route::prefix('install')->group(function() {
+    Route::get('confirm', 'Installer\InstallController@index');
+    Route::post('confirm', 'Installer\InstallController@store')
+        ->withoutMiddleware([App\Http\Middleware\VerifyCsrfToken::class]);
+
+    Route::get('{step?}', 'Installer\StepController@index');
+    Route::post('{step?}', 'Installer\StepController@store')
+        ->withoutMiddleware([App\Http\Middleware\VerifyCsrfToken::class]);
+});
+
 Route::get('file/{uuid}/{name}', 'FileController@index');
 Route::get('backups/{backup}', 'BackupController@index');
 Route::get('/themes/{theme}/preview.png', 'Themes\ScreenshotController@show');
@@ -54,6 +64,11 @@ Route::group(['prefix' => config('fusion.path')], function () {
         'as'   => 'admin',
         'uses' => 'AdminController@index',
     ])->where('any', '.*');
+});
+
+Route::group(['middleware' => ['can:themes.update']], function() {
+    Route::post('/customize', 'CustomizeController@show');
+    Route::post('{any?}/customize', 'CustomizeController@show')->where('any', '.*');
 });
 
 Route::post('form/{form}', 'ResponseController@store');
