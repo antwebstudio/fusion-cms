@@ -2,8 +2,6 @@
 
 namespace Fusion\Console;
 
-use Fusion\Facades\Addon;
-use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
@@ -46,7 +44,7 @@ class MakeAddonCommand extends Command
             $filePath     = addon_path("{$namespace}/{$relativePath}");
             $directory    = dirname($filePath);
 
-            if (! File::isDirectory($directory)) {
+            if (!File::isDirectory($directory)) {
                 File::makeDirectory($directory, 0755, true);
             }
 
@@ -55,7 +53,7 @@ class MakeAddonCommand extends Command
 
         $this->callSilent('addon:discover');
 
-        $this->info("Addon created successfully.");
+        $this->info('Addon created successfully.');
     }
 
     /**
@@ -75,7 +73,8 @@ class MakeAddonCommand extends Command
     /**
      * Replace placeholders with actual content.
      *
-     * @param  string  $content
+     * @param string $content
+     *
      * @return mixed
      */
     protected function replacePlaceholders($content, $manifest)

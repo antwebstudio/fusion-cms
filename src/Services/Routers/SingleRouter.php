@@ -3,8 +3,8 @@
 namespace Fusion\Services\Routers;
 
 use Fusion\Models\Matrix;
-use Illuminate\Http\Request;
 use Fusion\Services\Builders\Single;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class SingleRouter extends Router

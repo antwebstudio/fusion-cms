@@ -4,9 +4,9 @@ namespace Fusion\Http\Controllers\API\Insights;
 
 use Analytics;
 use Carbon\Carbon;
-use Spatie\Analytics\Period;
 use Fusion\Http\Controllers\Controller;
 use Fusion\Http\Resources\InsightResource;
+use Spatie\Analytics\Period;
 
 class OverviewController extends Controller
 {
@@ -16,7 +16,7 @@ class OverviewController extends Controller
         $dailyResponse = Analytics::performQuery(Period::days(30), 'ga:users,ga:pageviews,ga:bouncerate', ['dimensions' => 'ga:date']);
         $daily         = collect($dailyResponse['rows'] ?? [])->map(function (array $row) {
             return [
-                'date' => Carbon::createFromFormat('Ymd', $row[0]),
+                'date'       => Carbon::createFromFormat('Ymd', $row[0]),
                 'visitors'   => (int) $row[1],
                 'pageViews'  => (int) $row[2],
                 'bounceRate' => (int) $row[3],

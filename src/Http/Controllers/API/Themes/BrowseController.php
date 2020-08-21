@@ -2,15 +2,14 @@
 
 namespace Fusion\Http\Controllers\API\Themes;
 
-use Storage;
 use Artisan;
-use ZipArchive;
 use Fusion\Facades\Theme;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Fusion\Http\Controllers\Controller;
 use Fusion\Http\Resources\ThemeResource;
-use Fusion\Http\Requests\StoreThemeRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Storage;
+use ZipArchive;
 
 class BrowseController extends Controller
 {
@@ -37,14 +36,15 @@ class BrowseController extends Controller
      *
      *   zip -d your-archive.zip "__MACOSX*"
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return JsonResponse
      */
     public function store(Request $request)
     {
         $this->authorize('themes.create');
 
-        $zipArchive = new ZipArchive;
+        $zipArchive = new ZipArchive();
         $themePath  = Storage::disk('themes')->path('');
 
         if ($zipArchive->open($request->file('file-upload')) === true) {
@@ -55,11 +55,11 @@ class BrowseController extends Controller
             $manifest = stream_get_contents($fileHandle);
             $manifest = collect(json_decode($manifest));
 
-            $originalName  = basename($request->file('file-upload')->getClientOriginalName(), '.zip');
-            $themeName = $manifest->get('name');
+            $originalName = basename($request->file('file-upload')->getClientOriginalName(), '.zip');
+            $themeName    = $manifest->get('name');
 
             $files = [];
-            for ($i = 0; $i < $zipArchive->numFiles; ++$i) {
+            for ($i = 0; $i < $zipArchive->numFiles; $i++) {
                 $zipArchive->renameIndex($i, str_replace($originalName, $themeName, $zipArchive->getNameIndex($i)));
                 $files[] = $zipArchive->getNameIndex($i);
             }
@@ -76,8 +76,8 @@ class BrowseController extends Controller
     /**
      * Update the specified themes options.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  String  $theme
+     * @param \Illuminate\Http\Request $request
+     * @param string                   $theme
      */
     public function update(Request $request, $theme)
     {

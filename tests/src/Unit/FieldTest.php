@@ -2,13 +2,12 @@
 
 namespace Fusion\Tests\Unit;
 
-use Fusion\Models\Field;
 use Facades\FieldFactory;
-use Fusion\Tests\TestCase;
 use Facades\SectionFactory;
-use Illuminate\Support\Facades\DB;
+use Fusion\Tests\TestCase;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 
 class FieldTest extends TestCase
 {
@@ -43,11 +42,11 @@ class FieldTest extends TestCase
         $section = SectionFactory::times(1)->withoutFields()->create();
         $field   = FieldFactory::withSection($section)->create();
 
-        $fieldOne = collect(DB::table('fields')->first())->toArray();
+        $fieldOne           = collect(DB::table('fields')->first())->toArray();
         $fieldOne['id']     = null;
         $fieldOne['handle'] = 'new-handle';
 
-        $fieldTwo = collect(DB::table('fields')->first())->toArray();
+        $fieldTwo               = collect(DB::table('fields')->first())->toArray();
         $fieldTwo['id']         = null;
         $fieldTwo['section_id'] = 99;
 

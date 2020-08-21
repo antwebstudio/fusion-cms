@@ -2,15 +2,17 @@
 
 namespace Fusion\Models;
 
+use Fusion\Concerns\CachesQueries;
 use Fusion\Concerns\HasActivity;
 use Fusion\Concerns\HasFieldset;
-use Fusion\Concerns\CachesQueries;
 use Fusion\Database\Eloquent\Model;
 use Spatie\Activitylog\Models\Activity;
 
 class Menu extends Model
 {
-    use CachesQueries, HasFieldset, HasActivity;
+    use CachesQueries;
+    use HasFieldset;
+    use HasActivity;
 
     protected $with = ['fieldsets'];
 
@@ -46,7 +48,7 @@ class Menu extends Model
      */
     public function getTableAttribute()
     {
-        return 'menu_' . $this->handle;
+        return 'menu_'.$this->handle;
     }
 
     /**
@@ -65,8 +67,9 @@ class Menu extends Model
     /**
      * Tap into activity before persisting to database.
      *
-     * @param  \Spatie\Activitylog\Models\Activity $activity
-     * @param  string   $eventName
+     * @param \Spatie\Activitylog\Models\Activity $activity
+     * @param string                              $eventName
+     *
      * @return void
      */
     public function tapActivity(Activity $activity, string $eventName)
@@ -75,7 +78,7 @@ class Menu extends Model
         $action     = ucfirst($eventName);
         $properties = [
             'link' => "menus/{$subject->id}/edit",
-            'icon' => 'anchor'
+            'icon' => 'anchor',
         ];
 
         $activity->description = "{$action} menu ({$subject->name})";

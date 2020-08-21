@@ -2,12 +2,10 @@
 
 namespace Fusion\Services\Builders;
 
-use Fusion\Models\Field;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use Fusion\Models\Taxonomy as TaxonomyModel;
 use Fusion\Contracts\Builder as BuilderContract;
+use Fusion\Models\Taxonomy as TaxonomyModel;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class Taxonomy extends Builder implements BuilderContract
 {
@@ -29,7 +27,7 @@ class Taxonomy extends Builder implements BuilderContract
     /**
      * Create a new Taxonomy instance.
      *
-     * @param  string  $taxonomy
+     * @param string $taxonomy
      */
     public function __construct($taxonomy)
     {
@@ -50,7 +48,7 @@ class Taxonomy extends Builder implements BuilderContract
         $casts     = [];
 
         if ($this->taxonomy->fieldset) {
-            $fields    = $this->taxonomy->fieldset->fields->reject(function ($field) {
+            $fields = $this->taxonomy->fieldset->fields->reject(function ($field) {
                 $fieldtype = fieldtypes()->get($field->type);
 
                 if ($fieldtype->hasRelationship()) {
@@ -61,9 +59,9 @@ class Taxonomy extends Builder implements BuilderContract
             });
 
             foreach ($fields as $field) {
-                $fieldtype = fieldtypes()->get($field->type);
+                $fieldtype  = fieldtypes()->get($field->type);
                 $fillable[] = $field->handle;
-                $casts[]    = $field->handle . '\' => \'' . $fieldtype->cast ;
+                $casts[]    = $field->handle.'\' => \''.$fieldtype->cast;
             }
         }
 
@@ -73,10 +71,10 @@ class Taxonomy extends Builder implements BuilderContract
         $contents = strtr($stub, [
             '{class}'         => $className,
             '{handle}'        => $this->taxonomy->handle,
-            '{fillable}'      => '[\'' . implode('\', \'', $fillable) . '\']',
-            '{casts}'         => '[\'' . implode('\', \'', $casts) . '\']',
-            '{with}'          => '[\'' . implode('\', \'', $this->getWith()) . '\']',
-            '{dates}'         => '[\'' . implode('\', \'', $this->getDates()) . '\']',
+            '{fillable}'      => '[\''.implode('\', \'', $fillable).'\']',
+            '{casts}'         => '[\''.implode('\', \'', $casts).'\']',
+            '{with}'          => '[\''.implode('\', \'', $this->getWith()).'\']',
+            '{dates}'         => '[\''.implode('\', \'', $this->getDates()).'\']',
             '{trait_classes}' => $this->getTraitImportStatements($traits),
             '{traits}'        => $this->getTraitUseStatements($traits),
             '{taxonomy_id}'   => $this->taxonomy->id,
@@ -85,7 +83,7 @@ class Taxonomy extends Builder implements BuilderContract
 
         File::put($path, $contents);
 
-        return app()->make('Fusion\Models\Taxonomies\\'. $className);
+        return app()->make('Fusion\Models\Taxonomies\\'.$className);
     }
 
     /**

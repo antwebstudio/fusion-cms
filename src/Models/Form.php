@@ -2,15 +2,17 @@
 
 namespace Fusion\Models;
 
+use Fusion\Concerns\CachesQueries;
 use Fusion\Concerns\HasActivity;
 use Fusion\Concerns\HasFieldset;
-use Fusion\Concerns\CachesQueries;
 use Fusion\Database\Eloquent\Model;
 use Spatie\Activitylog\Models\Activity;
 
 class Form extends Model
 {
-    use CachesQueries, HasFieldset, HasActivity;
+    use CachesQueries;
+    use HasFieldset;
+    use HasActivity;
 
     protected $with = ['fieldsets'];
 
@@ -38,7 +40,7 @@ class Form extends Model
         'reply_to',
         'form_template',
         'thankyou_template',
-        'status'
+        'status',
     ];
 
     /**
@@ -91,7 +93,7 @@ class Form extends Model
      */
     public function getTableAttribute()
     {
-        return 'form_' . $this->handle;
+        return 'form_'.$this->handle;
     }
 
     /**
@@ -110,8 +112,9 @@ class Form extends Model
     /**
      * Tap into activity before persisting to database.
      *
-     * @param  \Spatie\Activitylog\Models\Activity $activity
-     * @param  string   $eventName
+     * @param \Spatie\Activitylog\Models\Activity $activity
+     * @param string                              $eventName
+     *
      * @return void
      */
     public function tapActivity(Activity $activity, string $eventName)
@@ -120,7 +123,7 @@ class Form extends Model
         $action     = ucfirst($eventName);
         $properties = [
             'link' => "forms/{$subject->id}/edit",
-            'icon' => 'paper-plane'
+            'icon' => 'paper-plane',
         ];
 
         $activity->description = "{$action} form ({$subject->name})";

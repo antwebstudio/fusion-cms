@@ -2,18 +2,18 @@
 
 namespace Fusion\Tests\Unit;
 
-use Fusion\Tests\TestCase;
 use Fusion\Models\Role;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
+use Fusion\Tests\TestCase;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class UserTest extends TestCase
 {
-	use RefreshDatabase;
+    use RefreshDatabase;
 
-	/**
+    /**
      * @test
      * @group unit
      * @group user
@@ -23,7 +23,7 @@ class UserTest extends TestCase
         $this->expectException(QueryException::class);
         $this->expectExceptionMessage('UNIQUE constraint failed: users.email');
 
-        $attributes = collect(DB::table('users')->first())->toArray();
+        $attributes       = collect(DB::table('users')->first())->toArray();
         $attributes['id'] = null;
 
         DB::table('users')->insert($attributes);

@@ -2,13 +2,11 @@
 
 namespace Fusion\Tests\Unit;
 
-use Fusion\Tests\TestCase;
 use Fusion\Models\Field;
 use Fusion\Models\Replicator;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\QueryException;
+use Fusion\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 
 class ReplicatorFieldtypeTest extends TestCase
 {
@@ -21,14 +19,14 @@ class ReplicatorFieldtypeTest extends TestCase
 
         // --
         $this->section  = \Facades\SectionFactory::times(1)->withoutFields()->create();
-        $this->field    = \Facades\FieldFactory::withName('Replicator')->withType('replicator')->withSection($this->section)->withSettings(['replicator'=>null,'sections'=>[]])->create();
+        $this->field    = \Facades\FieldFactory::withName('Replicator')->withType('replicator')->withSection($this->section)->withSettings(['replicator'=>null, 'sections'=>[]])->create();
         $this->fieldset = \Facades\FieldsetFactory::withSections(collect([$this->section]))->create();
 
         DB::table('replicators')->insert([
             'field_id' => $this->field->id,
             'name'     => 'Content',
             'handle'   => 'content',
-            'uniqid'   => unique_id(5)
+            'uniqid'   => unique_id(5),
         ]);
 
         $this->replicator = Replicator::first();

@@ -10,7 +10,8 @@ class WhenFieldsetIsAttached
     /**
      * Handle the event.
      *
-     * @param  FieldsetAttached  $event
+     * @param FieldsetAttached $event
+     *
      * @return void
      */
     public function handle(FieldsetAttached $event)
@@ -37,7 +38,8 @@ class WhenFieldsetIsAttached
      * Determine if the column should be created or not.
      *
      * @param
-     * @return boolean
+     *
+     * @return bool
      */
     protected function shouldCreateTableColumn($table, $column, $settings)
     {

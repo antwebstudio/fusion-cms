@@ -2,9 +2,9 @@
 
 namespace Fusion\Tests\Unit;
 
-use Fusion\Tests\TestCase;
-use Fusion\Models\Fieldset;
 use Fusion\Models\Extension;
+use Fusion\Models\Fieldset;
+use Fusion\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ExtensionTest extends TestCase
@@ -35,6 +35,6 @@ class ExtensionTest extends TestCase
     {
         $extension = factory(Extension::class)->create();
 
-        $this->assertDatabaseHasTable('ext_' . $extension->handle);
+        $this->assertDatabaseHasTable('ext_'.$extension->handle);
     }
 }

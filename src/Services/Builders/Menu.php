@@ -2,12 +2,10 @@
 
 namespace Fusion\Services\Builders;
 
-use Fusion\Models\Field;
-use Illuminate\Support\Str;
-use Fusion\Models\Menu as MenuModel;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use Fusion\Contracts\Builder as BuilderContract;
+use Fusion\Models\Menu as MenuModel;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class Menu extends Builder implements BuilderContract
 {
@@ -29,7 +27,7 @@ class Menu extends Builder implements BuilderContract
     /**
      * Create a new Menu instance.
      *
-     * @param  string  $menu
+     * @param string $menu
      */
     public function __construct($menu)
     {
@@ -54,7 +52,7 @@ class Menu extends Builder implements BuilderContract
         ];
 
         if ($this->menu->fieldset) {
-            $fields    = $this->menu->fieldset->fields->reject(function ($field) {
+            $fields = $this->menu->fieldset->fields->reject(function ($field) {
                 $fieldtype = fieldtypes()->get($field->type);
 
                 if ($fieldtype->hasRelationship()) {
@@ -67,7 +65,7 @@ class Menu extends Builder implements BuilderContract
             foreach ($fields as $field) {
                 $fieldtype  = fieldtypes()->get($field->type);
                 $fillable[] = $field->handle;
-                $casts[]    = $field->handle . '\' => \'' . $fieldtype->cast ;
+                $casts[]    = $field->handle.'\' => \''.$fieldtype->cast;
             }
         }
 
@@ -77,10 +75,10 @@ class Menu extends Builder implements BuilderContract
         $contents = strtr($stub, [
             '{class}'         => $className,
             '{handle}'        => $this->menu->handle,
-            '{fillable}'      => '[\'' . implode('\', \'', $fillable) . '\']',
-            '{casts}'         => '[\'' . implode('\', \'', $casts) . '\']',
-            '{with}'          => '[\'' . implode('\', \'', $this->getWith()) . '\']',
-            '{dates}'         => '[\'' . implode('\', \'', $this->getDates()) . '\']',
+            '{fillable}'      => '[\''.implode('\', \'', $fillable).'\']',
+            '{casts}'         => '[\''.implode('\', \'', $casts).'\']',
+            '{with}'          => '[\''.implode('\', \'', $this->getWith()).'\']',
+            '{dates}'         => '[\''.implode('\', \'', $this->getDates()).'\']',
             '{trait_classes}' => $this->getTraitImportStatements($traits),
             '{traits}'        => $this->getTraitUseStatements($traits),
             '{menu_id}'       => $this->menu->id,
@@ -89,7 +87,7 @@ class Menu extends Builder implements BuilderContract
 
         File::put($path, $contents);
 
-        return app()->make('Fusion\Models\Menus\\'. $className);
+        return app()->make('Fusion\Models\Menus\\'.$className);
     }
 
     /**

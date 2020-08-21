@@ -8,7 +8,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CollectionRequest extends FormRequest
 {
-
     public function __construct()
     {
         $this->matrix        = Matrix::where('slug', request()->route('slug'))->firstOrFail();
@@ -17,6 +16,7 @@ class CollectionRequest extends FormRequest
         $this->fields        = $this->fieldset->fields ?? [];
         $this->relationships = $this->fieldset ? $this->fieldset->relationships() : [];
     }
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,7 +24,7 @@ class CollectionRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->can('entries.' . ($this->method() === 'POST' ? 'create' : 'update'));
+        return $this->user()->can('entries.'.($this->method() === 'POST' ? 'create' : 'update'));
     }
 
     /**
@@ -36,7 +36,7 @@ class CollectionRequest extends FormRequest
     {
         $this->merge([
             'matrix_id' => $this->matrix->id,
-            'status'    => $this->status ?? 1
+            'status'    => $this->status ?? 1,
         ]);
     }
 
@@ -49,7 +49,7 @@ class CollectionRequest extends FormRequest
     {
         $rules = [
             'matrix_id' => 'required|integer',
-            'slug'      => 'unique:' . $this->model->getTable() . ',slug,' . request()->id,
+            'slug'      => 'unique:'.$this->model->getTable().',slug,'.request()->id,
             'status'    => 'required|boolean',
         ];
 
@@ -58,10 +58,22 @@ class CollectionRequest extends FormRequest
             $rules['slug'] .= '|required';
         }
 
-        foreach ($this->fields as $field) {
-            $rules[$field->handle] = $field->validation ?: 'sometimes';
-        }
+        $rules += $this->fields->flatMap(function ($field) {
+            return $field->type()->rules($field, $this->{$field->handle});
+        })->toArray();
 
         return $rules;
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return $this->fields->flatMap(function ($field) {
+            return $field->type()->attributes($field, $this->{$field->handle});
+        })->toArray();
     }
 }

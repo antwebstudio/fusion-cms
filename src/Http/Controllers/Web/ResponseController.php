@@ -2,7 +2,6 @@
 
 namespace Fusion\Http\Controllers\Web;
 
-use Fusion\Models\Form;
 use Fusion\Http\Controllers\Controller;
 use Fusion\Http\Requests\ResponseRequest;
 
@@ -11,7 +10,8 @@ class ResponseController extends Controller
     /**
      * Show the home index screen.
      *
-     * @param \Fusion\Http\Requests\ResponseRequest  $request
+     * @param \Fusion\Http\Requests\ResponseRequest $request
+     *
      * @return Theme
      */
     public function store(ResponseRequest $request)
@@ -23,7 +23,7 @@ class ResponseController extends Controller
             $relationship->type()->persistRelationship($response, $relationship);
         }
 
-        if (! $form->redirect_on_submission) {
+        if (!$form->redirect_on_submission) {
             $redirect = $form->thankyouPath();
         } else {
             $redirect = $form->redirect_url;

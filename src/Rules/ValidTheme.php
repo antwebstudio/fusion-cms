@@ -2,8 +2,8 @@
 
 namespace Fusion\Rules;
 
-use ZipArchive;
 use Illuminate\Contracts\Validation\Rule;
+use ZipArchive;
 
 class ValidTheme implements Rule
 {
@@ -24,14 +24,16 @@ class ValidTheme implements Rule
      */
     public function __construct()
     {
-        $this->zipArchive    = new ZipArchive;
-        $this->requiredFiles = ['theme.json','preview.png'];
+        $this->zipArchive    = new ZipArchive();
+        $this->requiredFiles = ['theme.json', 'preview.png'];
     }
+
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
+     * @param string $attribute
+     * @param mixed  $value
+     *
      * @return bool
      */
     public function passes($attribute, $value)
@@ -59,6 +61,6 @@ class ValidTheme implements Rule
      */
     public function message()
     {
-        return 'A theme requires the following files: ' . implode(', ', $this->requiredFiles) . '.';
+        return 'A theme requires the following files: '.implode(', ', $this->requiredFiles).'.';
     }
 }

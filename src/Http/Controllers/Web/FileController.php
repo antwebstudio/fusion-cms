@@ -2,13 +2,11 @@
 
 namespace Fusion\Http\Controllers\Web;
 
+use Fusion\Http\Streamers\Video\LaravelStreamer as LaravelVideoStreamer;
 use Fusion\Models\File;
-use Illuminate\Support\Str;
-use League\Glide\ServerFactory;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Storage;
-use League\Glide\Responses\LaravelResponseFactory;
-use Fusion\Http\Streamers\Video\LaravelStreamer as LaravelVideoStreamer;
+use Illuminate\Support\Str;
 
 class FileController extends Controller
 {
@@ -21,7 +19,7 @@ class FileController extends Controller
         $params['t'] = $file->updated_at->format('U');
 
         if ($name !== $file->name) {
-            return redirect()->to('/file/' . $uuid . '/' . $file->name . '?' . http_build_query($params));
+            return redirect()->to('/file/'.$uuid.'/'.$file->name.'?'.http_build_query($params));
         }
 
         if (in_array($file->mimetype, ['image/jpeg', 'image/gif', 'image/png'])) {
@@ -36,7 +34,7 @@ class FileController extends Controller
             $file->location,
             $file->name,
             [
-                'Content-Type' => $file->mimetype
+                'Content-Type' => $file->mimetype,
             ]
         );
     }

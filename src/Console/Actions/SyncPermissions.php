@@ -2,12 +2,12 @@
 
 namespace Fusion\Console\Actions;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Fusion\Models\Permission;
-use Symfony\Component\Finder\Finder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Spatie\Permission\PermissionRegistrar;
+use Symfony\Component\Finder\Finder;
 
 class SyncPermissions
 {
@@ -26,7 +26,8 @@ class SyncPermissions
     /**
      * Sync incoming permissions with existing.
      *
-     * @param  array $permissions
+     * @param array $permissions
+     *
      * @return void
      */
     public function sync($permissions)
@@ -35,7 +36,7 @@ class SyncPermissions
         $existing = Permission::all()->pluck('id', 'id');
 
         foreach ($permissions as $group => $values) {
-            foreach(Arr::dot($values) as $name => $value) {
+            foreach (Arr::dot($values) as $name => $value) {
 
                 // Allow for condensed version w/ autogen description.
                 // i.e. 'single' => [ 'show', 'create', ... ]
@@ -43,11 +44,11 @@ class SyncPermissions
 
                 if (preg_match('/([a-z]+)\.(\d+)/i', $name, $matches)) {
                     $name  = str_replace($matches[2], $value, $name);
-                    $value = ucfirst($value) . ' a ' . Str::of($matches[1])->singular()->ucfirst();
+                    $value = ucfirst($value).' a '.Str::of($matches[1])->singular()->ucfirst();
                 }
 
                 $permission = Permission::updateOrCreate(
-                    [ 'name' => $name ],
+                    ['name' => $name],
                     [
                         'guard_name'  => '*',
                         'description' => $value,
@@ -71,7 +72,8 @@ class SyncPermissions
     /**
      * Fetch all permission files.
      *
-     * @param  string  $directory
+     * @param string $directory
+     *
      * @return array
      */
     protected function fetchPermissions($directory)

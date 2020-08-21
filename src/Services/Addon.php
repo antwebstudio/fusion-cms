@@ -2,30 +2,27 @@
 
 namespace Fusion\Services;
 
-use Illuminate\Support\Str;
-use Fusion\Services\Manifest;
 use Composer\Autoload\ClassLoader;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Addon extends Collection
 {
-
     public function discover()
     {
         $addons = $this->getAddons();
 
         // 1. Extract existing "enabled" values for each addon
-        $addons->transform(function($addon) {
+        $addons->transform(function ($addon) {
             $cached = $this->get($addon['namespace']);
 
-            $addon['slug']      = Str::slug($addon['name'], '-');
-            $addon['handle']    = Str::slug($addon['name'], '_');
-            $addon['enabled']   = $cached['enabled'] ?? ($addon['enabled'] ?? false);
+            $addon['slug'] = Str::slug($addon['name'], '-');
+            $addon['handle'] = Str::slug($addon['name'], '_');
+            $addon['enabled'] = $cached['enabled'] ?? ($addon['enabled'] ?? false);
             $addon['installed'] = $cached['installed'] ?? ($addon['installed'] ?? false);
 
             return $addon;
@@ -45,7 +42,7 @@ class Addon extends Collection
      */
     public function register()
     {
-        $this->enabled()->each(function($addon) {
+        $this->enabled()->each(function ($addon) {
             $this->createSymlink($addon);
             $this->registerViewLocation($addon);
             $this->registerClassLoader($addon);
@@ -73,7 +70,7 @@ class Addon extends Collection
         $this->setProperty($namespace, 'installed', false);
 
         // Remove extensions before rolling back..
-        dispatch(new \Fusion\Console\Actions\SyncExtensions);
+        dispatch(new \Fusion\Console\Actions\SyncExtensions());
 
         Artisan::call('addon:rollback', [
             'namespace' => $namespace,
@@ -87,7 +84,8 @@ class Addon extends Collection
     /**
      * Enable the specified addon.
      *
-     * @param  string  $namespace
+     * @param string $namespace
+     *
      * @return void
      */
     public function enable($namespace)
@@ -100,7 +98,8 @@ class Addon extends Collection
     /**
      * Disable the specified addon.
      *
-     * @param  string  $addon
+     * @param string $addon
+     *
      * @return void
      */
     public function disable($namespace)
@@ -118,7 +117,7 @@ class Addon extends Collection
      */
     public function enabled()
     {
-        return $this->filter(function($addon) {
+        return $this->filter(function ($addon) {
             return $addon['enabled'] == true;
         });
     }
@@ -131,7 +130,7 @@ class Addon extends Collection
      */
     public function disabled()
     {
-        return $this->filter(function($addon) {
+        return $this->filter(function ($addon) {
             return $addon['enabled'] == false;
         });
     }
@@ -161,7 +160,8 @@ class Addon extends Collection
     /**
      * Symlink the specified addon's public directory.
      *
-     * @param  \Illuminate\Support\Collection  $addon
+     * @param \Illuminate\Support\Collection $addon
+     *
      * @return void
      */
     protected function createSymlink($addon)
@@ -170,11 +170,11 @@ class Addon extends Collection
         $publicPath = public_path("addons/{$folder}");
         $addonPath  = addon_path("{$folder}/public");
 
-        if (! File::exists(public_path("addons"))) {
-            File::makeDirectory(public_path("addons"));
+        if (!File::exists(public_path('addons'))) {
+            File::makeDirectory(public_path('addons'));
         }
 
-        if (! File::exists($publicPath) and File::exists($addonPath)) {
+        if (!File::exists($publicPath) and File::exists($addonPath)) {
             File::link(
                 $addonPath,
                 $publicPath
@@ -186,7 +186,8 @@ class Addon extends Collection
      * Register the addon's view location with Laravel. Addon views
      * act as fallbacks if a theme view can't be found.
      *
-     * @param  \Illuminate\Support\Collection  $addon
+     * @param \Illuminate\Support\Collection $addon
+     *
      * @return void
      */
     protected function registerViewLocation($addon)
@@ -200,7 +201,8 @@ class Addon extends Collection
      * Register a new PSR-4 class loader with composer for
      * the specified addon.
      *
-     * @param  \Illuminate\Support\Collection  $addon
+     * @param \Illuminate\Support\Collection $addon
+     *
      * @return void
      */
     protected function registerClassLoader($addon)
@@ -215,7 +217,8 @@ class Addon extends Collection
     /**
      * Register the addon's service provider with Laravel.
      *
-     * @param  \Illuminate\Support\Collection  $addon
+     * @param \Illuminate\Support\Collection $addon
+     *
      * @return void
      */
     protected function registerServiceProvider($addon)

@@ -8,20 +8,21 @@ use Illuminate\Contracts\Validation\Rule;
 class PwnedPassword implements Rule
 {
     /**
-     * @var   Number of times password has been compromised
+     * @var Number of times password has been compromised
      */
     protected $count;
 
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
+     * @param string $attribute
+     * @param mixed  $value
+     *
      * @return bool
      */
     public function passes($attribute, $value)
     {
-        $client = new Client;
+        $client = new Client();
         $hash   = strtoupper(sha1($value));
         $range  = substr($hash, 0, 5);
         $suffix = substr($hash, 5);

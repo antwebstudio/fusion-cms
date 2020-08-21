@@ -2,11 +2,11 @@
 
 namespace Fusion\Rules;
 
-use Log;
 use Exception;
-use ZipArchive;
 use Fusion\Facades\Theme;
 use Illuminate\Contracts\Validation\Rule;
+use Log;
+use ZipArchive;
 
 class UniqueThemeName implements Rule
 {
@@ -27,15 +27,16 @@ class UniqueThemeName implements Rule
      */
     public function __construct()
     {
-        $this->zipArchive = new ZipArchive;
+        $this->zipArchive = new ZipArchive();
         $this->themes     = collect(Theme::all());
     }
 
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
+     * @param string $attribute
+     * @param mixed  $value
+     *
      * @return bool
      */
     public function passes($attribute, $value)
@@ -72,9 +73,10 @@ class UniqueThemeName implements Rule
 
     /**
      * Parse theme.json settings file for validation.
-     * [helper]
+     * [helper].
      *
-     * @param  resource $handle
+     * @param resource $handle
+     *
      * @return Collection
      */
     private function parseStream($handle)

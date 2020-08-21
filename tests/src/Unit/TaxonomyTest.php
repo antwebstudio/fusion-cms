@@ -2,14 +2,13 @@
 
 namespace Fusion\Tests\Unit;
 
-use Fusion\Tests\TestCase;
-use Fusion\Models\Taxonomy;
-use Fusion\Models\Fieldset;
 use Facades\TaxonomyFactory;
-use Illuminate\Support\Facades\DB;
+use Fusion\Models\Fieldset;
+use Fusion\Models\Taxonomy;
+use Fusion\Tests\TestCase;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Facades\DB;
 
 class TaxonomyTest extends TestCase
 {
@@ -72,8 +71,8 @@ class TaxonomyTest extends TestCase
         $this->expectException(QueryException::class);
         $this->expectExceptionMessage('UNIQUE constraint failed: taxonomies.handle');
 
-        $taxonomy = factory(Taxonomy::class)->create();
-        $taxonomy = $taxonomy->toArray();
+        $taxonomy         = factory(Taxonomy::class)->create();
+        $taxonomy         = $taxonomy->toArray();
         $taxonomy['id']   = null;
         $taxonomy['slug'] = 'new-slug';
 
@@ -90,8 +89,8 @@ class TaxonomyTest extends TestCase
         $this->expectException(QueryException::class);
         $this->expectExceptionMessage('UNIQUE constraint failed: taxonomies.slug');
 
-        $taxonomy = factory(Taxonomy::class)->create();
-        $taxonomy = $taxonomy->toArray();
+        $taxonomy           = factory(Taxonomy::class)->create();
+        $taxonomy           = $taxonomy->toArray();
         $taxonomy['id']     = null;
         $taxonomy['handle'] = 'new-handle';
 

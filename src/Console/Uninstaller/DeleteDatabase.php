@@ -3,7 +3,6 @@
 namespace Fusion\Console\Uninstaller;
 
 use PDO;
-use Artisan;
 use PDOException;
 
 class DeleteDatabase
@@ -25,7 +24,7 @@ class DeleteDatabase
             $pdo = new PDO("{$driver}:host={$host}", $username, $password);
             $pdo->query("DROP DATABASE IF EXISTS {$database}");
         } catch (PDOException $e) {
-            die($e->getMessage());
+            exit($e->getMessage());
         }
     }
 }
