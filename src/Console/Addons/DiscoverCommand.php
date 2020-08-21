@@ -3,11 +3,7 @@
 namespace Fusion\Console\Addons;
 
 use Fusion\Facades\Addon;
-use Illuminate\Support\Str;
-use Fusion\Services\Manifest;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\File;
 
 class DiscoverCommand extends Command
 {

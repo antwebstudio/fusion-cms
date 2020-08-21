@@ -2,21 +2,22 @@
 
 namespace Fusion\Http\Controllers\API;
 
-use ParseError;
-use Fusion\Models\Matrix;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use Fusion\Http\Controllers\Controller;
-use Fusion\Http\Resources\EntryResource;
-use Fusion\Services\Builders\Collection;
 use Fusion\Http\Requests\CollectionRequest;
+use Fusion\Http\Resources\EntryResource;
+use Fusion\Models\Matrix;
+use Fusion\Services\Builders\Collection;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use ParseError;
 
 class CollectionController extends Controller
 {
     /**
      * Display the specified resource.
      *
-     * @param  string  $matrix
+     * @param string $matrix
+     *
      * @return JsonResponse
      */
     public function index($matrix)
@@ -33,7 +34,8 @@ class CollectionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \Fusion\Models\Matrix  $matrix
+     * @param \Fusion\Models\Matrix $matrix
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($matrix, $id)
@@ -50,8 +52,9 @@ class CollectionController extends Controller
     /**
      * Store newly created record in storage.
      *
-     * @param  \Fusion\Http\Requests\CollectionRequest $request
-     * @param  string $matrixSlug
+     * @param \Fusion\Http\Requests\CollectionRequest $request
+     * @param string                                  $matrixSlug
+     *
      * @return \Fusion\Http\Resources\EntryResource
      */
     public function store(CollectionRequest $request, $matrixSlug)
@@ -65,7 +68,7 @@ class CollectionController extends Controller
         }
 
         // Autogenerate name/slug
-        if (! $matrix->show_name_field) {
+        if (!$matrix->show_name_field) {
             $entry->name = $this->compileBladeString($matrix->name_format, $entry);
             $entry->slug = Str::slug($entry->name);
 
@@ -78,9 +81,10 @@ class CollectionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Fusion\Http\Requests\CollectionRequest $request
-     * @param  string  $matrix
-     * @param  integer $id
+     * @param \Fusion\Http\Requests\CollectionRequest $request
+     * @param string                                  $matrix
+     * @param int                                     $id
+     *
      * @return \Fusion\Http\Resources\EntryResource
      */
     public function update(CollectionRequest $request, $matrixSlug, $id)
@@ -94,7 +98,7 @@ class CollectionController extends Controller
             $relationship->type()->persistRelationship($entry, $relationship);
         }
 
-        if (! $matrix->show_name_field) {
+        if (!$matrix->show_name_field) {
             $entry->name = $this->compileBladeString($matrix->name_format, $entry);
             $entry->slug = Str::slug($entry->name);
 
@@ -107,9 +111,10 @@ class CollectionController extends Controller
     /**
      * Destroy resource from storage.
      *
-     * @param  Request  $request
-     * @param  string   $matrixSlug
-     * @param  integer  $id
+     * @param Request $request
+     * @param string  $matrixSlug
+     * @param int     $id
+     *
      * @return void
      */
     public function destroy(Request $request, $matrixSlug, $id)
@@ -120,7 +125,7 @@ class CollectionController extends Controller
         $model  = (new Collection($matrix->handle))->make();
         $entry  = $model->findOrFail($id);
 
-        if(isset($matrix->fieldset)) {
+        if (isset($matrix->fieldset)) {
             foreach ($matrix->fieldset->relationships() as $relationship) {
                 fieldtypes()->get($relationship->type)->destroyRelationship($entry, $relationship);
             }
@@ -132,8 +137,9 @@ class CollectionController extends Controller
     /**
      * Compile a blade string in a safe and controlled manner.
      *
-     * @param  string  $string
-     * @param  Entry  $entry
+     * @param string $string
+     * @param Entry  $entry
+     *
      * @return string
      */
     protected function compileBladeString($string, $entry)

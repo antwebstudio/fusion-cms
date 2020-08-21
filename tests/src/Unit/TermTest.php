@@ -2,11 +2,11 @@
 
 namespace Fusion\Tests\Unit;
 
-use Fusion\Tests\TestCase;
 use Fusion\Models\Taxonomy;
-use Illuminate\Support\Facades\DB;
+use Fusion\Tests\TestCase;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 
 class TermTest extends TestCase
 {
@@ -50,7 +50,7 @@ class TermTest extends TestCase
         $this->taxonomy->name   = 'Tags';
         $this->taxonomy->handle = 'tags';
         $this->taxonomy->save();
-        
+
         $term = $this->taxonomy->terms->first();
 
         $this->assertDatabaseHasTable($term->getTable());

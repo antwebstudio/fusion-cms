@@ -2,14 +2,12 @@
 
 namespace Fusion\Tests\Unit;
 
-use Fusion\Models\Setting;
 use Fusion\Models\Fieldset;
+use Fusion\Models\Setting;
 use Fusion\Tests\TestCase;
-use Fusion\Models\SettingSection;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Collection;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 
 class SettingTest extends TestCase
 {
@@ -25,7 +23,7 @@ class SettingTest extends TestCase
         $this->expectException(QueryException::class);
         $this->expectExceptionMessage('UNIQUE constraint failed: settings.handle');
 
-        $attributes = collect(DB::table('settings')->first())->toArray();
+        $attributes       = collect(DB::table('settings')->first())->toArray();
         $attributes['id'] = null;
 
         DB::table('settings')->insert($attributes);
@@ -61,7 +59,7 @@ class SettingTest extends TestCase
         $group   = Setting::first();
         $setting = $group->getBuilder()->firstOrCreate(['id' => 1, 'setting_id' => $group->id]);
 
-    	$this->assertInstanceOf(Setting::class, $setting->group);
+        $this->assertInstanceOf(Setting::class, $setting->group);
     }
 
     /**

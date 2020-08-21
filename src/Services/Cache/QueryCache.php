@@ -2,8 +2,8 @@
 
 namespace Fusion\Services\Cache;
 
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
 
 class QueryCache
 {
@@ -20,8 +20,8 @@ class QueryCache
     /**
      * Create a new QueryCache instance.
      *
-     * @param  string  $store
-     * @param  int  $length
+     * @param string $store
+     * @param int    $length
      */
     public function __construct($store, $length)
     {
@@ -45,7 +45,7 @@ class QueryCache
     /**
      * Set the length of the cache.
      *
-     * @param  int  $minutes
+     * @param int $minutes
      */
     public function length($minutes)
     {
@@ -55,7 +55,7 @@ class QueryCache
     /**
      * Enable and set the length of the cache.
      *
-     * @param  int  $minutes
+     * @param int $minutes
      */
     public function enable($minutes = 30)
     {
@@ -73,13 +73,14 @@ class QueryCache
     /**
      * Get the model results.
      *
-     * @param  QueryCacheBuilder  $builder
-     * @param  array  $columns
+     * @param QueryCacheBuilder $builder
+     * @param array             $columns
+     *
      * @return Collection
      */
     public function get(QueryCacheBuilder $builder, $columns = ['*'])
     {
-        if (! $this->enabled()) {
+        if (!$this->enabled()) {
             return $this->performQuery($builder, $columns);
         }
 
@@ -94,7 +95,8 @@ class QueryCache
     /**
      * Get the cache instance.
      *
-     * @param  QueryCacheBuilder  $builder
+     * @param QueryCacheBuilder $builder
+     *
      * @return Cache
      */
     protected function getCache(QueryCacheBuilder $builder)
@@ -117,8 +119,9 @@ class QueryCache
     /**
      * Perform the query on the model.
      *
-     * @param  QueryCacheBuilder  $builder
-     * @param  array  $coumns
+     * @param QueryCacheBuilder $builder
+     * @param array             $coumns
+     *
      * @return mixed
      */
     protected function performQuery(QueryCacheBuilder $builder, $columns = ['*'])
@@ -129,8 +132,9 @@ class QueryCache
     /**
      * Generate a key for cache tag support.
      *
-     * @param  QueryCacheBuilder  $builder
-     * @param  array  $columns
+     * @param QueryCacheBuilder $builder
+     * @param array             $columns
+     *
      * @return string
      */
     protected function generateKey(QueryCacheBuilder $builder, array $columns)
@@ -144,7 +148,8 @@ class QueryCache
     /**
      * Returns the tag to the model cache.
      *
-     * @param  QueryCacheBuilder  $builder
+     * @param QueryCacheBuilder $builder
+     *
      * @return string
      */
     protected function getTag(QueryCacheBuilder $builder)
@@ -155,7 +160,8 @@ class QueryCache
     /**
      * Flush the cache on the model.
      *
-     * @param  string  $tag
+     * @param string $tag
+     *
      * @return mixed
      */
     public function flush($tag)

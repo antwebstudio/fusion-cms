@@ -15,7 +15,7 @@ trait CachesQueries
      */
     public static function bootCacheable()
     {
-        static::observe(new CacheObserver);
+        static::observe(new CacheObserver());
     }
 
     /**
@@ -91,7 +91,8 @@ trait CachesQueries
     /**
      * Flush the cache if auto-busting is true on create/update events.
      *
-     * @param  array  $options
+     * @param array $options
+     *
      * @return void
      */
     public function finishSave(array $options)

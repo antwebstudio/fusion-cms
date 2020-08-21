@@ -2,15 +2,16 @@
 
 namespace Fusion\Http\Controllers\API;
 
-use Illuminate\Http\Request;
 use Fusion\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class UploadTempFile extends Controller
 {
     /**
      * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -20,14 +21,14 @@ class UploadTempFile extends Controller
         $maxFileUpload = byte_converter($maxFileUpload, 'MB', 'KB');
         $mimetypes     = $request->input('mimetypes');
 
-        $attributes  = $request->validate([
-            'file' => 'required|file|mimetypes:' . $mimetypes . '|max:' . $maxFileSize,
+        $attributes = $request->validate([
+            'file' => 'required|file|mimetypes:'.$mimetypes.'|max:'.$maxFileSize,
         ]);
 
         $file     = $attributes['file'];
         $fileExtn = $file->guessClientExtension();
-        $fileName = time() . '.' . $fileExtn;
-        $filePath = sys_get_temp_dir() . '/' . $fileName;
+        $fileName = time().'.'.$fileExtn;
+        $filePath = sys_get_temp_dir().'/'.$fileName;
 
         $file->storeAs(sys_get_temp_dir(), $fileName);
 

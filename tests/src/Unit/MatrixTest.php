@@ -2,14 +2,13 @@
 
 namespace Fusion\Tests\Unit;
 
-use Fusion\Models\Matrix;
 use Facades\MatrixFactory;
-use Fusion\Tests\TestCase;
 use Fusion\Models\Fieldset;
-use Illuminate\Support\Facades\DB;
+use Fusion\Models\Matrix;
+use Fusion\Tests\TestCase;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Facades\DB;
 
 class MatrixTest extends TestCase
 {
@@ -104,8 +103,8 @@ class MatrixTest extends TestCase
         $this->expectException(QueryException::class);
         $this->expectExceptionMessage('UNIQUE constraint failed: matrices.handle');
 
-        $matrix = factory(Matrix::class)->create();
-        $matrix = $matrix->toArray();
+        $matrix         = factory(Matrix::class)->create();
+        $matrix         = $matrix->toArray();
         $matrix['id']   = null;
         $matrix['slug'] = 'new-slug';
 
@@ -122,8 +121,8 @@ class MatrixTest extends TestCase
         $this->expectException(QueryException::class);
         $this->expectExceptionMessage('UNIQUE constraint failed: matrices.slug');
 
-        $matrix = factory(Matrix::class)->create();
-        $matrix = $matrix->toArray();
+        $matrix           = factory(Matrix::class)->create();
+        $matrix           = $matrix->toArray();
         $matrix['id']     = null;
         $matrix['handle'] = 'new-handle';
 

@@ -2,8 +2,8 @@
 
 namespace Fusion\Rules;
 
-use ZipArchive;
 use Illuminate\Contracts\Validation\Rule;
+use ZipArchive;
 
 class ValidAddon implements Rule
 {
@@ -27,11 +27,13 @@ class ValidAddon implements Rule
         $this->zipArchive    = $zipArchive;
         $this->requiredFiles = ['addon.json'];
     }
+
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
+     * @param string $attribute
+     * @param mixed  $value
+     *
      * @return bool
      */
     public function passes($attribute, $value)
@@ -59,6 +61,6 @@ class ValidAddon implements Rule
      */
     public function message()
     {
-        return 'An addon requires the following files: ' . implode(', ', $this->requiredFiles) . '.';
+        return 'An addon requires the following files: '.implode(', ', $this->requiredFiles).'.';
     }
 }

@@ -2,12 +2,11 @@
 
 namespace Fusion\Tests\Unit;
 
-use Fusion\Tests\TestCase;
-use Fusion\Models\Directory;
 use Facades\DirectoryFactory;
-use Illuminate\Support\Facades\DB;
+use Fusion\Tests\TestCase;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 
 class DirectoryTest extends TestCase
 {
@@ -23,8 +22,8 @@ class DirectoryTest extends TestCase
         $this->expectException(QueryException::class);
         $this->expectExceptionMessage('UNIQUE constraint failed: directories.parent_id, directories.slug');
 
-        $directory = DirectoryFactory::withName('lorem')->create();
-        $directory = $directory->toArray();
+        $directory       = DirectoryFactory::withName('lorem')->create();
+        $directory       = $directory->toArray();
         $directory['id'] = null;
 
         DB::table('directories')->insert($directory);
@@ -39,12 +38,12 @@ class DirectoryTest extends TestCase
     {
         $directory = DirectoryFactory::withName('lorem')->create();
 
-        $directoryOne = $directory->toArray();
+        $directoryOne         = $directory->toArray();
         $directoryOne['id']   = null;
         $directoryOne['slug'] = 'new-slug';
 
-        $directoryTwo = $directory->toArray();
-        $directoryTwo['id']     = null;
+        $directoryTwo              = $directory->toArray();
+        $directoryTwo['id']        = null;
         $directoryTwo['parent_id'] = 99;
 
         DB::table('directories')->insert($directoryOne);

@@ -8,14 +8,14 @@ class FileUploadRequest extends FormRequest
 {
     /**
      * Max file size upload limit.
-     * 
+     *
      * @var int
      */
     protected $maxFileSize;
 
     /**
      * Accepted file extensions.
-     * 
+     *
      * @var string
      */
     protected $acceptedMimes;
@@ -47,7 +47,7 @@ class FileUploadRequest extends FormRequest
     public function rules()
     {
         $maxKb = byte_converter($this->maxFileSize, 'MB', 'KB');
-        $mimes = implode(',', $this->acceptedMimes);
+        $mimes = implode(',', $this->acceptedMimes->toArray());
 
         return [
             'file'         => "required|file|max:{$maxKb}|mimes:{$mimes}",
@@ -57,7 +57,7 @@ class FileUploadRequest extends FormRequest
 
     /**
      * Get the error messages for the defined validation rules.
-    *
+     *
      * @return array
      */
     public function messages()

@@ -3,10 +3,10 @@
 namespace Fusion\Tests\Unit;
 
 use Fusion\Tests\TestCase;
-use Illuminate\Database\QueryException;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class FieldsetTest extends TestCase
 {

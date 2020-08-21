@@ -3,13 +3,14 @@
 /**
  * retrieve an instance of the matrix model builder.
  *
- * @param  string  $matrix
+ * @param string $matrix
+ *
  * @return \Fusion\Services\Builders\Matrix
  */
 function matrix_page($matrix)
 {
     try {
-        return new \Fusion\Services\Builders\Page($matrix);
+        return new \Fusion\Services\Builders\Single($matrix);
     } catch (\Exception $e) {
         return null;
     }

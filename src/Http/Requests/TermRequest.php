@@ -2,22 +2,21 @@
 
 namespace Fusion\Http\Requests;
 
-use Fusion\Models\Taxonomy;
-use Illuminate\Support\Str;
-use Illuminate\Foundation\Http\FormRequest;
 use Fusion\Services\Builders\Taxonomy as Builder;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class TermRequest extends FormRequest
 {
-
     public function __construct()
     {
         $this->taxonomy      = request()->route('taxonomy');
         $this->model         = (new Builder($this->taxonomy->handle))->make();
         $this->fieldset      = $this->taxonomy->fieldset;
-        $this->fields        = $this->fieldset ? $this->fieldset->database() : [];
+        $this->fields        = $this->fieldset ? $this->fieldset->fields : [];
         $this->relationships = $this->fieldset ? $this->fieldset->relationships() : [];
     }
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -25,7 +24,7 @@ class TermRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->can('terms.' . ($this->method() === 'POST' ? 'create' : 'update'));
+        return $this->user()->can('terms.'.($this->method() === 'POST' ? 'create' : 'update'));
     }
 
     /**
@@ -37,7 +36,7 @@ class TermRequest extends FormRequest
     {
         $this->merge([
             'taxonomy_id' => $this->taxonomy->id,
-            'slug'        => $this->slug ?? Str::slug($this->name)
+            'slug'        => $this->slug ? $this->slug : Str::slug($this->name),
         ]);
     }
 
@@ -54,21 +53,34 @@ class TermRequest extends FormRequest
             'taxonomy_id' => 'required|integer',
             'parent_id'   => 'sometimes|integer',
             'name'        => 'required',
-            'slug'        => 'required|unique:' . $this->model->getTable() . ',slug,' . $id,
+            'slug'        => 'required|unique:'.$this->model->getTable().',slug,'.$id,
             'status'      => 'required|boolean',
         ];
 
-        foreach ($this->fields as $field) {
-            $rules[$field->handle] = $field->validation ?: 'sometimes';
-        }
+        $rules += $this->fields->flatMap(function ($field) {
+            return $field->type()->rules($field, $this->{$field->handle});
+        })->toArray();
 
         return $rules;
     }
 
     /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return $this->fields->flatMap(function ($field) {
+            return $field->type()->attributes($field, $this->{$field->handle});
+        })->toArray();
+    }
+
+    /**
      * Configure the validator instance.
      *
-     * @param  \Illuminate\Validation\Validator  $validator
+     * @param \Illuminate\Validation\Validator $validator
+     *
      * @return void
      */
     public function withValidator($validator)

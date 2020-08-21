@@ -2,12 +2,11 @@
 
 namespace Fusion\Http\Controllers\API\Menus;
 
-use Fusion\Models\Menu;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use Fusion\Http\Controllers\Controller;
 use Fusion\Http\Resources\NodeResource;
+use Fusion\Models\Menu;
 use Fusion\Services\Builders\Menu as Builder;
+use Illuminate\Http\Request;
 
 class NodeController extends Controller
 {
@@ -24,7 +23,8 @@ class NodeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \Fusion\Models\Menu  $menu
+     * @param \Fusion\Models\Menu $menu
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($menu, $id)
@@ -54,7 +54,7 @@ class NodeController extends Controller
             'status'     => 'sometimes',
         ];
 
-        if(isset($menu->fieldset)) {
+        if (isset($menu->fieldset)) {
             $fields        = $menu->fieldset->database();
             $relationships = $menu->fieldset->relationships();
 
@@ -79,8 +79,9 @@ class NodeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $menu
+     * @param \Illuminate\Http\Request $request
+     * @param string                   $menu
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $menu, $id)
@@ -98,7 +99,7 @@ class NodeController extends Controller
             'status'     => 'sometimes',
         ];
 
-        if(isset($menu->fieldset)) {
+        if (isset($menu->fieldset)) {
             $fields        = $menu->fieldset->database();
             $relationships = $menu->fieldset->relationships();
 

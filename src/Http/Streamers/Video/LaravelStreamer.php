@@ -1,6 +1,7 @@
 <?php
 
 namespace Fusion\Http\Streamers\Video;
+
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class LaravelStreamer

@@ -60,8 +60,8 @@ trait DefaultFilters
                     break;
             }
 
-            $pair      = [$key, $comparison, $value];
-            $fillable  = $this->builder->getModel()->getFillable();
+            $pair     = [$key, $comparison, $value];
+            $fillable = $this->builder->getModel()->getFillable();
 
             if (in_array($key, $fillable)) {
                 call_user_func_array([$this->builder, 'where'], $pair);

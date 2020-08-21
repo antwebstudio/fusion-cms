@@ -3,25 +3,25 @@
 namespace Fusion\Observers;
 
 use Fusion\Models\Field;
-use Fusion\Models\Section;
 use Fusion\Models\Fieldset;
 use Fusion\Models\Replicator;
+use Fusion\Models\Section;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 
 class ReplicatorObserver
 {
     /**
      * Dynamic table name prefix.
-     * 
+     *
      * @var string
      */
     private $prefix;
-    
+
     /**
      * Dynamic table name suffix.
-     * 
+     *
      * @var string
      */
     private $suffix;
@@ -29,7 +29,8 @@ class ReplicatorObserver
     /**
      * Handle 'saved' model event.
      *
-     * @param  \Fusion\Models\Replicator $replicator
+     * @param \Fusion\Models\Replicator $replicator
+     *
      * @return void
      */
     public function saved(Replicator $replicator)
@@ -37,7 +38,7 @@ class ReplicatorObserver
         $this->prefix = "rp_{$replicator->handle}";
         $this->suffix = $replicator->uniqid;
 
-        $replicator->withoutEvents(function() use ($replicator) {
+        $replicator->withoutEvents(function () use ($replicator) {
             if ($replicator->fieldset == null) {
                 $this->createFieldset($replicator);
             } else {
@@ -49,7 +50,8 @@ class ReplicatorObserver
     /**
      * Handle 'deleted' model event.
      *
-     * @param  \Fusion\Models\Replicator $replicator
+     * @param \Fusion\Models\Replicator $replicator
+     *
      * @return void
      */
     public function deleted(Replicator $replicator)
@@ -57,7 +59,7 @@ class ReplicatorObserver
         $this->prefix = "rp_{$replicator->handle}";
         $this->suffix = $replicator->uniqid;
 
-        $replicator->withoutEvents(function() use ($replicator) {
+        $replicator->withoutEvents(function () use ($replicator) {
             $this->deleteFieldset($replicator);
         });
     }
@@ -65,25 +67,29 @@ class ReplicatorObserver
     /**
      * Auto-generate Fieldset.
      *
-     * @param  \Fusion\Models\Replicator  $replicator
+     * @param \Fusion\Models\Replicator $replicator
+     *
      * @return void
      */
     private function createFieldset(Replicator $replicator)
     {
         $fieldset = $replicator->fieldsets()->create([
             'name'   => ($name = "Replicator: {$replicator->name}"),
-            'handle' => str_handle($name),
-            'hidden' => true
+            'handle' => str_handle("{$replicator->name}_{$replicator->uniqid}"),
+            'hidden' => true,
         ]);
 
-        $this->createSections($fieldset,
-            collect($replicator->field->settings['sections']));
+        $this->createSections(
+            $fieldset,
+            collect($replicator->field->settings['sections'])
+        );
     }
 
     /**
      * Update Fieldset.
      *
-     * @param  \Fusion\Models\Replicator  $replicator
+     * @param \Fusion\Models\Replicator $replicator
+     *
      * @return void
      */
     private function updateFieldset(Replicator $replicator)
@@ -91,7 +97,7 @@ class ReplicatorObserver
         $fieldset = $replicator->fieldset;
         $fieldset->update([
             'name'   => ($name = "Replicator: {$replicator->name}"),
-            'handle' => str_handle($name),
+            'handle' => str_handle("{$replicator->name}_{$replicator->uniqid}"),
         ]);
 
         $sections = collect($replicator->field->settings['sections']);
@@ -105,7 +111,8 @@ class ReplicatorObserver
     /**
      * Delete Fieldset.
      *
-     * @param  \Fusion\Models\Replicator  $replicator
+     * @param \Fusion\Models\Replicator $replicator
+     *
      * @return void
      */
     private function deleteFieldset(Replicator $replicator)
@@ -119,20 +126,21 @@ class ReplicatorObserver
 
     /**
      * Create fieldset sections.
-     * 
-     * @param  \Fusion\Models\Fieldset         $fieldset
-     * @param  \Illuminate\Support\Collection  $toCreate
+     *
+     * @param \Fusion\Models\Fieldset        $fieldset
+     * @param \Illuminate\Support\Collection $toCreate
+     *
      * @return void
      */
     private function createSections(Fieldset $fieldset, Collection $toCreate)
     {
-        $toCreate->each(function ($data) use ($fieldset) {
+        $toCreate->each(function ($data, $index) use ($fieldset) {
             $section = $fieldset->sections()->create([
                 'name'        => $data['name'],
                 'handle'      => $data['handle'],
                 'description' => $data['description'],
                 'placement'   => $data['placement'],
-                'order'       => $data['order'],
+                'order'       => ($index + 1),
             ]);
 
             $this->createReplicantTable($section);
@@ -142,14 +150,15 @@ class ReplicatorObserver
 
     /**
      * Update fieldset sections.
-     * 
-     * @param  \Fusion\Models\Fieldset         $fieldset
-     * @param  \Illuminate\Support\Collection  $toUpdate
+     *
+     * @param \Fusion\Models\Fieldset        $fieldset
+     * @param \Illuminate\Support\Collection $toUpdate
+     *
      * @return void
      */
     private function updateSections(Fieldset $fieldset, Collection $toUpdate)
     {
-        $toUpdate->each(function ($data) use ($fieldset) {
+        $toUpdate->each(function ($data, $index) use ($fieldset) {
             $newSection = $fieldset->sections()->find($data['id']);
             $oldSection = $newSection->replicate();
             $newSection->update([
@@ -157,13 +166,13 @@ class ReplicatorObserver
                 'handle'      => $data['handle'],
                 'description' => $data['description'],
                 'placement'   => $data['placement'],
-                'order'       => $data['order'],
+                'order'       => ($index + 1),
             ]);
 
             $this->updateReplicantTable($oldSection, $newSection);
 
             // manage fields..
-            $fields   = collect($data['fields']);
+            $fields = collect($data['fields']);
             $existing = $newSection->fields->pluck('id');
 
             $this->deleteFields($newSection, $this->getDetachedItems($existing, $fields));
@@ -174,15 +183,16 @@ class ReplicatorObserver
 
     /**
      * Delete fieldset sections.
-     * 
-     * @param  \Fusion\Models\Fieldset        $fieldset
-     * @param  \Illuminate\Support\Collection $toDelete
-     * @return void             
+     *
+     * @param \Fusion\Models\Fieldset        $fieldset
+     * @param \Illuminate\Support\Collection $toDelete
+     *
+     * @return void
      */
     private function deleteSections(Fieldset $fieldset, Collection $toDelete)
     {
         $sections = $fieldset->sections()->whereIn('id', $toDelete);
-        $sections->each(function($section) {
+        $sections->each(function ($section) {
             $this->deleteFields($section, $section->fields->pluck('id'));
             $this->deleteReplicantTable($section);
             $section->delete();
@@ -191,37 +201,41 @@ class ReplicatorObserver
 
     /**
      * Create section fields.
-     * 
-     * @param  \Fusion\Models\Section          $section
-     * @param  \Illuminate\Support\Collection  $toCreate
+     *
+     * @param \Fusion\Models\Section         $section
+     * @param \Illuminate\Support\Collection $toCreate
+     *
      * @return void
      */
     private function createFields(Section $section, Collection $toCreate)
     {
-        $toCreate->each(function($data) use ($section) {
+        $toCreate->each(function ($data, $index) use ($section) {
             $field = $section->fields()->create([
                 'name'     => $data['name'],
                 'handle'   => $data['handle'],
                 'help'     => $data['help'],
                 'settings' => $data['settings'],
-                'type'     => is_string($data['type']) ? $data['type'] : $data['handle']['type'],
-                'order'    => $data['order'],
+                'type'     => is_string($data['type']) ? $data['type'] : $data['type']['handle'],
+                'order'    => ($index + 1),
             ]);
 
-            $this->createReplicantColumn($section, $field);
+            if ($field->type()->hasColumn()) {
+                $this->createReplicantColumn($section, $field);
+            }
         });
     }
 
     /**
      * Update section fields.
-     * 
-     * @param  \Fusion\Models\Section          $section
-     * @param  \Illuminate\Support\Collection  $toUpdate
+     *
+     * @param \Fusion\Models\Section         $section
+     * @param \Illuminate\Support\Collection $toUpdate
+     *
      * @return void
      */
     private function updateFields(Section $section, Collection $toUpdate)
     {
-        $toUpdate->each(function ($data) use ($section) {
+        $toUpdate->each(function ($data, $index) use ($section) {
             $newField = $section->fields()->find($data['id']);
             $oldField = $newField->replicate();
             $newField->update([
@@ -229,26 +243,31 @@ class ReplicatorObserver
                 'handle'   => $data['handle'],
                 'help'     => $data['help'],
                 'settings' => $data['settings'],
-                'type'     => is_string($data['type']) ? $data['type'] : $data['handle']['type'],
-                'order'    => $data['order'],
+                'type'     => is_string($data['type']) ? $data['type'] : $data['type']['handle'],
+                'order'    => ($index + 1),
             ]);
 
-            $this->updateReplicantColumn($section, $oldField, $newField);
+            if ($newField->type()->hasColumn()) {
+                $this->updateReplicantColumn($section, $oldField, $newField);
+            }
         });
     }
 
     /**
      * Remove Fields from Section.
-     * 
-     * @param  \Fusion\Models\Section          $section
-     * @param  \Illuminate\Support\Collection  $toDelete
+     *
+     * @param \Fusion\Models\Section         $section
+     * @param \Illuminate\Support\Collection $toDelete
+     *
      * @return void
      */
     private function deleteFields(Section $section, Collection $toDelete)
     {
         $fields = $section->fields()->whereIn('id', $toDelete);
-        $fields->each(function($field) use ($section) {
-            $this->deleteReplicantColumn($section, $field);
+        $fields->each(function ($field) use ($section) {
+            if ($field->type()->hasColumn()) {
+                $this->deleteReplicantColumn($section, $field);
+            }
 
             $field->delete();
         });
@@ -256,24 +275,27 @@ class ReplicatorObserver
 
     /**
      * Create replicant table for section.
-     * 
-     * @param  \Fusion\Models\Section  $section
+     *
+     * @param \Fusion\Models\Section $section
+     *
      * @return void
      */
     private function createReplicantTable(Section $section)
     {
-        Schema::create($this->getTable($section), function(Blueprint $table) {
+        Schema::create($this->getTable($section), function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('replicator_id')->index();
+            $table->unsignedBigInteger('section_id')->index();
             $table->timestamps();
         });
     }
 
     /**
      * Update replicant table for section.
-     * 
-     * @param  \Fusion\Models\Section  $oldSection
-     * @param  \Fusion\Models\Section  $newSection
+     *
+     * @param \Fusion\Models\Section $oldSection
+     * @param \Fusion\Models\Section $newSection
+     *
      * @return void
      */
     private function updateReplicantTable(Section $oldSection, Section $newSection)
@@ -288,8 +310,9 @@ class ReplicatorObserver
 
     /**
      * Delete replicant table.
-     * 
-     * @param  Section $section
+     *
+     * @param Section $section
+     *
      * @return void
      */
     private function deleteReplicantTable(Section $section)
@@ -299,16 +322,17 @@ class ReplicatorObserver
 
     /**
      * Update replicant table column.
-     * 
-     * @param  \Fusion\Models\Section  $section
-     * @param  \Fusion\Models\Field    $field
+     *
+     * @param \Fusion\Models\Section $section
+     * @param \Fusion\Models\Field   $field
+     *
      * @return void
      */
     private function createReplicantColumn(Section $section, Field $field)
     {
-        Schema::table($this->getTable($section), function(Blueprint $table) use ($field) {
+        Schema::table($this->getTable($section), function (Blueprint $table) use ($field) {
             $fieldtype = fieldtypes()->get($field->type);
-            $dataType  = $fieldtype->getColumn('type');
+            $dataType = $fieldtype->getColumn('type');
 
             call_user_func_array([$table, $dataType], [$field->handle])->nullable();
         });
@@ -316,20 +340,21 @@ class ReplicatorObserver
 
     /**
      * Update replicant table column.
-     * 
-     * @param  \Fusion\Models\Section  $section
-     * @param  \Fusion\Models\Field    $oldField
-     * @param  \Fusion\Models\Field    $newField
-     * @return void         
+     *
+     * @param \Fusion\Models\Section $section
+     * @param \Fusion\Models\Field   $oldField
+     * @param \Fusion\Models\Field   $newField
+     *
+     * @return void
      */
     private function updateReplicantColumn(Section $section, Field $oldField, Field $newField)
     {
-        Schema::table($this->getTable($section), function(Blueprint $table) use ($oldField, $newField) {
+        Schema::table($this->getTable($section), function (Blueprint $table) use ($oldField, $newField) {
             $oldFieldtype = fieldtypes()->get($oldField->type);
-            $oldDataType  = $oldFieldtype->getColumn('type');
+            $oldDataType = $oldFieldtype->getColumn('type');
 
             $newFieldtype = fieldtypes()->get($newField->type);
-            $newDataType  = $newFieldtype->getColumn('type');
+            $newDataType = $newFieldtype->getColumn('type');
 
             if ($oldField->handle !== $newField->handle) {
                 $table->renameColumn("`{$oldField->handle}`", "`{$newField->handle}`");
@@ -344,10 +369,11 @@ class ReplicatorObserver
 
     /**
      * Delete replicant table column.
-     * 
-     * @param  \Fusion\Models\Section  $section
-     * @param  \Fusion\Models\Field    $field
-     * @return void         
+     *
+     * @param \Fusion\Models\Section $section
+     * @param \Fusion\Models\Field   $field
+     *
+     * @return void
      */
     private function deleteReplicantColumn(Section $section, Field $field)
     {
@@ -358,8 +384,9 @@ class ReplicatorObserver
 
     /**
      * Get replicant table name based on Section.
-     * 
-     * @param  \Fusion\Models\Section  $section
+     *
+     * @param \Fusion\Models\Section $section
+     *
      * @return string
      */
     private function getTable(Section $section)
@@ -368,30 +395,33 @@ class ReplicatorObserver
     }
 
     /**
-     * @param  \Illuminate\Support\Collection $items
+     * @param \Illuminate\Support\Collection $items
+     *
      * @return \Illuminate\Support\Collection
      */
     private function getAttachedItems(Collection $items)
     {
         return $items->filter(function ($item) {
-            return ! isset($item['id']);
+            return !isset($item['id']);
         });
     }
 
     /**
-     * @param  \Illuminate\Support\Collection $items
+     * @param \Illuminate\Support\Collection $items
+     *
      * @return \Illuminate\Support\Collection
      */
     private function getUpdatedItems(Collection $items)
     {
         return $items->reject(function ($item) {
-            return ! isset($item['id']);
+            return !isset($item['id']);
         });
     }
 
     /**
-     * @param  \Illuminate\Support\Collection  $existing
-     * @param  \Illuminate\Support\Collection  $new
+     * @param \Illuminate\Support\Collection $existing
+     * @param \Illuminate\Support\Collection $new
+     *
      * @return \Illuminate\Support\Collection
      */
     private function getDetachedItems(Collection $existing, Collection $items)

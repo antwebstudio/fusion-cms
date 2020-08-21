@@ -3,14 +3,12 @@
 namespace Fusion\Tests\Feature;
 
 use Facades\FieldFactory;
-use Fusion\Tests\TestCase;
+use Facades\FieldsetFactory;
 use Facades\MatrixFactory;
 use Facades\SectionFactory;
 use Fusion\Models\Fieldset;
-use Illuminate\Support\Str;
-use Facades\FieldsetFactory;
-use Facades\TaxonomyFactory;
 use Fusion\Services\Builders\Single;
+use Fusion\Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class FieldsetTest extends TestCase
@@ -28,7 +26,7 @@ class FieldsetTest extends TestCase
         $matrix   = MatrixFactory::withFieldset($fieldset)->create();
         $table    = $matrix->getBuilder()->getTable();
 
-        $fieldset->fields->each(function($field) use ($table) {
+        $fieldset->fields->each(function ($field) use ($table) {
             $this->assertDatabaseTableHasColumn($table, $field->handle);
         });
     }
@@ -46,7 +44,7 @@ class FieldsetTest extends TestCase
 
         $matrix->detachFieldset();
 
-        $fieldset->fields->each(function($field) use ($table) {
+        $fieldset->fields->each(function ($field) use ($table) {
             $this->assertDatabaseTableDoesNotHaveColumn($table, $field->handle);
         });
     }
@@ -65,7 +63,7 @@ class FieldsetTest extends TestCase
 
         $matrix = MatrixFactory::asSingle()->withFieldset($redFieldset)->create();
         $model  = (new Single($matrix->handle))->make();
-        $single   = $model->create([
+        $single = $model->create([
             'matrix_id' => $matrix->id,
             'name'      => 'Renamed-single',
             'slug'      => 'renamed-single',
@@ -154,8 +152,8 @@ class FieldsetTest extends TestCase
         $postsTable  = $postsMatrix->getBuilder()->getTable();
         $newsTable   = $newsMatrix->getBuilder()->getTable();
 
-        $section  = $fieldset->sections()->first();
-        $field    = FieldFactory::withName('Example')->withSection($section)->create();
+        $section = $fieldset->sections()->first();
+        $field   = FieldFactory::withName('Example')->withSection($section)->create();
 
         $fieldset->sections()->first()->fields()->save($field);
 
@@ -199,8 +197,8 @@ class FieldsetTest extends TestCase
         $postsTable  = $postsMatrix->getBuilder()->getTable();
         $newsTable   = $newsMatrix->getBuilder()->getTable();
 
-        $section  = $fieldset->sections()->first();
-        $field    = FieldFactory::withName('Example')->withSection($section)->create();
+        $section = $fieldset->sections()->first();
+        $field   = FieldFactory::withName('Example')->withSection($section)->create();
 
         $section->fields()->save($field);
 
@@ -290,8 +288,8 @@ class FieldsetTest extends TestCase
         $fieldset = FieldsetFactory::withSections([$section])->create();
 
         // Assign to matrix..
-        $matrix   = MatrixFactory::asSingle()->withFieldset($fieldset)->create();
-        $table    = $matrix->getBuilder()->getTable();
+        $matrix = MatrixFactory::asSingle()->withFieldset($fieldset)->create();
+        $table  = $matrix->getBuilder()->getTable();
 
         // old field - updated
         $fieldA->name   = 'Bar';
@@ -301,14 +299,16 @@ class FieldsetTest extends TestCase
         // new field - w/ previous name
         $fieldB = factory(\Fusion\Models\Field::class)->make(['name' => 'Foo', 'handle' => 'foo']);
 
-        $section = $section->fresh();
-        $section->fields = [ $fieldA, $fieldB ];
+        $section         = $section->fresh();
+        $section->fields = [$fieldA, $fieldB];
 
         // Save fieldset through API..
         $this
             ->be($this->owner, 'api')
-            ->json('POST', '/api/fieldsets/' . $fieldset->id . '/sections',
-                [ 'sections' => [ $section ] ]
+            ->json(
+                'POST',
+                '/api/fieldsets/'.$fieldset->id.'/sections',
+                ['sections' => [$section]]
             );
 
         // original field - updated
@@ -327,8 +327,8 @@ class FieldsetTest extends TestCase
     {
         $this->actingAs($this->owner, 'api');
 
-        $fieldset = FieldsetFactory::withName('Foo')->create();
-        $fieldset = $fieldset->toArray();
+        $fieldset       = FieldsetFactory::withName('Foo')->create();
+        $fieldset       = $fieldset->toArray();
         $fieldset['id'] = null;
 
         $response = $this
