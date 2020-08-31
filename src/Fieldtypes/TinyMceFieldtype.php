@@ -28,7 +28,10 @@ class TinyMceFieldtype extends \Fusion\Fieldtypes\Fieldtype
      * @var array
      */
     public $settings = [
-        'placeholder' => ''
+        'placeholder'           => '',
+        'limit'                 => null,
+        'root_directory'        => null,
+        'filetype_restrictions' => [],
     ];
 
     /**
