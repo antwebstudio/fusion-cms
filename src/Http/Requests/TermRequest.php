@@ -71,7 +71,7 @@ class TermRequest extends FormRequest
      */
     public function attributes()
     {
-        return $this->fields->flatMap(function ($field) {
+        return collect($this->fields)->flatMap(function ($field) {
             return $field->type()->attributes($field, $this->{$field->handle});
         })->toArray();
     }
