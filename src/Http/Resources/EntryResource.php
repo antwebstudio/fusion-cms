@@ -23,7 +23,7 @@ class EntryResource extends JsonResource
                 'slug'       => $this->slug,
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
-                'status'     => $this->status,
+                'status'     => (int) $this->status,
             ],
         ];
 

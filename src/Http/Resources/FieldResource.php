@@ -32,7 +32,7 @@ class FieldResource extends JsonResource
             'default'    => $fieldtype->getDefault(),
 
             'order'     => $this->order,
-            'status'    => $this->status,
+            'status'    => (int) $this->status,
         ];
     }
 }
