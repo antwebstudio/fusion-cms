@@ -34,11 +34,14 @@ export default {
         },
 
         setSettings (state, payload) {
-            let items    = _.map(payload, 'settings')
             let settings = {}
 
-            _.forEach(items, (item) => _.merge(settings, item))
-
+            _.each(payload, (item) => {
+                _.each(item.settings, ((value, setting) => {
+                    settings[item.handle + '.' + setting] = value
+                }))
+            })
+            
             state.settings = settings
         },
     },
