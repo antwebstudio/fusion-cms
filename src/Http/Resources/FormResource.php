@@ -33,7 +33,7 @@ class FormResource extends JsonResource
             'reply_to'                => $this->reply_to,
             'form_template'           => $this->form_template,
             'thankyou_template'       => $this->thankyou_template,
-            'status'                  => $this->status,
+            'status'                  => (int) $this->status,
 
             'table'                   => $this->table,
             'fieldset'                => new FieldsetResource($this->fieldset),

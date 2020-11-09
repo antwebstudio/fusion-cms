@@ -32,7 +32,7 @@ class NodeResource extends JsonResource
 
         $resource['created_at'] = $this->created_at;
         $resource['updated_at'] = $this->updated_at;
-        $resource['status']     = $this->status;
+        $resource['status']     = (int) $this->status;
 
         return $resource;
     }
