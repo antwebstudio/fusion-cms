@@ -487,25 +487,6 @@ const router = new Router({
                 layout: 'admin'
             }
         },
-		{
-			path: '/orders',
-            component: () => import('../pages/Orders/Index'),
-            name: 'orders',
-            meta: {
-                requiresAuth: true,
-                layout: 'admin'
-            }
-		},
-		{
-			path: '/orders/:order/show',
-            component: () => import('../pages/Orders/Show'),
-            name: 'orders.show',
-            meta: {
-                requiresAuth: true,
-                layout: 'admin'
-            }
-		},
-
         {
             path: '*',
             component: () => import('@/pages/404'),
