@@ -20,7 +20,7 @@ class SingleResource extends JsonResource
             'single'   => [
                 'name'   => $this->name ?? $this->matrix->name,
                 'slug'   => $this->slug ?? $this->matrix->slug,
-                'status' => $this->status,
+                'status' => (int) $this->status,
             ],
         ];
 

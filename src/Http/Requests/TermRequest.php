@@ -36,7 +36,7 @@ class TermRequest extends FormRequest
     {
         $this->merge([
             'taxonomy_id' => $this->taxonomy->id,
-            'slug'        => $this->slug ? $this->slug : Str::slug($this->name),
+            'slug'        => $this->slug ? $this->slug : Str::slug($this->name, '-', false),
         ]);
     }
 
@@ -57,7 +57,7 @@ class TermRequest extends FormRequest
             'status'      => 'required|boolean',
         ];
 
-        $rules += $this->fields->flatMap(function ($field) {
+        $rules += collect($this->fields)->flatMap(function ($field) {
             return $field->type()->rules($field, $this->{$field->handle});
         })->toArray();
 
@@ -71,7 +71,7 @@ class TermRequest extends FormRequest
      */
     public function attributes()
     {
-        return $this->fields->flatMap(function ($field) {
+        return collect($this->fields)->flatMap(function ($field) {
             return $field->type()->attributes($field, $this->{$field->handle});
         })->toArray();
     }

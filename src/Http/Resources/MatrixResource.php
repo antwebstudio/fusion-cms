@@ -43,7 +43,7 @@ class MatrixResource extends JsonResource
             'revision_control'   => $this->revision_control,
             'publishable'        => $this->publishable,
 
-            'status'             => $this->status,
+            'status'             => (int) $this->status,
 
             'fieldset'         => new FieldsetResource($this->fieldset),
             'parent'           => new MatrixResource($this->parent),
