@@ -48,13 +48,23 @@ class TagsFieldtype extends \Fusion\Fieldtypes\Fieldtype
 
     public function persistRelationship($model, Field $field)
     {
-        $oldValues = $model->{$field->handle}->pluck('name');
-        $model->detachTags($oldValues);
-        $model->attachTags(request()->tags);
+        $oldValues = collect($model->tagsWithType($this->getTagType($model, $field)))->pluck('name');
+        $newValues = collect(request()->{$field->handle})->map(function($value) {
+            return is_array($value) ? $value['name'] : $value;
+        });
+        $model->detachTags($oldValues, $this->getTagType($model, $field));
+        $model->attachTags($newValues, $this->getTagType($model, $field));
     }
 
     public function getResource($model, Field $field)
     {
-       return TagResource::collection($this->getValue($model, $field));
+       return TagResource::collection($model->tagsWithType($this->getTagType($model, $field)) ?? []);
+    }
+
+    protected function getTagType($model, $field) {
+        $className = get_class($model);
+        $className = str_replace('\\', '_', $className);
+        $className = strtolower($className);
+        return $className.':'.$field->handle;
     }
 }
