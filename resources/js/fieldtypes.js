@@ -103,3 +103,5 @@ Vue.component('user-fieldtype-settings', () => import('./components/Fieldtypes/U
 
 Vue.component('tinymce-fieldtype', () => import('./components/Fieldtypes/TinyMce/Field'))
 Vue.component('tinymce-fieldtype-settings', () => import('./components/Fieldtypes/TinyMce/Settings'))
+
+Vue.component('tags-fieldtype', () => import('./components/Fieldtypes/Tags/Field'))

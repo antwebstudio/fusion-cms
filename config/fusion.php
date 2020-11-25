@@ -72,6 +72,7 @@ return [
         \Fusion\Fieldtypes\ToggleFieldtype::class,
         \Fusion\Fieldtypes\USStateFieldtype::class,
         \Fusion\Fieldtypes\UserFieldtype::class,
+        \Fusion\Fieldtypes\TagsFieldtype::class,
 
     ],
 

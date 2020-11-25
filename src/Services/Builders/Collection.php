@@ -40,7 +40,6 @@ class Collection extends Builder implements BuilderContract
     public function make()
     {
         $className = Str::studly($this->matrix->handle);
-        $traits    = [];
         $fillable  = ['matrix_id', 'parent_id', 'name', 'slug', 'status'];
         $casts     = ['status' => 'boolean'];
         $fields    = [];
@@ -51,6 +50,10 @@ class Collection extends Builder implements BuilderContract
 
                 if ($fieldtype->hasRelationship()) {
                     $this->addRelationship($field, $fieldtype);
+                }
+
+                if($fieldtype->hasTrait()){
+                    $this->addTrait($field, $fieldtype);
                 }
 
                 return is_null($fieldtype->column);
@@ -65,7 +68,7 @@ class Collection extends Builder implements BuilderContract
 
         $path = fusion_path('/src/Models/Collections/'.$className.'.php');
         $stub = File::get(fusion_path('/stubs/matrices/collection.stub'));
-
+        
         $contents = strtr($stub, [
             '{class}'         => $className,
             '{matrix_id}'     => $this->matrix->id,
@@ -75,8 +78,8 @@ class Collection extends Builder implements BuilderContract
             '{with}'          => '[\''.implode('\', \'', $this->getWith()).'\']',
             '{dates}'         => '[\''.implode('\', \'', $this->getDates()).'\']',
             '{references}'    => '[\''.implode('\', \'', $this->getReferences($fields)).'\']',
-            '{trait_classes}' => $this->getTraitImportStatements($traits),
-            '{traits}'        => $this->getTraitUseStatements($traits),
+            '{trait_classes}' => $this->getTraitImportStatements(),
+            '{traits}'        => $this->getTraitUseStatements(),
             '{relationships}' => $this->generateRelationships(),
         ]);
 

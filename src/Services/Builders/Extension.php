@@ -48,6 +48,10 @@ class Extension extends Builder implements BuilderContract
                     $this->addRelationship($field, $fieldtype);
                 }
 
+                if($fieldtype->hasTrait()){
+                    $this->addTrait($field, $fieldtype);
+                }
+
                 return is_null($fieldtype->column);
             });
 
@@ -67,6 +71,8 @@ class Extension extends Builder implements BuilderContract
             '{fillable}'      => '[\''.implode('\', \'', $fillable).'\']',
             '{casts}'         => '[\''.implode('\', \'', $casts).'\']',
             '{relationships}' => $this->generateRelationships(),
+            '{trait_classes}' => $this->getTraitImportStatements(),
+            '{traits}'        => $this->getTraitUseStatements(),
         ]);
 
         File::put($path, $contents);
