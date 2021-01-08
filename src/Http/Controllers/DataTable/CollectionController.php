@@ -23,6 +23,7 @@ class CollectionController extends DataTableController
         return [
             'name',
             'slug',
+            'created_at',
         ];
     }
 
@@ -31,6 +32,7 @@ class CollectionController extends DataTableController
         return [
             'name',
             'slug',
+            'created_at',
         ];
     }
 
@@ -39,6 +41,7 @@ class CollectionController extends DataTableController
         return [
             'name',
             'slug',
+            'created_at',
         ];
     }
 
@@ -47,6 +50,7 @@ class CollectionController extends DataTableController
         return [
             'name'   => 'Name',
             'slug'   => 'Slug',
+            'created_at' => 'Date',
         ];
     }
 }
