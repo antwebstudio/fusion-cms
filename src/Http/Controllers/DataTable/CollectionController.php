@@ -45,6 +45,11 @@ class CollectionController extends DataTableController
         ];
     }
 
+    public function getDefaultSort() 
+    {
+        return '-created_at';
+    }
+
     public function getCustomColumnNames()
     {
         return [
