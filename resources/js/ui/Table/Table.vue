@@ -176,7 +176,7 @@
             sortBy: {
                 required: false,
                 type: String,
-                default: 'id',
+                default: '',
             },
 
             perPage: {
