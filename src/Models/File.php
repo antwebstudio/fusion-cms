@@ -11,7 +11,7 @@ use Storage;
 
 class File extends Model
 {
-    use CachesQueries;
+    // use CachesQueries;
 
     protected $fillable = [
         'uuid',
