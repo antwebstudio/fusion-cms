@@ -5,7 +5,6 @@ namespace Fusion\Services\Routers;
 use Fusion\Models\Matrix;
 use Fusion\Services\Builders\Single;
 use Illuminate\Http\Request;
-use Fusion\Services\Builders\Single;
 
 class HomepageRouter extends Router
 {
