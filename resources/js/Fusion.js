@@ -14,6 +14,8 @@ export default class Fusion {
         this.store = store
         this.vue = null
 
+        window.Vue = Vue;
+
         // Mixins
         Vue.mixin(forms)
         Vue.mixin(setting)
