@@ -40,7 +40,6 @@ class Single extends Builder implements BuilderContract
     public function make()
     {
         $className = Str::studly($this->matrix->handle);
-        $traits    = [];
         $fillable  = ['name', 'slug', 'matrix_id', 'status'];
         $casts     = [];
 
@@ -50,6 +49,10 @@ class Single extends Builder implements BuilderContract
 
                 if ($fieldtype->hasRelationship()) {
                     $this->addRelationship($field, $fieldtype);
+                }
+
+                if($fieldtype->hasTrait()){
+                    $this->addTrait($field, $fieldtype);
                 }
 
                 return is_null($fieldtype->column);
@@ -73,8 +76,8 @@ class Single extends Builder implements BuilderContract
             '{casts}'         => '[\''.implode('\', \'', $casts).'\']',
             '{with}'          => '[\''.implode('\', \'', $this->getWith()).'\']',
             '{dates}'         => '[\''.implode('\', \'', $this->getDates()).'\']',
-            '{trait_classes}' => $this->getTraitImportStatements($traits),
-            '{traits}'        => $this->getTraitUseStatements($traits),
+            '{trait_classes}' => $this->getTraitImportStatements(),
+            '{traits}'        => $this->getTraitUseStatements(),
             '{matrix_id}'     => $this->matrix->id,
             '{relationships}' => $this->generateRelationships(),
         ]);

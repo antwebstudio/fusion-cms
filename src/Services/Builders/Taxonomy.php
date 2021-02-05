@@ -43,7 +43,6 @@ class Taxonomy extends Builder implements BuilderContract
     public function make()
     {
         $className = Str::studly($this->taxonomy->handle);
-        $traits    = [];
         $fillable  = ['taxonomy_id', 'parent_id', 'name', 'slug', 'status'];
         $casts     = [];
 
@@ -53,6 +52,10 @@ class Taxonomy extends Builder implements BuilderContract
 
                 if ($fieldtype->hasRelationship()) {
                     $this->addRelationship($field, $fieldtype);
+                }
+
+                if($fieldtype->hasTrait()){
+                    $this->addTrait($field, $fieldtype);
                 }
 
                 return is_null($fieldtype->column);
@@ -75,8 +78,8 @@ class Taxonomy extends Builder implements BuilderContract
             '{casts}'         => '[\''.implode('\', \'', $casts).'\']',
             '{with}'          => '[\''.implode('\', \'', $this->getWith()).'\']',
             '{dates}'         => '[\''.implode('\', \'', $this->getDates()).'\']',
-            '{trait_classes}' => $this->getTraitImportStatements($traits),
-            '{traits}'        => $this->getTraitUseStatements($traits),
+            '{trait_classes}' => $this->getTraitImportStatements(),
+            '{traits}'        => $this->getTraitUseStatements(),
             '{taxonomy_id}'   => $this->taxonomy->id,
             '{relationships}' => $this->generateRelationships(),
         ]);

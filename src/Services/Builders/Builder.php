@@ -19,6 +19,11 @@ abstract class Builder implements BuilderContract
     protected $relationships = [];
 
     /**
+     * @var array
+     */
+    protected $traits = [];
+
+    /**
      * Create a new Builder instance.
      */
     public function __construct()
@@ -88,7 +93,15 @@ abstract class Builder implements BuilderContract
      */
     public function getTraitUseStatements()
     {
-        return [];
+        $useStatements = [];
+
+        foreach ($this->traits as $traits) {
+            foreach ($traits as $trait) {
+                $prefix = Str::startsWith($trait, '\\') ? 'use ' : 'use \\';
+                $useStatements[] = $prefix.$trait.';';
+            }
+        }
+        return implode("\n", $useStatements);
     }
 
     /**
@@ -197,5 +210,19 @@ abstract class Builder implements BuilderContract
         })->map(function ($model) {
             return $model;
         });
+    }
+
+	public function addTrait($field, $fieldtype) {
+        $this->traits[$field->handle] = $fieldtype->getTraits();
+
+        return $this;
+	}
+
+    public function hasTraits(){
+        return count($this->getTraits()) > 0;
+    }
+
+    public function getTraits(){
+        return $this->traits;
     }
 }

@@ -3,8 +3,8 @@
 namespace Fusion\Services\Routers;
 
 use Fusion\Models\Matrix;
-use Illuminate\Http\Request;
 use Fusion\Services\Builders\Single;
+use Illuminate\Http\Request;
 
 class HomepageRouter extends Router
 {
@@ -19,7 +19,7 @@ class HomepageRouter extends Router
 
                 return view(trim($matrix->template) == '' ? 'index' : $matrix->template, [
                     'matrix' => $matrix,
-                    'page' => $page,
+                    'page'   => $page,
                 ]);
             } else {
                 return view('index');
