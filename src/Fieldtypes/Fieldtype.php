@@ -65,6 +65,11 @@ abstract class Fieldtype
     public $relationship = null;
 
     /**
+     * @var mixed
+     */
+    public $traits = null;
+
+    /**
      * @var Field
      */
     public $field;
@@ -213,6 +218,16 @@ abstract class Fieldtype
     }
 
     /**
+     * Determine if the fieldtype has a trait.
+     *
+     * @return bool
+     */
+    public function hasTrait()
+    {
+        return !is_null($this->traits);
+    }
+
+    /**
      * Get custom rules when saving field.
      *
      * @param Field $field
@@ -338,6 +353,20 @@ abstract class Fieldtype
         }
 
         return $this->relationship;
+    }
+
+    /**
+     * Get the traits for the fieldtype.
+     *
+     * @return string
+     */
+    public function getTraits()
+    {
+        if (!$this->traits) {
+            return null;
+        }
+
+        return $this->traits;
     }
 
     /**
