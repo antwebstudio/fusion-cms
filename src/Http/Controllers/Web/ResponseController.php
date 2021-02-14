@@ -26,7 +26,7 @@ class ResponseController extends Controller
         }
 
         if (isset($form->send_to) && trim($form->send_to) != '') {
-            Mail::to($form->send_to)->send(new FormMail($form));
+            Mail::to($form->send_to)->send(new FormMail($response));
         }
 
         if (!$form->redirect_on_submission) {

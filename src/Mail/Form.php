@@ -11,17 +11,17 @@ class Form extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $form;
+    protected $response;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($form)
+    public function __construct($response)
     {
         //
-        $this->form = $form;
+        $this->response = $response;
     }
 
     /**
@@ -31,6 +31,6 @@ class Form extends Mailable
      */
     public function build()
     {
-        return $this->view('forms.mail', ['form' => $this->form]);
+        return $this->markdown('forms.mail', ['response' => $this->response]);
     }
 }
