@@ -206,8 +206,12 @@
         computed: {
 			init() {
 				return {
+					mobile: {
+						menubar: true,	
+					},
 					plugins: 'paste, image, media, fullscreen',
-					file_picker_callback: FusionMediaFilePickerCallback(this),
+					images_upload_url: this.field.settings.uploader == 'image' ? '/tinymce-image-upload/' + this.field.settings.root_directory : null,
+					file_picker_callback: this.field.settings.uploader == 'filepicker' ? FusionMediaFilePickerCallback(this) : null,
 					height: 500,
 					inline_styles: false,
 					paste_preprocess: function(pl, o) {

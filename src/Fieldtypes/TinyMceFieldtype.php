@@ -32,6 +32,7 @@ class TinyMceFieldtype extends \Fusion\Fieldtypes\Fieldtype
         'limit'                 => null,
         'root_directory'        => null,
         'filetype_restrictions' => [],
+        'uploader'              => null,
     ];
 
     /**
