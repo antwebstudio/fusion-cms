@@ -58,11 +58,11 @@ class ResponseController extends Controller
             $fields        = $form->fieldset->database();
             $relationships = $form->fieldset->relationships();
 
-            foreach ($fields as $field) {
-                $rules[$field->handle] = 'sometimes';
-            }
+            $rules += $fields->flatMap(function ($field) {
+                return $field->type()->rules($field);
+            })->toArray();
         }
-
+        
         $attributes            = $request->validate($rules);
         $attributes['form_id'] = $form->id;
 
