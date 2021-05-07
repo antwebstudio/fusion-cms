@@ -7,6 +7,7 @@ use Fusion\Services\Routers\EntryRouter;
 use Fusion\Services\Routers\HomepageRouter;
 use Fusion\Services\Routers\SingleRouter;
 use Illuminate\Http\Request;
+use Fusion\Services\Routers\TaxonomyRouter;
 
 class RouterController extends Controller
 {
@@ -27,6 +28,7 @@ class RouterController extends Controller
             HomepageRouter::class,
             EntryRouter::class,
             SingleRouter::class,
+            TaxonomyRouter::class,
         ];
 
         foreach ($routers as $router) {
