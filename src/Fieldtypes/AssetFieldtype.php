@@ -112,6 +112,6 @@ class AssetFieldtype extends Fieldtype
      */
     public function getResource($model, Field $field)
     {
-        return FileResource::collection($this->getValue($model, $field));
+        return FileResource::collection($this->getValue($model, $field) ?? []);
     }
 }
