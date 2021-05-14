@@ -10,13 +10,19 @@
             :multiple="multiple"
             :showControls="showControls"
             :filterable="filterable"
+            :has-error="hasError"
+            :error-message="errorMessage"
         ></p-select>
     </div>
 </template>
 
 <script>
+    import FieldMixin from '@/mixins/fieldtypes/field'
+
     export default {
         name: 'select-fieldtype',
+
+        mixins: [FieldMixin],
 
         props: {
             field: {
