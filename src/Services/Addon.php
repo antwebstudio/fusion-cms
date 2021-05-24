@@ -270,6 +270,8 @@ class Addon extends Collection
                 $addon     = new Manifest($directory.'/addon.json');
                 $namespace = $addon->get('namespace');
 
+                if (!isset($namespace)) throw new \Exception('Invalid manifest file "addon.json" in '.$directory.'. (Please remove the folder if it is an empty folder)');
+
                 $addons->put($namespace, collect($addon->all()));
             }
         }
