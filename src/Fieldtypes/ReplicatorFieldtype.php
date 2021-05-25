@@ -159,7 +159,7 @@ class ReplicatorFieldtype extends Fieldtype
 
         $sections->each(function ($section) use ($model, $replicator, $replicants) {
             $handle = "rp_{$section->handle}_{$replicator->uniqid}";
-            $existing = $model->{$handle}->pluck('id');
+            $existing = collect($model->{$handle})->pluck('id');
             $attached = $replicants->where('section_id', $section->id)
                 ->mapWithKeys(function ($replicant, $index) use ($section) {
                     return [$replicant->id => [
@@ -246,7 +246,7 @@ class ReplicatorFieldtype extends Fieldtype
      */
     public function getResource($model, Field $field)
     {
-        return $this->getValue($model, $field)->map(function ($replicant) {
+        return collect($this->getValue($model, $field))->map(function ($replicant) {
             return new ReplicantResource($replicant);
         });
     }
