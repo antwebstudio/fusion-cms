@@ -196,7 +196,7 @@ class ReplicatorFieldtype extends Fieldtype
     {
         $rules = [];
 
-        foreach ($value as $key => $input) {
+        foreach ((array) $value as $key => $input) {
             $section = Section::find($input['section']['id']);
             $prefix  = "{$field->handle}.{$key}.fields.";
 
@@ -224,7 +224,7 @@ class ReplicatorFieldtype extends Fieldtype
     {
         $attributes = [];
 
-        foreach ($value as $key => $input) {
+        foreach ((array) $value as $key => $input) {
             $section = Section::find($input['section']['id']);
             $prefix  = "{$field->handle}.{$key}.fields.";
 
