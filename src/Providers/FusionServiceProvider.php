@@ -69,6 +69,7 @@ class FusionServiceProvider extends ServiceProvider
             \Fusion\Console\RefreshCommand::class,
             \Fusion\Console\FlushCommand::class,
             \Fusion\Console\SyncCommand::class,
+            \Fusion\Console\SyncModels::class,
         ]);
     }
 

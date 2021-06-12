@@ -13,6 +13,13 @@ class SyncResources
      */
     public function handle()
     {
+        $themeSymlink = public_path('theme');
+        if(is_link($themeSymlink)) {
+            unlink($themeSymlink);
+        } else if (is_dir($themeSymlink)) {
+            rmdir($themeSymlink);
+        }
+        
         foreach ($this->links() as $link => $target) {
             try {
                 if (! file_exists($link) && file_exists($target)) {
