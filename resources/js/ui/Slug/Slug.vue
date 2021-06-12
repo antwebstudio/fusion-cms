@@ -24,7 +24,7 @@
         </div>
 
         <p class="field__help" v-if="help" v-html="help"></p>
-        <p class="field__help field__help--danger" v-if="errorMessage" v-html="errorMessage"></p>
+        <p class="field__help field__help--danger help help--danger" v-if="errorMessage" v-html="errorMessage"></p>
     </div>
 </template>
 
