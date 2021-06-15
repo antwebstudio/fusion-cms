@@ -45,19 +45,19 @@ class SyncModels extends Command
             \Fusion\Models\Setting::class,
             // \Fusion\Models\Replicator::class,
         ];
-        try {
-            foreach ($modelTypes as $modelType) {
-                // $this->line($modelType);
-                $matrices = $modelType::get();
-                foreach ($matrices as $matrix) {
+        foreach ($modelTypes as $modelType) {
+            // $this->line($modelType);
+            $matrices = $modelType::get();
+            foreach ($matrices as $matrix) {
+                try {
                     // dd($matrix);
                     if (isset($matrix->fieldset)) {
                         $matrix->attachFieldset($matrix->fieldset);
                     }
+                } catch (\Illuminate\Contracts\Container\BindingResolutionException $ex) {
+                    // Need to catch class not found exception to run this command successfully
                 }
             }
-        } catch (\Exception $ex) {
-            dd($matrix->name);
         }
         return 0;
     }
