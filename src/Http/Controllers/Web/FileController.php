@@ -10,6 +10,10 @@ use Illuminate\Support\Str;
 
 class FileController extends Controller
 {
+    public function __construct() {
+        ini_set('memory_limit', config('filesystems.memory_limit', '256M'));
+    }
+
     public function index($uuid, $name)
     {
         $file = File::where('uuid', $uuid)->firstOrFail();
