@@ -274,8 +274,8 @@ class FusionServiceProvider extends ServiceProvider
     private function mergeConfigFile($path, $key)
     {
         $this->app['config']->set($key, array_merge(
-            $this->app['config']->get($key, []),
-            require $path
+            require $path,
+            $this->app['config']->get($key, [])
         ));
     }
 
