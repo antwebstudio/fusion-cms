@@ -172,7 +172,7 @@ class FusionServiceProvider extends ServiceProvider
      */
     private function bootViews()
     {
-        View::getFinder()->prependLocation(fusion_path('resources/views'));
+        View::getFinder()->addLocation(fusion_path('resources/views'));
     }
 
     /**
