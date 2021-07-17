@@ -10,6 +10,7 @@
 
         {{-- Styles --}}
         <link rel="stylesheet" href="{{ mix('css/gravity.css', 'vendor/fusion') }}">
+        @assets('css')
 
         @yield('styles')
     </head>

@@ -228,6 +228,7 @@ trait RegistersAssets
             }
         }
 
+        $this->nodes = [];
         $dependencies       = $this->buildDependencies($list);
         $sortedDependencies = $this->sortDependencies();
 
