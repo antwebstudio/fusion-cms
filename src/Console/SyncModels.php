@@ -50,10 +50,7 @@ class SyncModels extends Command
             $matrices = $modelType::get();
             foreach ($matrices as $matrix) {
                 try {
-                    // dd($matrix);
-                    if (isset($matrix->fieldset)) {
-                        $matrix->attachFieldset($matrix->fieldset);
-                    }
+                    $matrix->getBuilder();
                 } catch (\Illuminate\Contracts\Container\BindingResolutionException $ex) {
                     // Need to catch class not found exception to run this command successfully
                 }
