@@ -1,6 +1,12 @@
 <template>
 	<div>
-		<label :for="field.handle" class="form__label">{{ field.name }}</label>
+		<p-field-group
+			:name="field.handle"
+			:fieldId="formattedId"
+			:label="field.name"
+			:hasError="hasError"
+			:errorMessage="errorMessage"
+			>
 
 		<div class="flex items-start justify-between">
 			<div class="w-1/2">
@@ -100,6 +106,8 @@
         <portal to="modals">
             <new-folder-modal></new-folder-modal>
         </portal>
+
+		</p-field-group>
 	</div>
 </template>
 
@@ -139,6 +147,7 @@
 			require('@/mixins/fileselector').default,
 			require('@/mixins/filedragdrop').default,
             require('@/mixins/filebrowser').default,
+			require ('@/mixins/fieldtypes/field').default,
         ],
 
 		data() {
@@ -200,7 +209,11 @@
 
 			typeRestriction() {
 				return this.field.settings.filetype_restrictions
-			}
+			},
+			
+			formattedId() {
+                return this.field.handle + '_field'
+            }
         },
 
 		methods: {

@@ -159,7 +159,7 @@ class ReplicatorFieldtype extends Fieldtype
 
         $sections->each(function ($section) use ($model, $replicator, $replicants) {
             $handle = "rp_{$section->handle}_{$replicator->uniqid}";
-            $existing = $model->{$handle}->pluck('id');
+            $existing = collect($model->{$handle})->pluck('id');
             $attached = $replicants->where('section_id', $section->id)
                 ->mapWithKeys(function ($replicant, $index) use ($section) {
                     return [$replicant->id => [
@@ -183,6 +183,18 @@ class ReplicatorFieldtype extends Fieldtype
             $model->{$handle}()->attach($attached);
         });
     }
+    
+    public function destroyRelationship($model, Field $field)
+    {
+        $replicator = Replicator::find($field->settings['replicator']);
+        $sections   = $replicator->sections;
+
+        $sections->each(function ($section) use ($model, $replicator) {
+            $handle = "rp_{$section->handle}_{$replicator->uniqid}";
+            
+            $model->{$handle}()->detach();
+        });
+    }
 
     /**
      * Get custom rules when saving field.
@@ -196,7 +208,7 @@ class ReplicatorFieldtype extends Fieldtype
     {
         $rules = [];
 
-        foreach ($value as $key => $input) {
+        foreach ((array) $value as $key => $input) {
             $section = Section::find($input['section']['id']);
             $prefix  = "{$field->handle}.{$key}.fields.";
 
@@ -224,7 +236,7 @@ class ReplicatorFieldtype extends Fieldtype
     {
         $attributes = [];
 
-        foreach ($value as $key => $input) {
+        foreach ((array) $value as $key => $input) {
             $section = Section::find($input['section']['id']);
             $prefix  = "{$field->handle}.{$key}.fields.";
 
@@ -246,7 +258,7 @@ class ReplicatorFieldtype extends Fieldtype
      */
     public function getResource($model, Field $field)
     {
-        return $this->getValue($model, $field)->map(function ($replicant) {
+        return collect($this->getValue($model, $field))->map(function ($replicant) {
             return new ReplicantResource($replicant);
         });
     }

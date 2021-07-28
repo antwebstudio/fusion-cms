@@ -68,6 +68,7 @@ class FusionServiceProvider extends ServiceProvider
             \Fusion\Console\RefreshCommand::class,
             \Fusion\Console\FlushCommand::class,
             \Fusion\Console\SyncCommand::class,
+            \Fusion\Console\SyncModels::class,
         ]);
     }
 
@@ -171,7 +172,7 @@ class FusionServiceProvider extends ServiceProvider
      */
     private function bootViews()
     {
-        View::getFinder()->prependLocation(fusion_path('resources/views'));
+        View::getFinder()->addLocation(fusion_path('resources/views'));
     }
 
     /**
@@ -273,8 +274,8 @@ class FusionServiceProvider extends ServiceProvider
     private function mergeConfigFile($path, $key)
     {
         $this->app['config']->set($key, array_merge(
-            $this->app['config']->get($key, []),
-            require $path
+            require $path,
+            $this->app['config']->get($key, [])
         ));
     }
 

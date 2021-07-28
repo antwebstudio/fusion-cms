@@ -30,6 +30,10 @@ export default class Fusion {
         this.bootedCallbacks = []
     }
 
+    setRouter(router) {
+        this.router = router
+    }
+
     booting (callback) {
         this.bootingCallbacks.push(callback)
     }

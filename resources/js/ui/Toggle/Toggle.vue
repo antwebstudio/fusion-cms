@@ -2,6 +2,7 @@
     <p-field-group
         :name="name"
         :fieldId="formattedId"
+        :label="label"
         :required="required"
         :hasError="hasError"
         :errorMessage="errorMessage"

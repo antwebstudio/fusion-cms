@@ -12,6 +12,8 @@
         <link rel="stylesheet" href="{{ mix('css/gravity.css', 'vendor/fusion') }}">
 
         @yield('styles')
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/js-polyfills/0.1.43/polyfill.min.js" integrity="sha512-lvWiOP+aMKHllm4THsjzNleVuGOh0WGniJ3lgu/nvCbex1LlaQSxySUjAu/LTJw9FhnSL/PVYoQcckg1Q03+fQ==" crossorigin="anonymous"></script>
     </head>
 
     <body class="admin">

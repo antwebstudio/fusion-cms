@@ -2,6 +2,8 @@
 
 namespace Fusion\Database\Eloquent;
 
+use DateTimeInterface;
+use Carbon\Carbon;
 use Fusion\Concerns\HasDynamicRelationships;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 
@@ -63,5 +65,10 @@ class Model extends EloquentModel
     public function getDate($attribute, $timezone = null)
     {
         return $this->$attribute->timezone($timezone ?: setting('system.time_zone'));
+    }
+    
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return Carbon::instance($date)->toDateTimeString();
     }
 }

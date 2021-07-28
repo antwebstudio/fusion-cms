@@ -100,6 +100,3 @@ Vue.component('us-state-fieldtype-settings', () => import('./components/Fieldtyp
 // User
 Vue.component('user-fieldtype', () => import('./components/Fieldtypes/User/Field'))
 Vue.component('user-fieldtype-settings', () => import('./components/Fieldtypes/User/Settings'))
-
-Vue.component('tinymce-fieldtype', () => import('./components/Fieldtypes/TinyMce/Field'))
-Vue.component('tinymce-fieldtype-settings', () => import('./components/Fieldtypes/TinyMce/Settings'))

@@ -19,7 +19,7 @@ class SingleController extends Controller
      */
     public function show($matrix)
     {
-        $this->authorize('entries.show');
+        $this->authorize('entries.view');
 
         $matrix = Matrix::where('slug', $matrix)->firstOrFail();
         $single = (new Single($matrix->handle))->make();

@@ -1,11 +1,13 @@
 <template>
 	<div class="field">
-		<div class="form__group">
-			<label
-	            class="form__label"
-	            :for="field.handle"
-	            v-html="field.name">
-	        </label>
+		
+		<p-field-group
+			:name="field.handle"
+			:fieldId="formattedId"
+			:label="field.name"
+			:hasError="hasError"
+			:errorMessage="errorMessage"
+			>
 
 			<input
 				type="file"
@@ -55,7 +57,7 @@
 	            	</div>
 	            </div>
 	        </div>
-		</div>
+		</p-field-group>
 	</div>
 </template>
 
@@ -64,7 +66,8 @@
 		name: 'file-fieldtype',
 
 		mixins: [
-			require ('@/mixins/filehelper').default
+			require ('@/mixins/filehelper').default,
+			require ('@/mixins/fieldtypes/field').default,
 		],
 
 		data() {
@@ -96,6 +99,10 @@
 
             required() {
                 return String(this.field.validation).includes('required')
+            },
+
+            formattedId() {
+                return this.field.handle + '_field'
             }
         },
 

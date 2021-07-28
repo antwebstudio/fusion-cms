@@ -4,6 +4,8 @@ import { before, resolve, after } from '@/router/hooks'
 
 Vue.use(Router)
 
+window.VueRouter = Router
+
 const router = new Router({
     mode: 'history',
     base: window.config.path,
