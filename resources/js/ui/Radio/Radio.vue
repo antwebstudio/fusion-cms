@@ -26,7 +26,7 @@
 
         data() {
             return {
-                model: false,
+                newValue: this.value,
             }
         },
 
