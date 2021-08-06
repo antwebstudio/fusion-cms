@@ -24,7 +24,9 @@ trait HasExtension
              * - Everything else is grouped and updated in mass.
              */
             if ($model->extension) {
-                $attributes = $model->fields->mapWithKeys(function ($field) use ($model) {
+                $attributes = $model->fields->filter(function($field) {
+                    return request()->has($field->handle);
+                })->mapWithKeys(function ($field) use ($model) {
                     $fieldtype = fieldtypes()->get($field->type);
 
                     if ($fieldtype->hasRelationship()) {
