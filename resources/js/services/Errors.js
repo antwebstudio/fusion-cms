@@ -4,6 +4,7 @@ export default class Errors {
     }
 
     has(field) {
+        if (_.isUndefined(this.errors)) return false
         return this.errors.hasOwnProperty(field)
     }
 
