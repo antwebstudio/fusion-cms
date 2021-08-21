@@ -39,13 +39,13 @@
 		<x-installer.input
 			name="db_charset"
 			label="Character Set"
-			value="{{ $data['db_charset'] ?? 'utf8' }}"
+			value="{{ $data['db_charset'] ?? 'utf8mb4' }}"
 		/>
 
 		<x-installer.input
 			name="db_collation"
 			label="Collation"
-			value="{{ $data['db_collation'] ?? 'utf8_unicode_ci' }}"
+			value="{{ $data['db_collation'] ?? 'utf8mb4_unicode_ci' }}"
 		/>
 
 		<div class="mt-10 flex justify-between">

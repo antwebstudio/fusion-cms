@@ -4,6 +4,12 @@
 @section('subtitle', 'Confirm your settings')
 
 @section('content')
+	@if ($errors->any())
+		@foreach ($errors->all() as $message)
+			<div class="text-red-500">{{ $message }}</div>
+		@endforeach
+	@endif
+	
 	@error('install')
 		<div class="text-red-500">{{ $message }}</div>
 	@enderror
@@ -102,7 +108,7 @@
 
 	<form method="POST">
 		<div class="mt-5 flex justify-between">
-			<x-installer.button class="w-1/3" label="Start Over" href="/install"/>
+			<x-installer.button class="w-1/3" label="Back" href="database"/>
 			<x-installer.button class="w-1/3" label="Install!" type="submit"/>
 		</div>
 	</form>
