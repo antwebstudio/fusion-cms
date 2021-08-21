@@ -24,7 +24,10 @@ class DeleteDatabase
             $pdo = new PDO("{$driver}:host={$host}", $username, $password);
             $pdo->query("DROP DATABASE IF EXISTS {$database}");
         } catch (PDOException $e) {
-            exit($e->getMessage());
+            // It might have exception for first time install, which is actually normal.
+
+            // throw $e;
+            // exit($e->getMessage());
         }
     }
 }
