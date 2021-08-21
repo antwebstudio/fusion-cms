@@ -101,7 +101,7 @@ return [
                     'db_host'      => 'required',
                     'db_database'  => 'required',
                     'db_username'  => 'required',
-                    'db_password'  => 'required',
+                    'db_password'  => 'nullable',
                     'db_charset'   => 'required',
                     'db_collation' => 'required',
                 ],
