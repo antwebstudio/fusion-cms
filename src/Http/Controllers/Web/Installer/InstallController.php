@@ -68,8 +68,8 @@ class InstallController extends Controller
                 dispatch_now($instance);
             } catch (Exception $exception) {
                 Log::error($exception->getMessage(), (array) $exception->getTrace()[0]);
-
-                return back();
+                
+                return back()->withErrors(['installer' => $exception->getMessage()]);
             }
         }
 
