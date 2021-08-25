@@ -59,6 +59,7 @@ function glide()
     return League\Glide\ServerFactory::create([
         'response'          => new League\Glide\Responses\LaravelResponseFactory($request),
         'source'            => $filesystem,
+        'watermarks'        => $filesystem,
         'cache'             => $filesystem,
         'cache_path_prefix' => '.cache',
     ]);
