@@ -28,6 +28,7 @@ class FusionServiceProvider extends ServiceProvider
         $this->bootRoutes();
         $this->bootGates();
         $this->bootCustomRules();
+        $this->bootGlide();
 
         if (app_installed()) {
             $this->bootAddons();
@@ -124,6 +125,22 @@ class FusionServiceProvider extends ServiceProvider
         Validator::extend('securepassword', 'Fusion\Rules\SecurePassword@passes');
         Validator::extend('serverrequirements', 'Fusion\Rules\ServerRequirements@passes');
         Validator::extend('permissionrequirements', 'Fusion\Rules\PermissionRequirements@passes');
+    }
+
+    protected function bootGlide()
+    {
+        $this->app->bind('glide', function() {
+            $request    = app('request');
+            $filesystem = app('filesystem')->getDriver();
+        
+            return \League\Glide\ServerFactory::create([
+                'response'          => new \League\Glide\Responses\LaravelResponseFactory($request),
+                'source'            => $filesystem,
+                'watermarks'        => $filesystem,
+                'cache'             => $filesystem,
+                'cache_path_prefix' => '.cache',
+            ]);
+        });
     }
 
     /**
