@@ -53,13 +53,5 @@ function fusion()
 
 function glide()
 {
-    $request    = app('request');
-    $filesystem = app('filesystem')->getDriver();
-
-    return League\Glide\ServerFactory::create([
-        'response'          => new League\Glide\Responses\LaravelResponseFactory($request),
-        'source'            => $filesystem,
-        'cache'             => $filesystem,
-        'cache_path_prefix' => '.cache',
-    ]);
+    return app('glide');
 }

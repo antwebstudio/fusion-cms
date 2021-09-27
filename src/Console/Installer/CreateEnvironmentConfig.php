@@ -47,7 +47,7 @@ class CreateEnvironmentConfig
             $this->createConfigFile();
         }
 
-        Artisan::call('config:cache');
+        Artisan::call('config:clear'); // Use config:cache will cause the session error message not display if the next installer command throw any exception.
     }
 
     /**

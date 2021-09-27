@@ -82,7 +82,7 @@
                 </div>
 
                 <div class="card__body">
-                    <div v-for="field in section.fields">
+                    <div>
                         <component
                             v-for="field in section.fields"
                             :key="field.handle"
