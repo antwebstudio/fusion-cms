@@ -5,5 +5,5 @@
      */
     public function {handle}()
     {
-        return $this->morphToMany('{related_namespace}', 'pivot', '{related_table}', 'pivot_id', '{related_pivot_key}'){where_clause}{order_clause};
+        return $this->morphToMany(app('{related_namespace}'), 'pivot', '{related_table}', 'pivot_id', '{related_pivot_key}'){where_clause}{order_clause};
     }
