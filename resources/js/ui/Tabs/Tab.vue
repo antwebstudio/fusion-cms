@@ -48,10 +48,12 @@
         methods: {
             activate() {
                 this.isActive = true
+                this.$emit('activated')
             },
 
             deactivate() {
                 this.isActive = false
+                this.$emit('deactivated')
             },
 
             reset() {
