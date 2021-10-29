@@ -96,7 +96,7 @@ if (!function_exists('theme_mix')) {
      *
      * @return string
      */
-    function theme_mix($path)
+    function theme_mix($path, $absolutePath = true)
     {
         $theme        = Theme::active();
         $namespace    = $theme->get('namespace');
@@ -128,6 +128,6 @@ if (!function_exists('theme_mix')) {
             $assetPath = ltrim($assetPath, '/');
         }
 
-        return "/theme/$assetPath";
+        return $absolutePath ? url("/theme/$assetPath") : "/theme/$assetPath";
     }
 }
