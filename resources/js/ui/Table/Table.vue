@@ -125,6 +125,7 @@
                 column_names: [],
                 sortable: [],
                 records: [],
+                appends: [],
                 search: '',
 
                 pagination: {
@@ -176,7 +177,7 @@
             sortBy: {
                 required: false,
                 type: String,
-                default: 'id',
+                default: '',
             },
 
             perPage: {
@@ -223,6 +224,7 @@
                     this.records = response.data.records.data
                     this.displayable = response.data.displayable
                     this.sortable = response.data.sortable
+                    this.appends = response.data.appends
                     this.column_names = response.data.column_names
                     this.pagination.totalRecords = response.data.records.total
                     this.pagination.totalPages = response.data.records.last_page
