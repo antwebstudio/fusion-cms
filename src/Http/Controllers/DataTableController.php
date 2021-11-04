@@ -39,6 +39,7 @@ abstract class DataTableController extends Controller
         return response()->json([
             'displayable'  => array_values($this->getDisplayableColumns()),
             'sortable'     => array_values($this->getSortable()),
+            'appendable'   => array_values($this->getAppendable()),
             'column_names' => $this->getCustomColumnNames(),
             'records'      => $this->getRecords($request),
         ]);
@@ -124,6 +125,11 @@ abstract class DataTableController extends Controller
         return $this->getDisplayableColumns();
     }
 
+    protected function getAppendable()
+    {
+        return [];
+    }
+
     /**
      * Get the default sortable column.
      *
@@ -177,6 +183,9 @@ abstract class DataTableController extends Controller
 
                 // Allowed sortable columns    (e.g. sort=name)
                 ->allowedSorts($this->getSortable())
+
+                // Allowed appendable columns (e.g. append=name)
+                ->allowedAppends($this->getAppendable())
 
                 // Default sortable column
                 ->defaultSort($this->getDefaultSort())
