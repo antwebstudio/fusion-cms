@@ -35,6 +35,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->mapWebRoutes();
         $this->mapApiRoutes();
+        $this->mapDataTableRoutes();
     }
 
     /**
@@ -69,6 +70,24 @@ class RouteServiceProvider extends ServiceProvider
             'prefix'     => 'api',
         ], function ($router) {
             require addon_path('{{namespace}}/routes/api.php');
+        });
+    }
+
+    /**
+     * Define the "datatable" routes for the addon.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapDataTableRoutes()
+    {
+        Route::group([
+            'middleware' => 'api',
+            'namespace'  => $this->namespace . '\DataTable',
+            'prefix'     => 'datatable',
+        ], function ($router) {
+            require addon_path('{{namespace}}/routes/datatable.php');
         });
     }
 }
