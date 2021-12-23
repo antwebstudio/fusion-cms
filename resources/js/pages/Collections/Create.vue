@@ -39,11 +39,17 @@
         },
 
         methods: {
+            submitAndStay() {
+                this._submit(true)
+            },
             submit() {
+                this._submit(false)
+            },
+            _submit(stay) {
                 this.form.post(`/api/collections/${this.collection.slug}`).then((response) => {
                     toast('Entry saved successfully', 'success')
 
-                    this.$router.push(`/collection/${this.collection.slug}`)
+                    if ( ! stay) this.$router.push(`/collection/${this.collection.slug}`)
                 }).catch((response) => {
                     toast(response.message, 'failed')
                 })

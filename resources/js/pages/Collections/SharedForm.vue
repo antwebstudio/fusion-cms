@@ -4,6 +4,10 @@
             <div class="buttons">
                 <router-link v-if="collection.slug" :to="{ name: 'collection.index', params: {collection: collection.slug} }" class="button button--secondary">Go Back</router-link>
                 <button type="submit" @click.prevent="$parent.submit" class="button button--primary" :class="{'button--disabled': !form.hasChanges}" :disabled="!form.hasChanges">Save</button>
+                
+                <p-actions :id="'entry_submit_actions'" :key="'entry_submit_actions'">
+                    <p-dropdown-link @click.prevent="$parent.submitAndStay">Save and stay</p-dropdown-link>
+                </p-actions>
             </div>
         </portal>
 
