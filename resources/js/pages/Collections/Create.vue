@@ -49,7 +49,11 @@
                 this.form.post(`/api/collections/${this.collection.slug}`).then((response) => {
                     toast('Entry saved successfully', 'success')
 
-                    if ( ! stay) this.$router.push(`/collection/${this.collection.slug}`)
+                    if (stay) {
+                        this.$router.push(`/collection/${this.collection.slug}/${response.data.entry.id}/edit`)
+                    } else {
+                        this.$router.push(`/collection/${this.collection.slug}`)
+                    }
                 }).catch((response) => {
                     toast(response.message, 'failed')
                 })

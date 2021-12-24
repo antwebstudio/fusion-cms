@@ -67,11 +67,17 @@
         },
 
         methods: {
+            submitAndStay() {
+                this._submit(true)
+            },
             submit() {
+                this._submit(false)
+            },
+            _submit(stay) {
                 this.form.patch(`/api/taxonomies/${this.taxonomy.id}/terms/${this.term.id}`).then((response) => {
                     toast('Term saved successfully', 'success')
 
-                    this.$router.push(`/taxonomies/${this.taxonomy.id}`)
+                    if (!stay) this.$router.push(`/taxonomies/${this.taxonomy.id}`)
                 }).catch((response) => {
                     toast(response.response.data.message, 'failed')
                 })
