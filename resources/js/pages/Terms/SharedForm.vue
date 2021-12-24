@@ -4,6 +4,10 @@
 			<div class="buttons">
 				<router-link v-if="taxonomy.id" :to="{ name: 'terms.index', params: {taxonomy: taxonomy.id} }" class="button">Go Back</router-link>
 				<button type="submit" @click.prevent="submit" class="button button--primary" :class="{'button--disabled': !form.hasChanges}" :disabled="!form.hasChanges">Save</button>
+                
+                <p-actions :id="'entry_submit_actions'" :key="'entry_submit_actions'">
+                    <p-dropdown-link @click.prevent="$parent.submitAndStay">Save and stay</p-dropdown-link>
+                </p-actions>
 			</div>
 		</portal>
 
