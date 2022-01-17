@@ -46,7 +46,14 @@
         <div class="table__wrapper" v-if="records.length && ! loading">
             <table :id="id" class="table" aria-live="polite">
                 <thead>
-                    <tr>
+                    <tr>    
+                        <th v-if="allowBulkActions">
+                            <input
+                                type="checkbox"
+                                :checked="hasSelections"
+                                @click="selectAllRows($event)"
+                            />
+                        </th>
                         <th
                             v-for="(column, index) in displayable"
                             :key="column[primaryKey] || index"
@@ -72,6 +79,14 @@
 
                 <tbody>
                     <tr v-for="(record, index) in records" :key="record[primaryKey] || index">
+                        <td v-if="allowBulkActions" style="width: 20px;">
+                            <input
+                                type="checkbox"
+                                :value="record.id"
+                                :checked="isSelected(record.id)"
+                                @click="clickRow($event, record, index)"
+                            />
+                        </td>
                         <td
                             v-for="column in displayable"
                             :key="column"
@@ -147,10 +162,19 @@
                     key: this.sortBy,
                     order: this.sortIn,
                 },
+
+                selections: [],
+                lastItemClicked: null,
             }
         },
 
         computed: {
+            hasSelections() {
+                return this.selections.length > 0
+            },
+            reachedSelectionLimit() {
+                return false
+            },
             columns() {
                 return _.map(this.displayable, (option) => {
                     columns.push({
@@ -210,6 +234,11 @@
                 required: false,
                 type: String,
             },
+
+            allowBulkActions: {
+                default: false,
+                type: Boolean
+            },
         },
 
         watch: {
@@ -225,8 +254,71 @@
         },
 
         methods: {
+            isSelected(id) {
+                let index = this.selections.indexOf(id)
+                return index >= 0
+            },
+            unselectAll() {
+                this.selections = []
+                this.$emit('selection', this.selections)
+            },
+            unselectMultipleRow(from, to) {
+                this.selectMultipleRow(from, to, true)
+            },
+            selectMultipleRow(from, to, unselect) {
+                for (var i = from; i <= to; i++) {
+                    let id = this.records[i].id;
+                    if (unselect) {
+                        if (this.selections.includes(id)) {
+                            this.selections.splice(this.selections.indexOf(id), 1);
+                        }
+                    } else {
+                        if (! this.selections.includes(id) && ! this.reachedSelectionLimit) {
+                            this.selections.push(id);
+                        }
+                    }
+                };
+            },
+            selectAllRows($event) {
+                this.selectMultipleRow(0, this.records.length - 1, ! $event.target.checked)
+            },
+            clickRow($event, record, rowIndex) {
+                let id = record.id
+                let index = this.selections.indexOf(id)
+
+                if ($event.shiftKey && this.lastItemClicked !== null) {
+                    if ($event.target.checked) {
+                        this.selectMultipleRow(
+                            Math.min(this.lastItemClicked, rowIndex),
+                            Math.max(this.lastItemClicked, rowIndex)
+                        );
+                    } else {
+                        this.unselectMultipleRow(
+                            Math.min(this.lastItemClicked, rowIndex),
+                            Math.max(this.lastItemClicked, rowIndex)
+                        );
+                    }
+                } else {
+                    if (index >= 0) {
+                        this.selections.splice(index, 1);
+                    } else {
+                        this.selections.push(id)
+                    }
+                }
+                
+                this.lastItemClicked = rowIndex
+
+                if ($event.target.checked) {
+                    this.$emit('row-selected', record)
+                } else {
+                    this.$emit('row-unselected', record)
+                }
+                this.$emit('selection', this.selections)
+            },
             getRecords() {
                 this.loading = true
+
+                this.unselectAll()
 
                 return axios.get(`${this.endpoint}?${this.getQueryParameters()}`).then((response) => {
                     this.records = response.data.records.data
