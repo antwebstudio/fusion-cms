@@ -26,6 +26,10 @@ export default {
         errorMessage() {
             return this.errors ?
                 this.errors.get(this.field.handle) : ''
+        },
+        
+        formattedId() {
+            return this.field.handle + '_field'
         }
     }
 }
