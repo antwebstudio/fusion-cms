@@ -27,6 +27,7 @@ Vue.component('option-builder', require('@/components/OptionBuilder').default)
 Vue.component('page-title', require('@/components/PageTitle').default)
 Vue.component('select-directory-modal', require('@/components/Modals/SelectDirectoryModal').default)
 Vue.component('settings-modal', require('@/components/Modals/SettingsModal').default)
+Vue.component('bulk-actions', require('@/components/BulkActions').default)
 
 // Interfaces
 Vue.component('analytics-overview', require('@/interfaces/Analytics/AnalyticsOverview').default)
