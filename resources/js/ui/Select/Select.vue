@@ -259,6 +259,13 @@
         },
 
         watch: {
+            value(value) {
+                if (_.isString(value)) {
+                    this.selection = value.split(',')
+                } else if (_.isNumber(value)) {
+                    this.selection = [ _.toString(value) ]
+                }
+            },
             selection(value) {
                 this.$emit('input', _.isArray(value) ? _.join(value, ',') : value)
             },
