@@ -43,7 +43,7 @@
             </div>
         </div>
 
-        <div class="table__wrapper" v-if="records.length">
+        <div class="table__wrapper" v-if="records.length && ! loading">
             <table :id="id" class="table" aria-live="polite">
                 <thead>
                     <tr>
@@ -92,7 +92,7 @@
             </table>
         </div>
 
-        <div class="mt-6" v-if="this.pagination.totalPages > 1">
+        <div class="mt-6" v-if="this.pagination.totalPages > 1 && ! loading">
             <p-pagination
                 @input="changePage($event)"
                 :total="this.pagination.totalPages"
@@ -100,10 +100,18 @@
             ></p-pagination>
         </div>
 
-        <div class="card" v-if="! records.length">
+        <div class="card" v-if="! records.length && ! loading">
             <slot name="empty-state">
                 <div class="card__body text-center">
                     <h3 class="m-0">No results found.</h3>
+                </div>
+            </slot>
+        </div>
+
+        <div class="card" v-if=" loading ">
+            <slot name="loading">
+                <div class="card__body text-center">
+                    <h3 class="m-0">Loading...</h3>
                 </div>
             </slot>
         </div>
