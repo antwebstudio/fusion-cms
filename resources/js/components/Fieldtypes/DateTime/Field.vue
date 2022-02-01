@@ -94,7 +94,12 @@
       })
 
       if (this.value) {
-        let adjustedDate = this.adjustTimezone(this.datetime)
+        let adjustedDate = null
+        if (this.field.settings.adjust_date || this.field.settings.adjust_date == null) {
+          adjustedDate = this.adjustTimezone(this.datetime)
+        } else {
+          adjustedDate = this.datetime
+        }
         let formattedDate = this.format(adjustedDate, this.flatpickr)
         this.flatpickr.setDate(formattedDate)
         this.emitEvent(null, this.flatpickr.latestSelectedDateObj, this.flatpickr)

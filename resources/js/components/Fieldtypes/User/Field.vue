@@ -1,6 +1,12 @@
 <template>
 	<div>
-		<label :for="field.handle" class="form__label">{{ field.name }}</label>
+		<p-field-group
+			:name="field.handle"
+			:fieldId="formattedId"
+			:label="field.name"
+			:hasError="hasError"
+			:errorMessage="errorMessage"
+			>
 
 		<div class="flex items-start justify-between">
 			<div class="w-1/2">
@@ -65,11 +71,14 @@
             	</div>
             </div>
         </p-modal>
+
+		</p-field-group>
 	</div>
 </template>
 
 <script>
 	import { mapGetters, mapActions } from 'vuex'
+    import FieldMixin from '@/mixins/fieldtypes/field'
 
 	import UserCard      from '@/interfaces/UserManager/Browse/User.vue'
 	import UserSelection from '@/interfaces/UserManager/Selection.vue'
@@ -93,6 +102,7 @@
 
 		mixins: [
 			require('@/mixins/userselector').default,
+			FieldMixin,
         ],
 
 		data() {
