@@ -25,7 +25,7 @@ class InstallCommand extends Command
                            ' {--host=localhost             : Sets .env variable DB_HOST }'.
                            ' {--database=fusioncms         : Sets .env variable DB_DATABASE }'.
                            ' {--username=root              : Sets .env variable DB_USERNAME }'.
-                           ' {--password=secret            : Sets .env variable DB_PASSWORD }'.
+                           ' {--password=            : Sets .env variable DB_PASSWORD }'.
                            ' {--charset=utf8               : Sets .env variable DB_CHARSET }'.
                            ' {--collation=utf8_general_ci  : Sets .env variable DB_COLLATION }';
 
@@ -96,7 +96,7 @@ class InstallCommand extends Command
         //
         if ($this->option('homestead')) {
             $this->set('db_username', 'homestead');
-            $this->set('db_password', 'secret');
+            $this->set('db_password', '');
             $this->set('app_debug', true);
         }
 
@@ -129,21 +129,22 @@ class InstallCommand extends Command
     private function wizard()
     {
         // application
-        $this->container['app_name'] = $this->ask('Please enter your application name:', $this->get('app_name'));
-        $this->container['app_url']  = $this->ask('Please enter your website url:', $this->get('app_url'));
+        $this->container['app_name'] = $this->ask('Please enter your application name', $this->get('app_name'));
+        $this->container['app_url']  = $this->ask('Please enter your website url', $this->get('app_url'));
 
         // database
-        $this->container['db_host']      = $this->ask('Please enter the database host:', $this->get('db_host'));
-        $this->container['db_database']  = $this->ask('Please enter the database name:', $this->get('db_database'));
-        $this->container['db_username']  = $this->ask('Please enter the database username:', $this->get('db_username'));
-        $this->container['db_password']  = $this->ask('Please enter the database password:', $this->get('db_password'));
-        $this->container['db_charset']   = $this->ask('Please enter the database charset:', $this->get('db_charset'));
-        $this->container['db_collation'] = $this->ask('Please enter the database collation:', $this->get('db_collation'));
+        $this->container['db_host']      = $this->ask('Please enter the database host', $this->get('db_host'));
+        $this->container['db_database']  = $this->ask('Please enter the database name', $this->get('db_database'));
+        $this->container['db_username']  = $this->ask('Please enter the database username', $this->get('db_username'));
+        $this->container['db_password']  = $this->secret('Please enter the database password');
+
+        $this->container['db_charset']   = $this->ask('Please enter the database charset', $this->get('db_charset'));
+        $this->container['db_collation'] = $this->ask('Please enter the database collation', $this->get('db_collation'));
 
         // default user
-        $this->container['user_name']     = $this->ask('Please enter a default user name:', $this->get('user_name'));
-        $this->container['user_email']    = $this->ask('Please enter a default user email:', $this->get('user_email'));
-        $this->container['user_password'] = $this->ask('Please enter a default user password:', $this->get('user_password'));
+        $this->container['user_name']     = $this->ask('Please enter a default user name', $this->get('user_name'));
+        $this->container['user_email']    = $this->ask('Please enter a default user email', $this->get('user_email'));
+        $this->container['user_password'] = $this->secret('Please enter a default user password');
 
         $this->confirmation();
     }
@@ -166,18 +167,18 @@ class InstallCommand extends Command
             $this->comment('Database host:         '.$this->get('db_host'));
             $this->comment('Database name:         '.$this->get('db_database'));
             $this->comment('Database username:     '.$this->get('db_username'));
-            $this->comment('Database password:     '.$this->get('db_password'));
+            $this->comment('Database password:     (hidden)');
             $this->comment('Database charset:      '.$this->get('db_charset'));
             $this->comment('Database collation:    '.$this->get('db_collation'));
 
             // default user
             $this->comment('Default user name:     '.$this->get('user_name'));
             $this->comment('Default user email:    '.$this->get('user_email'));
-            $this->comment('Default user password: '.$this->get('user_password'));
+            $this->comment('Default user password: (hidden)');
 
             // make confirmation..
             if ($this->confirm('Do you wish to proceed in installing FusionCMS?')) {
-                $this->confirmation(true);
+                $this->confirmation();
             } else {
                 $this->wizard();
             }
@@ -225,7 +226,19 @@ class InstallCommand extends Command
             unset(
                 $jobs['Deleting environment config...'],
                 $jobs['Creating environment config...'],
-                $jobs['Generating encryption key...']
+                $jobs['Generating encryption key...'],
+            );
+        } else {
+            unset(
+                $jobs['Deleting asset files...'],
+                $jobs['Deleting model files...'],
+                $jobs['Deleting addon assets...'],
+                $jobs['Deleting addon cache...'],
+                $jobs['Deleting theme assets...'],
+                $jobs['Deleting theme cache...'],
+                $jobs['Deleting log files...'],
+                $jobs['Deleting environment config...'],
+                $jobs['Deleting database...'],
             );
         }
 
@@ -294,6 +307,7 @@ class InstallCommand extends Command
             'Edwin Hubble',       // Edwin Powell Hubble was an American astronomer who played a crucial role in establishing the field of extragalactic astronomy and is generally regarded as one of the most important observational cosmologists of the 20th century.
             'John Glenn',         // John Herschel Glenn Jr. was an American aviator, engineer, astronaut, and United States Senator from Ohio. In 1962 he became the first American to orbit the Earth, circling three times.
             'Ursula Franklin',    // Ursula Martius Franklin, CC OOnt FRSC, was a German-Canadian metallurgist, research physicist, author, and educator who taught at the University of Toronto for more than 40 years.
+            'Stephen Hawking',    // Stephen William Hawking, CH CBE FRS FRSA, was an English theoretical physicist, cosmologist, and author who was director of research at the Centre for Theoretical Cosmology at the University of Cambridge.
         ];
 
         return $people[array_rand($people)];
