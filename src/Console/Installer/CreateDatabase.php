@@ -32,7 +32,7 @@ class CreateDatabase
         $host      = $this->container['db_host'] ?? 'localhost';
         $database  = $this->container['db_database'] ?? 'fusioncms';
         $username  = $this->container['db_username'] ?? 'root';
-        $password  = $this->container['db_password'] ?? 'secret';
+        $password  = $this->container['db_password'] ?? '';
         $charset   = $this->container['db_charset'] ?? 'utf8';
         $collation = $this->container['db_collation'] ?? 'utf8_general_ci';
 

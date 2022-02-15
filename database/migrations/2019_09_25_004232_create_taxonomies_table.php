@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTaxonomiesTable extends Migration
+class CreateFusionTaxonomiesTable extends Migration
 {
     /**
      * Run the migrations.
