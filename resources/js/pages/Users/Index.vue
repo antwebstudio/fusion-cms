@@ -36,7 +36,7 @@
                     </template>
 
                     <template slot="role" slot-scope="table">
-                        <span class="badge">{{ table.record.role.name }}</span>
+                        <span class="badge" v-if="table.record.role">{{ table.record.role.name }}</span>
                     </template>
 
                     <template slot="actions" slot-scope="table">
