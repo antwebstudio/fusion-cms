@@ -76,8 +76,15 @@ class RestoreSchema extends Command
 
     protected function restoreExtensions($data)
     {
-        foreach ($data as $extension) {
-            $extension = Extension::create($extension);
+        foreach ($data as $extensionData) {
+            $extension = Extension::create($extensionData);
+            
+            if (isset($extensionData['fieldset']['handle'])) {
+                $fieldsetHandle = $extensionData['fieldset']['handle'];
+                $fieldset = Fieldset::where('handle', $fieldsetHandle)->first();
+                $extension->attachFieldset($fieldset);
+            }
+
             $this->line('Created extension ' . $extension->handle);
         }
     }
@@ -91,7 +98,7 @@ class RestoreSchema extends Command
                 $this->taxonomies[$handle] = $taxonomy;
 
                 if (isset($taxonomyData['fieldset']['handle'])) {
-                    $fieldsetHandle = $taxonomy['fieldset']['handle'];
+                    $fieldsetHandle = $taxonomyData['fieldset']['handle'];
                     $fieldset = Fieldset::where('handle', $fieldsetHandle)->first();
                     $taxonomy->attachFieldset($fieldset);
                 }
