@@ -70,6 +70,8 @@ class FusionServiceProvider extends ServiceProvider
             \Fusion\Console\FlushCommand::class,
             \Fusion\Console\SyncCommand::class,
             \Fusion\Console\SyncModels::class,
+            \Fusion\Console\BackupSchema::class,
+            \Fusion\Console\RestoreSchema::class,
         ]);
     }
 
