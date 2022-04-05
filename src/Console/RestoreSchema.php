@@ -34,6 +34,8 @@ class RestoreSchema extends Command
 
     protected $matrices = [];
 
+    protected $assignFieldset = [];
+
     /**
      * Create a new command instance.
      *
@@ -63,6 +65,7 @@ class RestoreSchema extends Command
             $this->restoreTaxonomies($json['taxonomies']);
             $this->title('Extensions');
             $this->restoreExtensions($json['extensions']);
+            $this->assignFieldsets();
         });
         return 0;
     }
@@ -72,6 +75,23 @@ class RestoreSchema extends Command
         $this->line('===============================');
         $this->line(' '.$title);
         $this->line('===============================');
+    }
+
+    protected function assignFieldsets()
+    {
+        $assign = $this->assignFieldset['matrix'] ?? [];
+        foreach ($assign as $modelId => $fieldsetHandle) {
+            $fieldset = Fieldset::where('handle', $fieldsetHandle)->first();
+            $matrix = Matrix::find($modelId);
+            $matrix->attachFieldset($fieldset);
+        }
+
+        $assign = $this->assignFieldset['taxonomy'] ?? [];
+        foreach ($assign as $modelId => $fieldsetHandle) {
+            $fieldset = Fieldset::where('handle', $fieldsetHandle)->first();
+            $taxonomy = Taxonomy::find($modelId);
+            $taxonomy->attachFieldset($fieldset);
+        }
     }
 
     protected function restoreExtensions($data)
@@ -92,38 +112,60 @@ class RestoreSchema extends Command
     protected function restoreTaxonomies($data)
     {
         foreach ($data as $taxonomyData) {
-            $handle = $taxonomyData['handle'];
-            if (!isset($this->taxonomies[$handle])) {
-                $taxonomy = Taxonomy::create($taxonomyData);
-                $this->taxonomies[$handle] = $taxonomy;
+            $this->restoreTaxonomy($taxonomyData);
+        }
+    }
 
-                if (isset($taxonomyData['fieldset']['handle'])) {
-                    $fieldsetHandle = $taxonomyData['fieldset']['handle'];
-                    $fieldset = Fieldset::where('handle', $fieldsetHandle)->first();
+    protected function restoreTaxonomy($taxonomyData)
+    {
+        $handle = $taxonomyData['handle'];
+        if (!isset($this->taxonomies[$handle])) {
+            $taxonomy = Taxonomy::create($taxonomyData);
+            $this->taxonomies[$handle] = $taxonomy;
+
+            if (isset($taxonomyData['fieldset']['handle'])) {
+                $fieldsetHandle = $taxonomyData['fieldset']['handle'];
+                $fieldset = Fieldset::where('handle', $fieldsetHandle)->first();
+                if (isset($fieldset)) {
                     $taxonomy->attachFieldset($fieldset);
+                } else {
+                    $this->assignFieldset['taxonomy'][$taxonomy->id] = $fieldsetHandle;
                 }
-
-                $this->line('Created taxonomy ' . $taxonomy->handle);
             }
+
+            $this->line('Created taxonomy ' . $taxonomy->handle);
+
+            return $taxonomy;
         }
     }
 
     protected function restoreMatrices($data)
     {
         foreach ($data as $matrixData) {
-            $handle = $matrixData['handle'];
-            if (!isset($this->matrices[$handle])) {
-                $matrix = Matrix::create($matrixData);
-                $this->matrices[$handle] = $matrix;
+            $this->restoreMatrix($matrixData);
+        }
+    }
 
-                if (isset($matrixData['fieldset']['handle'])) {
-                    $fieldsetHandle = $matrixData['fieldset']['handle'];
-                    $fieldset = Fieldset::where('handle', $fieldsetHandle)->first();
+    protected function restoreMatrix($matrixData)
+    {
+        $handle = $matrixData['handle'];
+        if (!isset($this->matrices[$handle])) {
+            $matrix = Matrix::create($matrixData);
+            $this->matrices[$handle] = $matrix;
+
+            if (isset($matrixData['fieldset']['handle'])) {
+                $fieldsetHandle = $matrixData['fieldset']['handle'];
+                $fieldset = Fieldset::where('handle', $fieldsetHandle)->first();
+                if (isset($fieldset)) {
                     $matrix->attachFieldset($fieldset);
+                } else {
+                    $this->assignFieldset['matrix'][$matrix->id] = $fieldsetHandle;
                 }
-
-                $this->line('Created matrix ' . $matrix->handle);
             }
+
+            $this->line('Created matrix ' . $matrix->handle);
+
+            return $matrix;
         }
     }
 
@@ -158,11 +200,9 @@ class RestoreSchema extends Command
                             $taxonomy = $this->taxonomies[$handle];
                         } else {
                             try {
-                                $taxonomy = Taxonomy::create($taxonomy);
-                                $this->taxonomies[$handle] = $taxonomy;
-                                $this->line('Created taxonomy ' . $taxonomy->handle);
+                                $taxonomy = $this->restoreTaxonomy($taxonomy);
                             } catch (\Exception $ex) {
-                                // throw $ex;
+                                throw $ex;
                                 dd($taxonomy['handle'], array_keys($this->taxonomies), $ex->getMessage());
                             }
                         }
@@ -174,9 +214,7 @@ class RestoreSchema extends Command
                         if (isset($this->matrices[$handle])) {
                             $matrix = $this->matrices[$handle];
                         } else {
-                            $matrix = Matrix::create($matrix);
-                            $this->matrices[$handle] = $matrix;
-                            $this->line('Created matrix ' . $matrix->handle);
+                            $matrix = $this->restoreMatrix($matrix);
                         }
                         $field['settings']['matrix'] = $matrix->id;
                     }
@@ -191,7 +229,7 @@ class RestoreSchema extends Command
                         ]));
                         $this->line('Created field ' . $field->handle);
                     } catch (\Exception $ex) {
-                        // throw $ex;
+                        throw $ex;
                         dd($fieldData, $field['type']['id'], $ex->getMessage());
                     }
                 }
