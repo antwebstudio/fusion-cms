@@ -131,13 +131,13 @@ Route::post('navigation/reorder', 'NavigationReorderController');
 /**
  * API - Addon Routes.
  */
-Route::prefix('addons')->group(function () {
-    Route::post('upload', 'Addons\UploadController@store');
-    Route::post('{addon}/install', 'Addons\ActionController@install');
-    Route::post('{addon}/uninstall', 'Addons\ActionController@uninstall');
-    Route::post('{addon}/enable', 'Addons\StatusController@enable');
-    Route::post('{addon}/disable', 'Addons\StatusController@disable');
-});
+// Route::prefix('addons')->group(function () {
+//     Route::post('upload', 'Addons\UploadController@store');
+//     Route::post('{addon}/install', 'Addons\ActionController@install');
+//     Route::post('{addon}/uninstall', 'Addons\ActionController@uninstall');
+//     Route::post('{addon}/enable', 'Addons\StatusController@enable');
+//     Route::post('{addon}/disable', 'Addons\StatusController@disable');
+// });
 
 /**
  * API - Single Routes.
