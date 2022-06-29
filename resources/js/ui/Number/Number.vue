@@ -128,12 +128,20 @@
                 }
             },
 
+            hasMin() {
+                return this.min != 0
+            },
+
+            hasMax() {
+                return this.max != 0
+            },
+
             decreaseDisabled() {
-                return this.model <= this.min
+                return this.hasMin && this.model <= this.min
             },
             
             increaseDisabled() {
-                return this.model >= this.max
+                return this.hasMax && this.model >= this.max
             },
         },
 
