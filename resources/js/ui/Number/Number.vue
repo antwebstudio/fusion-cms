@@ -151,7 +151,11 @@
                     return
                 }
 
-                this.model = Math.min(this.model + Number(this.step), this.max)
+				if (this.hasMax) {
+					this.model = Math.min(this.model + Number(this.step), this.max)
+				} else {
+					this.model = this.model + Number(this.step)
+				}
             },
 
             decrease() {
@@ -159,7 +163,11 @@
                     return
                 }
 
-                this.model = Math.max(this.model - Number(this.step), this.min)
+				if (this.hasMin) {
+					this.model = Math.max(this.model - Number(this.step), this.min)
+				} else {
+					this.model = this.model - Number(this.step)
+				}
             }
         }
     }
