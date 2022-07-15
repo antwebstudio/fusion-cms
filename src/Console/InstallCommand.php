@@ -17,6 +17,7 @@ class InstallCommand extends Command
      * @var string
      */
     protected $signature = 'fusion:install'.
+                           ' {--S|silent                   : Silent install. }'.
                            ' {--H|homestead                : Quick install; uses default homestead configurations. }'.
                            ' {--A|valet                    : Quick install; uses default valet configurations. }'.
                            ' {--R|refresh                  : Same as running uninstall/install but wont\'t refresh .env file. }'.
@@ -117,7 +118,12 @@ class InstallCommand extends Command
             $this->verifyServerRequirements();
 
             $this->line("\n<fg=black;bg=white>--- Now for some questions to get you started...</>");
-            $this->wizard();
+
+            if (!$this->option('silent')) {
+                $this->wizard();
+            } else {
+                $this->install();
+            }
         }
     }
 
