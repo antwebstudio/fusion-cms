@@ -23,7 +23,7 @@ class RestoreSchema extends Command
      *
      * @var string
      */
-    protected $signature = 'fusion:restore-schema';
+	protected $signature = 'fusion:restore-schema {--file=}';
 
     /**
      * The console command description.
@@ -55,7 +55,7 @@ class RestoreSchema extends Command
      */
     public function handle()
     {
-        $rawJson = Storage::disk('local')->get('schema.json');
+        $rawJson = file_get_contents(base_path($this->option('file')));
         $json = json_decode($rawJson, true);
 
         $this->matrices = Matrix::get()->keyBy('handle');

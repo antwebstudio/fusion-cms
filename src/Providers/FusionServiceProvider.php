@@ -58,6 +58,7 @@ class FusionServiceProvider extends ServiceProvider
             \Fusion\Console\FlushCommand::class,
             \Fusion\Console\SyncCommand::class,
             \Fusion\Console\UpdateCommand::class,
+            \Fusion\Console\RestoreSchema::class,
 
             // Addons
             \Fusion\Console\Addons\DiscoverCommand::class,
