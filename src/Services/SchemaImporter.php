@@ -59,7 +59,9 @@ class SchemaImporter {
     {
         foreach ($data as $taxonomyData) {
             $oldId = $taxonomyData['id'];
-            $this->createFieldset($this->taxonomies[$oldId]->blueprint, $taxonomyData['fieldset']);
+            if (isset($taxonomyData['fieldset'])) {
+                $this->createFieldset($this->taxonomies[$oldId]->blueprint, $taxonomyData['fieldset']);
+            }
         }   
     }
 
@@ -67,7 +69,9 @@ class SchemaImporter {
     {
         foreach ($data as $matrixData) {
             $oldId = $matrixData['id'];
-            $this->createFieldset($this->matrices[$oldId]->blueprint, $matrixData['fieldset']);
+            if (isset($matrixData['fieldset'])) {
+                $this->createFieldset($this->matrices[$oldId]->blueprint, $matrixData['fieldset']);
+            }
         }   
     }
 
