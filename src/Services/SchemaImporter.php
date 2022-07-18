@@ -20,8 +20,6 @@ class SchemaImporter {
 
     protected $matrices = [];
 
-    protected $assignFieldset = [];
-
     protected $replicatorsData = [];
 
     public function restoreOldVersionSchema($schemaJson)
@@ -31,94 +29,68 @@ class SchemaImporter {
         $this->replicatorsData = collect($json['replicators'] ?? [])->keyBy('id');
         $fieldset = collect($json['fieldsets'] ?? [])->keyBy('handle');
 
-        $this->restoreMatrices($json['matrices'], $fieldset);
-        $this->restoreTaxonomies($json['taxonomies'], $fieldset);
+        $this->restoreMatrices($json['matrices']);
+        $this->restoreTaxonomies($json['taxonomies']);
+        $this->restoreMatricesFieldsets($json['matrices']);
+        $this->restoreTaxonomiesFieldsets($json['taxonomies']);
 
-    }protected function restoreTaxonomies($data, $fieldsetData)
+    }
+    
+    protected function restoreTaxonomies($data)
     {
         foreach ($data as $taxonomyData) {
-            $this->restoreTaxonomy($taxonomyData, $fieldsetData);
+            $oldId = $taxonomyData['id'];
+            $taxonomy = $this->restoreTaxonomy($taxonomyData);
+            $this->taxonomies[$oldId] = $taxonomy;
         }
     }
 
-    protected function restoreTaxonomy($taxonomyData, $fieldsetData)
+    protected function restoreTaxonomy($taxonomyData)
     {
         $handle = $taxonomyData['handle'];
         if (!isset($this->taxonomies[$handle])) {
             $taxonomy = Taxonomy::create($taxonomyData);
-            $this->taxonomies[$handle] = $taxonomy;
-
-            if (isset($taxonomyData['fieldset']['handle'])) {
-                // $blueprint = $this->createBlueprint($taxonomy);
-                $this->createBlueprintFields($taxonomy->blueprint, $fieldsetData[$taxonomyData['fieldset']['handle']]);
-    
-                $fieldsetHandle = $taxonomyData['fieldset']['handle'];
-                $fieldset = Fieldset::where('handle', $fieldsetHandle)->first();
-                if (isset($fieldset)) {
-                    // $taxonomy->attachFieldset($fieldset);
-                } else {
-                    $this->assignFieldset['taxonomy'][$taxonomy->id] = $fieldsetHandle;
-                }
-            }
-
-            $this->line('Created taxonomy ' . $taxonomy->handle);
 
             return $taxonomy;
         }
     }
 
-    protected function restoreMatrices($data, $fieldsetData)
+    protected function restoreTaxonomiesFieldsets($data)
+    {
+        foreach ($data as $taxonomyData) {
+            $oldId = $taxonomyData['id'];
+            $this->createFieldset($this->taxonomies[$oldId]->blueprint, $taxonomyData['fieldset']);
+        }   
+    }
+
+    protected function restoreMatricesFieldsets($data)
     {
         foreach ($data as $matrixData) {
-            $this->restoreMatrix($matrixData, $fieldsetData);
+            $oldId = $matrixData['id'];
+            $this->createFieldset($this->matrices[$oldId]->blueprint, $matrixData['fieldset']);
+        }   
+    }
+
+    protected function restoreMatrices($data)
+    {
+        foreach ($data as $matrixData) {
+            $oldId = $matrixData['id'];
+            $matrix = $this->restoreMatrix($matrixData);
+            $this->matrices[$oldId] = $matrix;
         }
     }
 
-    protected function restoreMatrix($matrixData, $fieldsetData)
+    protected function restoreMatrix($matrixData)
     {
         $handle = $matrixData['handle'];
         if (!isset($this->matrices[$handle])) {
             $matrix = Matrix::create($matrixData);
-            $this->matrices[$handle] = $matrix;
-
-            if (isset($matrixData['fieldset']['handle'])) {
-                // $blueprint = $this->createBlueprint($matrix);
-                $this->createBlueprintFields($matrix->blueprint, $fieldsetData[$matrixData['fieldset']['handle']]);
-    
-                $fieldsetHandle = $matrixData['fieldset']['handle'];
-                $fieldset = Fieldset::where('handle', $fieldsetHandle)->first();
-                if (isset($fieldset)) {
-                    // $matrix->attachFieldset($fieldset);
-                } else {
-                    $this->assignFieldset['matrix'][$matrix->id] = $fieldsetHandle;
-                }
-            }
-
-            // $this->line('Created matrix ' . $matrix->handle);
 
             return $matrix;
         }
     }
-    protected function createBlueprint($model) {
-        if ($model instanceof Matrix) {
-            $structure = $model->type == 'collection' ? 'Collections' : 'Singles';
-        } else if ($model instanceof Taxonomy) {
-            $structure = 'Taxonomy';
-        } else if ($model instanceof Replicator) {
-            $structure = 'Replicator';
-        } else {
-            throw new \Exception('Unsupported model type: '.get_class($model));
-        }
 
-        return $model->blueprint()->create([
-            'structure' => $structure,
-            'blueprintable_type' => get_class($model),
-            'blueprintable_id' => $model->id,
-            'name' => $model->name,
-        ]);
-    }
-
-    protected function createBlueprintFields($blueprint, $fieldsetData) {
+    protected function createFieldset($blueprint, $fieldsetData) {
         if (!isset($fieldsetData['sections'])) {
             throw new \Exception('Sections for fieldset is missing. ');
         }
@@ -128,7 +100,6 @@ class SchemaImporter {
             ]));
             
             $this->createSectionFields($section, $sectionData['fields']);
-            
         }
     }
 
@@ -140,40 +111,23 @@ class SchemaImporter {
                 $replicatorData = $this->replicatorsData[$fieldData['settings']['replicator']];
                 $fieldData['settings']['replicator'] = null;
                 $fieldData['settings']['sections'] = $replicatorData['sections'][0]['fields'];
-
             } else if ($fieldData['type']['id'] == 'taxonomy') {
-                // dd($field['settings']['taxonomy']);
-                // if (!isset($field['settings']['taxonomy'])) {
-                //     dd($field);
-                // }
-                $taxonomy = $fieldData['settings']['taxonomy'];
-                $handle = $taxonomy['handle'];
-
-                if (isset($this->taxonomies[$handle])) {
-                    $taxonomy = $this->taxonomies[$handle];
-                } else {
-                    try {
-                        $taxonomy = Taxonomy::create($taxonomy);
-                        $this->taxonomies[$handle] = $taxonomy;
-                        // $this->line('Created taxonomy ' . $taxonomy->handle);
-                    } catch (\Exception $ex) {
-                        // throw $ex;
-                        dd($taxonomy['handle'], array_keys($this->taxonomies), $ex->getMessage());
+                if (is_array($fieldData['settings']['taxonomy'])) {
+                    if (!isset($fieldData['settings']['taxonomy']['id'])) {
+                        dd($fieldData);
                     }
-                }
-                $fieldData['settings']['taxonomy'] = $taxonomy->id;
-            } else if ($fieldData['type']['id'] == 'matrix') {
-                $matrix = $fieldData['settings']['matrix'];
-                $handle = $matrix['handle'];
-
-                if (isset($this->matrices[$handle])) {
-                    $matrix = $this->matrices[$handle];
+                    $oldId = $fieldData['settings']['taxonomy']['id'];
                 } else {
-                    $matrix = Matrix::create($matrix);
-                    $this->matrices[$handle] = $matrix;
-                    // $this->line('Created matrix ' . $matrix->handle);
+                    $oldId = $fieldData['settings']['taxonomy'];
                 }
-                $fieldData['settings']['matrix'] = $matrix->id;
+                $fieldData['settings']['taxonomy'] = $this->taxonomies[$oldId]->id;
+            } else if ($fieldData['type']['id'] == 'matrix') {
+                if (is_array($fieldData['settings']['matrix'])) {
+                    $oldId = $fieldData['settings']['matrix']['id'];
+                } else {
+                    $oldId = $fieldData['settings']['matrix'];
+                }
+                $fieldData['settings']['matrix'] = $this->taxonomies[$oldId]->id;
             }
 
             if (!isset($fieldData['type']['id'])) {
@@ -194,19 +148,6 @@ class SchemaImporter {
                 throw $ex;
                 // dd($fieldData, $field['type']['id'], $ex->getMessage());
             }
-            
-            // if ($fieldData['type']['id'] == 'replicator') {
-            //     try {
-            //         $replicatorData = $this->replicatorsData[$fieldData['settings']['replicator']];
-            //         $replicatorData['field_id'] = $field->id;
-            //         $replicator = Replicator::create($replicatorData);
-
-            //         $blueprint = $this->createBlueprint($replicator);
-            //         $this->createBlueprintFields($blueprint, $replicatorData);
-            //     } catch (\Exception $ex) {
-            //         throw $ex;
-            //     }
-            // }
         }
     }
 }
