@@ -57,6 +57,7 @@ class BackupSchema extends Command
             'matrices' => $this->backupMatrices(),
             'taxonomies' => $this->backupTaxonomies(),
             'extensions' => $this->backupExtensions(),
+            'replicators' => $this->backupReplicator(),
         ];
 
         Storage::disk('local')->put('schema.json', json_encode($data));
@@ -72,7 +73,7 @@ class BackupSchema extends Command
 
         foreach (Extension::all() as $extension) {
             $extension = new ExtensionResource($extension);
-            $extension = Arr::only($extension->toArray(request()), ['name', 'handle', 'fieldset', 'slug']);
+            $extension = Arr::only($extension->toArray(request()), ['id', 'name', 'handle', 'fieldset', 'slug']);
 
             if (!isset($extension['fieldset']->id)) {
                 unset($extension['fieldset']);
@@ -90,7 +91,7 @@ class BackupSchema extends Command
 
         foreach (Taxonomy::all() as $taxonomy) {
             $taxonomy = new TaxonomyResource($taxonomy);
-            $taxonomy = Arr::only($taxonomy->toArray(request()), ['name', 'handle', 'fieldset', 'slug']);
+            $taxonomy = Arr::only($taxonomy->toArray(request()), ['id', 'name', 'handle', 'fieldset', 'slug']);
 
             if (!isset($taxonomy['fieldset']->id)) {
                 unset($taxonomy['fieldset']);
@@ -108,7 +109,7 @@ class BackupSchema extends Command
 
         foreach (Matrix::all() as $matrix) {
             $matrix = new MatrixResource($matrix);
-            $matrix = Arr::only($matrix->toArray(request()), ['name', 'handle', 'type', 'fieldset', 'slug']);
+            $matrix = Arr::only($matrix->toArray(request()), ['id', 'name', 'handle', 'type', 'fieldset', 'slug']);
 
             if (!isset($matrix['fieldset']->id)) {
                 unset($matrix['fieldset']);
@@ -138,7 +139,7 @@ class BackupSchema extends Command
                         if (isset($field->settings['taxonomy'])) {
                             $taxonomy = Taxonomy::find($field->settings['taxonomy']);
                             $taxonomy = new TaxonomyResource($taxonomy);
-                            $taxonomy = Arr::only($taxonomy->toArray(request()), ['name', 'handle', 'fieldset', 'slug']);
+                            $taxonomy = Arr::only($taxonomy->toArray(request()), ['id', 'name', 'handle', 'fieldset', 'slug']);
                             
                             if (!isset($taxonomy['fieldset']->id)) {
                                 unset($taxonomy['fieldset']);
@@ -149,7 +150,7 @@ class BackupSchema extends Command
                         if (isset($field->settings['matrix'])) {
                             $matrix = Matrix::find($field->settings['matrix']);
                             $matrix = new MatrixResource($matrix);
-                            $matrix = Arr::only($matrix->toArray(request()), ['name', 'handle', 'type', 'fieldset', 'slug']);
+                            $matrix = Arr::only($matrix->toArray(request()), ['id', 'name', 'handle', 'type', 'fieldset', 'slug']);
 
                             if (!isset($matrix['fieldset']->id)) {
                                 unset($matrix['fieldset']);
@@ -161,6 +162,13 @@ class BackupSchema extends Command
             }
         }
 
+        return $resource->toArray(request());
+    }
+
+    protected function backupReplicator() {
+        $replicators = Replicator::get();
+        $resource = ReplicatorResource::collection($replicators);
+        
         return $resource->toArray(request());
     }
 }
