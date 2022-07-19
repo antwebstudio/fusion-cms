@@ -138,6 +138,9 @@ class SchemaImporter {
                 dd($fieldData);
             }
             try {
+                if (!isset($fieldData['validation'])) {
+                    $fieldData['validation'] = null;
+                }
                 $field = Field::make(array_merge($fieldData, [
                     'type' => $fieldData['type']['id'],
                     'fieldable_id' => $section->id,
