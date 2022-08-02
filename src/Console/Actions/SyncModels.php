@@ -16,6 +16,7 @@ class SyncModels
             \Fusion\Models\Taxonomy::class,
             \Fusion\Models\Form::class,
             \Fusion\Models\Setting::class,
+            \Fusion\Models\Extension::class,
         ];
 
         foreach ($modelTypes as $modelType) {
