@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfusioncms=self.webpackChunkfusioncms||[]).push([[572],{572:(s,n,e)=>{e.r(n),e.d(n,{default:()=>u});const t={name:"divider-fieldtype"};const u=(0,e(1900).Z)(t,(function(){this._self._c;return this._m(0)}),[function(){var s=this._self._c;return s("div",[s("hr")])}],!1,null,null,null).exports}}]);

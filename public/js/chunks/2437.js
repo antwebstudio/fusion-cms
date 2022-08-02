@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfusioncms=self.webpackChunkfusioncms||[]).push([[2437],{2437:(s,n,e)=>{e.r(n),e.d(n,{default:()=>u});const t={name:"form-fieldtype-settings"};const u=(0,e(1900).Z)(t,(function(){return(0,this._self._c)("div")}),[],!1,null,null,null).exports}}]);

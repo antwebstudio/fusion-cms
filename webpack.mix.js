@@ -8,7 +8,7 @@ const sourceMap = production ? false : 'inline-source-map'
 mix.setPublicPath('public')
     .js('resources/js/gravity.js', 'js')
     .vue()
-    .sass('resources/scss/gravity.scss', 'css', { implementation: require('node-sass') })
+    .sass('resources/scss/gravity.scss', 'css', { implementation: require('sass') })
     .version()
     .webpackConfig({
         devtool: sourceMap,
@@ -25,7 +25,7 @@ mix.setPublicPath('public')
     .options({
         processCssUrls: false,
         postCss: [
-            require("@tailwindcss/jit"),
+            // require("@tailwindcss/jit"),
             require('postcss-import'),
             require('tailwindcss'),
             require('autoprefixer'),
