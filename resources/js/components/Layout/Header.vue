@@ -8,7 +8,10 @@
             <div class="header__logo">
                 <router-link to="/" class="nav-logo" @click.native="onClick()">
                     <span class="nav-logo__image"></span>
-                    <span class="nav-logo__text">
+                    <span class="nav-logo__text" v-if="appConfig && appConfig.name" v-html="appConfig.name">
+                        
+                    </span>
+                    <span class="nav-logo__text" v-else>
                         Fusion<span class="font-bold">CMS</span>
                     </span>
                 </router-link>
@@ -73,6 +76,7 @@
 </template>
 
 <script>
+    import { mapGetters }    from 'vuex'
     export default {
         name: 'layout-header',
 
@@ -80,7 +84,13 @@
             greeting: {
                 type: String,
                 default: 'Hello'
-            }
+            },
+        },
+
+        computed: {
+            ...mapGetters({
+                appConfig: 'fusion/getConfig',
+            }),
         },
     }
 </script>

@@ -21,6 +21,10 @@
                 type: String,
                 required: true,
             },
+
+            config: {
+                type: Object,
+            },
         },
 
         computed: {
@@ -32,6 +36,7 @@
         created() {
             this.$store.commit('auth/setUser', this.user)
             this.$store.commit('fusion/setVersion', this.version)
+            this.$store.commit('fusion/setConfig', this.config)
 
             this.$store.dispatch('auth/authenticate', {
                 guestNext: { name: 'login', query: { redirect: location.pathname } },
