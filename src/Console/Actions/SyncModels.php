@@ -2,6 +2,8 @@
 
 namespace Fusion\Console\Actions;
 
+use Illuminate\Support\Facades\Schema;
+
 class SyncModels
 {
     /**
@@ -16,8 +18,11 @@ class SyncModels
             \Fusion\Models\Taxonomy::class,
             \Fusion\Models\Form::class,
             \Fusion\Models\Setting::class,
-            \Fusion\Models\Extension::class,
         ];
+
+        if (Schema::hasTable('extensions')) {
+            $modelTypes[] = \Fusion\Models\Extension::class;
+        }
 
         foreach ($modelTypes as $modelType) {
             // $this->line($modelType);
