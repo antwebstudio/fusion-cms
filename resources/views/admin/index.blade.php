@@ -3,6 +3,8 @@
 @php
 	$config = [
 		'name' => config('fusion.name'),
+		'demo_username' => config('fusion.demo.username', ''),
+		'demo_password' => config('fusion.demo.password', ''),
 	];
 @endphp
 

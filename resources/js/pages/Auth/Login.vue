@@ -9,7 +9,8 @@
                 <div class="card__body">
                     <div class="flex flex-col items-center leading-none mb-6">
                         <span class="mb-3 text-gray-600 text-sm font-bold ">Welcome to</span>
-                        <span class="font-bold text-xxl">FusionCMS</span>
+                        <span v-if="this.appConfig" v-html="this.appConfig.name"></span>
+                        <span v-else class="font-bold text-xxl">FusionCMS</span>
                     </div>
 
                     <form @submit.prevent="submit">
@@ -43,12 +44,13 @@
         </div>
 
         <footer class="p-6 text-xs text-gray-600 flex flex-col items-center justify-center leading-loose md:leading-none">
-            <span>Built with <fa-icon :icon="['fas', 'heart']" class="text-danger-200 mx-1"></fa-icon> + <fa-icon :icon="['fas', 'coffee']" class="text-gray-600 mx-1"></fa-icon> by the efelle team</span>
+            <span>Built with <fa-icon :icon="['fas', 'heart']" class="text-danger-200 mx-1"></fa-icon> + <fa-icon :icon="['fas', 'coffee']" class="text-gray-600 mx-1"></fa-icon> by ant web studio with support of the efelle team</span>
         </footer>
     </div>
 </template>
 
 <script>
+    import { mapGetters }    from 'vuex'
 	import Form from '@/services/Form'
 
 	export default {
@@ -69,6 +71,17 @@
                     password: '',
                 })
             }
+        },
+
+        computed: {
+            ...mapGetters({
+                appConfig: 'fusion/getConfig',
+            }),
+        },
+
+        mounted() {
+            this.form.email = this.appConfig ? this.appConfig.demo_username : ''
+            this.form.password = this.appConfig ? this.appConfig.demo_password : ''
         },
 
 		methods: {
