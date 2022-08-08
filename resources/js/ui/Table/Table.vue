@@ -141,7 +141,7 @@
                             </div>
                         </th>
 
-                        <th v-show="hasActions && ! hasSelections" class="w-48">&nbsp;</th>
+                        <th v-show="hasActions && ! hasSelections" class="w-20">&nbsp;</th>
                     </tr>
                 </thead>
 
