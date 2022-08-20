@@ -24,6 +24,17 @@
         <script>window.config = @json(config('fusion'))</script>
 
         {{-- Scripts --}}
+        <script>
+            var inCloudFlare = true;
+            window.addEventListener("DOMContentLoaded", function () {
+                inCloudFlare = false;
+            });
+            if (document.readyState === "loading") {
+                window.addEventListener("load", function () {
+                    if (inCloudFlare) window.dispatchEvent(new Event("DOMContentLoaded"));
+                });
+            }
+        </script>
         <script src="{{ mix('js/gravity.js', 'vendor/fusion') }}"></script>
 
         @assets('js')
