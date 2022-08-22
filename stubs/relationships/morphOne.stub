@@ -5,5 +5,5 @@
      */
     public function {handle}()
     {
-    	return $this->morphOne('{related_namespace}', '{related_name}'){where_clause};
+    	return $this->morphOne(app('{related_namespace}'), '{related_name}'){where_clause};
     }
