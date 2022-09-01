@@ -108,7 +108,7 @@
 
                         <th v-for="(column, index) in displayable"
                             v-show="! hasSelections"
-                            :class="{'sortable': isSortable(column), 'active': (sort.key === column), 'w-96': (column === 'url')}"
+                            :class="{'sortable': isSortable(column), 'active': (sort.key === column), 'w-96': (column === 'url'), ['th-' + column]: true}"
                             :key="column[primaryKey] || index">
                             <a href="#" v-if="isSortable(column)" class="table__heading table__heading--link" @click.prevent="isSortable(column) && sortRecordsBy(column)" :aria-label="'Sort by ' + column_names[column] || column">
                                 <span>{{ column_names[column] || column }}</span>
@@ -175,7 +175,7 @@
                             </slot>
                         </td>
 
-                        <td class="table__actions w-20" v-if="hasActions">
+                        <td class="'table__actions w-20 td-' + column" v-if="hasActions">
                             <slot name="actions" :record="record"></slot>
                         </td>
                     </tr>
