@@ -141,7 +141,7 @@
                             </div>
                         </th>
 
-                        <th v-show="hasActions && ! hasSelections" class="w-20">&nbsp;</th>
+                        <th v-show="hasActions && ! hasSelections" class="w-20 col-actions">&nbsp;</th>
                     </tr>
                 </thead>
 
@@ -160,7 +160,7 @@
                             </div>
                         </td>
 
-                        <td v-for="column in displayable"
+                        <td v-for="column in displayable" :class="'td-' + column"
                             :key="column">
                             <span class="column-label">{{ column_names[column] || column }}</span>
 
@@ -175,7 +175,7 @@
                             </slot>
                         </td>
 
-                        <td class="'table__actions w-20 td-' + column" v-if="hasActions">
+                        <td class="'table__actions w-20 col-actions'" v-if="hasActions">
                             <slot name="actions" :record="record"></slot>
                         </td>
                     </tr>
