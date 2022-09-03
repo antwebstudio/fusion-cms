@@ -444,6 +444,6 @@ abstract class Fieldtype
      */
     public function destroyRelationship($model, Field $field)
     {
-        $model->{$field->handle}()->detach();
+        $model->{$field->handle}()->wherePivot('field_id', $field->id)->detach();
     }
 }

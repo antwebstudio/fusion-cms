@@ -87,7 +87,7 @@ class UserFieldtype extends Fieldtype
                 ], ];
         });
 
-        $model->{$field->handle}()->detach($oldValues);
+        $model->{$field->handle}()->wherePivot('field_id', $field->id)->detach($oldValues);
         $model->{$field->handle}()->attach($newValues);
     }
 
