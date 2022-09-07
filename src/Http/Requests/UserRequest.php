@@ -25,7 +25,7 @@ class UserRequest extends Request
      */
     public function authorizePatch()
     {
-        return $this->user()->can('users.update') and $this->user()->level($this->user->role->level);
+        return $this->user()->can('users.update') and (!isset($this->user->role) || $this->user()->level($this->user->role->level));
     }
 
     /**
