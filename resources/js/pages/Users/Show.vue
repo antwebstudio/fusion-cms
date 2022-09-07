@@ -24,7 +24,7 @@
                 <dt>Email</dt>
                 <dd>{{ user.email }}</dd>
                 <dt>Role</dt>
-                <dd>{{ user.role ? user.role.name : 'Loading...' }}</dd>
+                <dd>{{ user.role ? user.role.name : null }}</dd>
             </dl>
         </section-card>
 
@@ -148,7 +148,7 @@
                 name: user.name,
                 email: user.email,
                 status: user.status,
-                role: user.role.name,
+                role: user.role ? user.role.name : null,
                 password: '',
                 password_confirmation: '',
             })
