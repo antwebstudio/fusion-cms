@@ -20,7 +20,7 @@ class UserResource extends JsonResource
             'name'                   => $this->name,
             'role'                   => new RoleResource($this->roles()->first()),
             'email'                  => $this->email,
-            'status'                 => $this->status,
+            'status'                 => (int) $this->status,
             'logged_in_at'           => $this->logged_in_at,
             'invalidly_logged_in_at' => $this->invalidly_logged_in_at,
             'password_changed_at'    => $this->password_changed_at,

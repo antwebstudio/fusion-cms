@@ -71,19 +71,19 @@
                         <ui-actions :id="'user_' + table.record.id + '_actions'" :key="'user_' + table.record.id + '_actions'">
                             <ui-dropdown-link :to="{ name: 'users.show', params: {user: table.record.id} }" v-if="$can('users.view')">View</ui-dropdown-link>
 
-                            <ui-dropdown-link @click.prevent :to="{ name: 'users.edit', params: {user: table.record.id} }" v-if="$can('users.update', table.record.role.level)">Edit</ui-dropdown-link>
+                            <ui-dropdown-link @click.prevent :to="{ name: 'users.edit', params: {user: table.record.id} }" v-if="$can('users.update', table.record.role ? table.record.role.level : 0)">Edit</ui-dropdown-link>
 
-                            <ui-dropdown-divider v-if="$can('users.update', table.record.role.level)"></ui-dropdown-divider>
+                            <ui-dropdown-divider v-if="$can('users.update', table.record.role ? table.record.role.level : 0)"></ui-dropdown-divider>
 
                             <ui-dropdown-link
-                                v-if="$can('users.update', table.record.role.level)"
+                                v-if="$can('users.update', table.record.role ? table.record.role.level : 0)"
                                 @click.prevent
                                 v-modal:verify-user="table.record">
                                 Resend Verification
                             </ui-dropdown-link>
 
                             <ui-dropdown-link
-                                v-if="$can('users.update', table.record.role.level)"
+                                v-if="$can('users.update', table.record.role ? table.record.role.level : 0)"
                                 @click.prevent
                                 v-modal:password-user="table.record">
                                 Reset Password
@@ -92,7 +92,7 @@
                             <ui-dropdown-divider></ui-dropdown-divider>
 
                             <ui-dropdown-link
-                                v-if="table.record.id != $user.id && $can('users.delete', table.record.role.level)"
+                                v-if="table.record.id != $user.id && $can('users.delete', table.record.role ? table.record.role.level : 0)"
                                 @click.prevent
                                 v-modal:delete-user="table.record"
                                 class="danger">
