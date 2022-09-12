@@ -113,7 +113,9 @@ class ResponseController extends Controller
         $response->update($attributes);
 
         foreach ($relationships as $relationship) {
-            $relationship->type()->persistRelationship($response, $relationship);
+            if ($request->has($relationship->handle)) {
+                $relationship->type()->persistRelationship($response, $relationship);
+            }
         }
 
         return new ResponseResource($response);

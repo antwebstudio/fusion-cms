@@ -95,7 +95,9 @@ class CollectionController extends Controller
 
         // persist relationships..
         foreach ($request->relationships as $relationship) {
-            $relationship->type()->persistRelationship($entry, $relationship);
+            if ($request->has($relationship->handle)) {
+                $relationship->type()->persistRelationship($entry, $relationship);
+            }
         }
 
         if (!$matrix->show_name_field) {

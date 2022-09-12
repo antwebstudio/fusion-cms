@@ -52,7 +52,9 @@ class SingleController extends Controller
 
         // persist relationships..
         foreach ($request->relationships as $relationship) {
-            $relationship->type()->persistRelationship($single, $relationship);
+            if ($request->has($relationship->handle)) {
+                $relationship->type()->persistRelationship($single, $relationship);
+            }
         }
 
         return new SingleResource($single);
