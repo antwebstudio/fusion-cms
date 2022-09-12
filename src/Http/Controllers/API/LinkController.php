@@ -80,7 +80,9 @@ class LinkController extends Controller
 
         // persist relationships..
         foreach ($request->relationships as $relationship) {
-            $relationship->type()->persistRelationship($link, $relationship);
+            if ($request->has($relationship->handle)) {
+                $relationship->type()->persistRelationship($link, $relationship);
+            }
         }
 
         return new LinkResource($link);

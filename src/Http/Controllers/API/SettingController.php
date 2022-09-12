@@ -63,7 +63,9 @@ class SettingController extends Controller
 
         // Persist relationships...
         foreach ($setting->blueprint->relationships() as $relationship) {
-            $relationship->type()->persistRelationship($setting->settings, $relationship);
+            if ($request->has($relationship->handle)) {
+                $relationship->type()->persistRelationship($setting->settings, $relationship);
+            }
         }
     }
 

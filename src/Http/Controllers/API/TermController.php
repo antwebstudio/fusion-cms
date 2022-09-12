@@ -80,7 +80,9 @@ class TermController extends Controller
 
         // persist relationships..
         foreach ($request->relationships as $relationship) {
-            $relationship->type()->persistRelationship($term, $relationship);
+            if ($request->has($relationship->handle)) {
+                $relationship->type()->persistRelationship($term, $relationship);
+            }
         }
 
         return new TermResource($term);
