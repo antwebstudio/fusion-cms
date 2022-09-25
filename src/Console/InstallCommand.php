@@ -28,7 +28,8 @@ class InstallCommand extends Command
                            ' {--username=root              : Sets .env variable DB_USERNAME }'.
                            ' {--password=secret            : Sets .env variable DB_PASSWORD }'.
                            ' {--charset=utf8               : Sets .env variable DB_CHARSET }'.
-                           ' {--collation=utf8_general_ci  : Sets .env variable DB_COLLATION }';
+                           ' {--collation=utf8_general_ci  : Sets .env variable DB_COLLATION }'.
+                           ' {--production }';
 
     /**
      * The console command description.
@@ -75,7 +76,7 @@ class InstallCommand extends Command
         // installation configurations
         //
         $this->set('app_name', 'FusionCMS');
-        $this->set('app_env', 'local');
+        $this->set('app_env', $this->option('production') ? 'production' : 'local');
         $this->set('app_debug', $this->option('debug'));
         $this->set('app_url', $this->option('url'));
 
