@@ -20,6 +20,8 @@ class SchemaImporter {
 
     protected $matrices = [];
 
+    protected $extensions = [];
+
     protected $replicatorsData = [];
 
     public function restoreOldVersionSchema($schemaJson)
@@ -31,8 +33,11 @@ class SchemaImporter {
 
         $this->restoreMatrices($json['matrices']);
         $this->restoreTaxonomies($json['taxonomies']);
+        $this->restoreExtensions($json['extensions']);
+
         $this->restoreMatricesFieldsets($json['matrices']);
         $this->restoreTaxonomiesFieldsets($json['taxonomies']);
+        $this->restoreExtensionsFieldsets($json['extensions']);
 
     }
     
@@ -63,6 +68,35 @@ class SchemaImporter {
                 $this->createFieldset($this->taxonomies[$oldId]->blueprint, $taxonomyData['fieldset']);
             }
         }   
+    }
+
+    protected function restoreExtensionsFieldsets($data)
+    {
+        foreach ($data as $extensionData) {
+            $oldId = $extensionData['id'];
+            if (isset($extensionData['fieldset'])) {
+                $this->createFieldset($this->extensions[$oldId]->blueprint, $extensionData['fieldset']);
+            }
+        }   
+    }
+
+    protected function restoreExtensions($data)
+    {
+        foreach ($data as $extensionData) {
+            $oldId = $extensionData['id'];
+            $extension = $this->restoreExtension($extensionData);
+            $this->extensions[$oldId] = $extension;
+        }
+    }
+
+    protected function restoreExtension($extensionData)
+    {
+        $handle = $extensionData['handle'];
+        if (!isset($this->extensions[$handle])) {
+            $extension = Extension::create($extensionData);
+
+            return $extension;
+        }
     }
 
     protected function restoreMatricesFieldsets($data)
