@@ -36,7 +36,7 @@
 
         data() {
             return {
-                newValue: this.value,
+                newValue: this.value ? true : false, // To make sure its value always a boolean
             }
         },
 
@@ -91,7 +91,7 @@
                 },
 
                 set(value) {
-                    this.newValue = value
+                    this.newValue = value ? true : false // To make sure its value always a boolean
                     this.$emit('input', value)
                 }
             },
@@ -107,7 +107,7 @@
 
         watch: {
             value(value) {
-                this.newValue = value
+                this.newValue = value ? true : false // To make sure its value always a boolean
             }
         }
     }
