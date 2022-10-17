@@ -5,7 +5,7 @@
 
 .layout-admin {
     @apply flex flex-auto flex-col bg-gray-50;
-    height: 100vh;
+    // height: 100vh;
     overflow: hidden;
     padding-top: $header-height; // Offset fixed header
 
