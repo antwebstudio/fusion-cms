@@ -19,7 +19,7 @@
 
         <ui-modal name="delete_section" title="Delete" >
             <p>Are you sure you want to permenantly delete this section and related fields?</p>
-            <template slot="footer">
+            <template v-slot:footer>
                 <ui-button v-modal:delete_section @click="remove" variant="danger" class="ml-3">Delete</ui-button>
                 <ui-button v-modal:delete_section variant="secondary">Cancel</ui-button>
             </template>

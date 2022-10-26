@@ -13,11 +13,11 @@
                 showPageNav
                 showPageEnds
                 showPageStatus>
-                <template slot="name" slot-scope="table">
+                <template v-slot:name="table">
                     <code>{{ table.record.name }}</code>
                 </template>
 
-                <template slot="description" slot-scope="table">
+                <template v-slot:description="table">
                     <p>{{ table.record.description }}</p>
                 </template>
             </ui-table>

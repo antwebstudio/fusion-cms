@@ -7,7 +7,7 @@
                 <span v-if="!value" class="sr-only">Disabled</span>
             </span>
         </template>
-        <template slot="content">
+        <template v-slot:content>
             <span v-if="value">Enabled</span>
             <span v-if="!value">Disabled</span>
         </template>

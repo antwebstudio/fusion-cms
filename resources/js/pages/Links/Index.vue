@@ -32,7 +32,7 @@
                     :per-page="50"
                     :key="'entries-' + navigation.id"
                 >
-                    <template slot="name" slot-scope="table">
+                    <template v-slot:name="table">
                         <div class="flex items-center">
                             <ui-status :value="table.record.status" class="mr-2"></ui-status>
 
@@ -40,11 +40,11 @@
                         </div>
                     </template>
 
-                    <template slot="url" slot-scope="table">
+                    <template v-slot:url="table">
                         <code>{{ table.record.url }}</code>
                     </template>
 
-                    <template slot="actions" slot-scope="table">
+                    <template v-slot:actions="table">
                         <ui-actions :id="'entry_' + table.record.id + '_actions'" :key="'entry_' + table.record.id + '_actions'">
                             <ui-dropdown-link :to="{ name: 'links.edit', params: {navigation: navigation.id, link: table.record.id} }">Edit</ui-dropdown-link>
 
@@ -66,7 +66,7 @@
             <ui-modal name="delete-link" title="Delete Link" key="delete_link">
                 <p>Are you sure you want to permenantly delete this link?</p>
 
-                <template slot="footer" slot-scope="link">
+                <template v-slot:footer="link">
                     <ui-button v-modal:delete-link @click="destroy(link.data.id)" variant="danger" class="ml-3">Delete</ui-button>
                     <ui-button v-modal:delete-link>Cancel</ui-button>
                 </template>

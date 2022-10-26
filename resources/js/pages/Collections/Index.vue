@@ -22,7 +22,7 @@
                     :per-page="50"
                     :key="'entries-' + collection.id"
                 >
-                    <template slot="name" slot-scope="table">
+                    <template v-slot:name="table">
                         <div class="flex items-center">
                             <ui-status :value="table.record.status" class="mr-2"></ui-status>
 
@@ -30,19 +30,19 @@
                         </div>
                     </template>
 
-                    <template slot="slug" slot-scope="table">
+                    <template v-slot:slug="table">
                         <code>{{ table.record.slug }}</code>
                     </template>
 
-                    <template slot="created_at" slot-scope="table">
+                    <template v-slot:created_at="table">
                         <ui-date :timestamp="table.record.created_at"></ui-date>
                     </template>
 
-                    <template slot="updated_at" slot-scope="table">
+                    <template v-slot:updated_at="table">
                         <ui-date :timestamp="table.record.updated_at"></ui-date>
                     </template>
 
-                    <template slot="actions" slot-scope="table">
+                    <template v-slot:actions="table">
                         <ui-actions :id="'entry_' + table.record.id + '_actions'" :key="'entry_' + table.record.id + '_actions'">
                             <ui-dropdown-link :to="{ name: 'collection.edit', params: {collection: collection.slug, id: table.record.id} }">Edit</ui-dropdown-link>
 
@@ -64,7 +64,7 @@
             <ui-modal name="delete-entry" title="Delete Entry" key="delete_entry">
                 <p>Are you sure you want to permenantly delete this entry?</p>
 
-                <template slot="footer" slot-scope="entry">
+                <template v-slot:footer="entry">
                     <ui-button v-modal:delete-entry @click="destroy(entry.data.id)" variant="danger" class="ml-3">Delete</ui-button>
                     <ui-button v-modal:delete-entry variant="secondary">Cancel</ui-button>
                 </template>

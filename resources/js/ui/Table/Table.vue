@@ -236,7 +236,7 @@
             <ui-modal v-if="action !== null" name="confirm-bulk-action" :title="'Confirm Bulk ' + this.allowedBulkActions[action].name" v-model="showBulkActionConfirmation">
                 <p>Are you sure you want to perform this action against <b>{{ this.selected.length }}</b> record{{this.selected.length > 1 ? 's' : '' }}?</p>
 
-                <template slot="footer">
+                <template v-slot:footer>
                     <ui-button @click.prevent="confirmBulkAction" :loading="working" class="ml-3" variant="primary">Confirm</ui-button>
                     <ui-button @click.prevent="cancelBulkAction" v-if="! working" variant="secondary">Cancel</ui-button>
                 </template>

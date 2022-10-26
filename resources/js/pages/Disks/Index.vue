@@ -21,20 +21,20 @@
                     :show_status="false"
                     :endpoint="endpoint"
                 >
-                    <template slot="name" slot-scope="table">
+                    <template v-slot:name="table">
                         <router-link v-if="!isLocked(table.record.handle)" :to="{ name: 'disks.edit', params: {disk: table.record.id} }">{{ table.record.name }}</router-link>
                         <span v-else>{{ table.record.name }}</span>
                     </template>
 
-                    <template slot="handle" slot-scope="table">
+                    <template v-slot:handle="table">
                         <code>{{ table.record.handle }}</code>
                     </template>
 
-                    <template slot="driver" slot-scope="table">
+                    <template v-slot:driver="table">
                         <strong>{{ table.record.driver }}</strong>
                     </template>
 
-                    <template slot="actions" slot-scope="table">
+                    <template v-slot:actions="table">
                         <ui-table-actions :disabled="isLocked(table.record.handle)" :id="'disks_' + table.record.id + '_actions'" :key="'disks_' + table.record.id + '_actions'">
                             <ui-dropdown-link :to="{ name: 'disks.edit', params: {disk: table.record.id} }">
                                 Edit
@@ -58,7 +58,7 @@
             <ui-modal name="delete-disk" title="Delete Disk" key="delete_disk">
                 <p>Are you sure you want to permenantly delete this disk?</p>
 
-                <template slot="footer" slot-scope="disk">
+                <template v-slot:footer="disk">
                     <ui-button v-modal:delete-disk @click="destroy(disk.data.id)" variant="danger" class="ml-3">Delete</ui-button>
                     <ui-button v-modal:delete-disk>Cancel</ui-button>
                 </template>

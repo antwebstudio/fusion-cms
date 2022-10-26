@@ -10,7 +10,7 @@
                 Create a backup before restoring.
             </ui-checkbox>
 
-            <template slot="footer" slot-scope="backup">
+            <template v-slot:footer="backup">
                 <ui-button v-modal:restore-backup @click="confirm(backup.data.id)" class="button button--primary">Restore</ui-button>
                 <ui-button v-modal:restore-backup class="mr-3">Cancel</ui-button>
             </template>

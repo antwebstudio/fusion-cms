@@ -26,7 +26,7 @@
             <span class="sr-only">Error</span>
           </fa-icon>
         </template>
-        <template slot="content">
+        <template v-slot:content>
           {{file.error}}
         </template>
       </ui-tooltip>

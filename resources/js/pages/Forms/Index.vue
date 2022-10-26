@@ -24,21 +24,21 @@
                     :endpoint="endpoint"
                     :show_status="true"
                 >
-                    <template slot="name" slot-scope="table">
+                    <template v-slot:name="table">
                         <ui-status :value="table.record.status" class="mr-2"></ui-status>
 
                         <router-link :to="{ name: 'forms.edit', params: {form: table.record.id} }">{{ table.record.name }}</router-link>
                     </template>
 
-                    <template slot="handle" slot-scope="table">
+                    <template v-slot:handle="table">
                         <code>{{ table.record.handle }}</code>
                     </template>
 
-                    <template slot="description" slot-scope="table">
+                    <template v-slot:description="table">
                         <span class="text-gray-800 text-sm">{{ table.record.description }}</span>
                     </template>
 
-                    <template slot="actions" slot-scope="table">
+                    <template v-slot:actions="table">
                         <ui-actions :id="'form_' + table.record.id + '_actions'" :key="'form_' + table.record.id + '_actions'">
                             <ui-dropdown-link :to="{ name: 'forms.edit', params: {form: table.record.id} }">Edit</ui-dropdown-link>
 
@@ -60,7 +60,7 @@
             <ui-modal name="delete-form" title="Delete Form" key="delete_form">
                 <p>Are you sure you want to permenantly delete this form?</p>
 
-                <template slot="footer" slot-scope="form">
+                <template v-slot:footer="form">
                     <ui-button v-modal:delete-form @click="destroy(form.data.id)" variant="danger" class="ml-3">Delete</ui-button>
                     <ui-button v-modal:delete-form>Cancel</ui-button>
                 </template>

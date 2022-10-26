@@ -60,7 +60,7 @@
             </template>
         </div>
 
-        <template slot="footer">
+        <template v-slot:footer>
             <ui-button variant="primary" @click="submit">Save</ui-button>
             <ui-button variant="secondary" class="mr-2" @click="close">Close</ui-button>
         </template>

@@ -23,20 +23,20 @@
                     reorder_route="/api/roles/reorder"
                     :show_status="false"
                 >
-                    <template slot="name" slot-scope="table">
+                    <template v-slot:name="table">
                         <router-link :to="{ name: 'roles.show', params: {role: table.record.id} }" v-if="$can('roles.view')">{{ table.record.name }}</router-link>
                         <span v-else>{{ table.record.name }}</span>
                     </template>
 
-                    <template slot="level" slot-scope="table" class="w-10">
+                    <template v-slot:level="table" class="w-10">
                         <ui-badge>{{ table.record.level }}</ui-badge>
                     </template>
 
-                    <template slot="description" slot-scope="table">
+                    <template v-slot:description="table">
                         <span class="text-gray-800 text-sm">{{ table.record.description }}</span>
                     </template>
 
-                    <template slot="actions" slot-scope="table">
+                    <template v-slot:actions="table">
                         <ui-actions :id="'role_' + table.record.id + '_actions'" :key="'role_' + table.record.id + '_actions'">
                             <ui-dropdown-link
                                 v-if="$can('roles.view')"
@@ -82,7 +82,7 @@
                     </ui-select-group>
                 </template>
 
-                <template slot="footer" slot-scope="role">
+                <template v-slot:footer="role">
                     <ui-button v-modal:delete-role @click="destroy(role.data.id)" variant="danger" class="ml-3" :disabled="transfer.length == 0">Delete</ui-button>
                     <ui-button v-modal:delete-role variant="secondary">Cancel</ui-button>
                 </template>
