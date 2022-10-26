@@ -41,7 +41,7 @@
                 name="configurations.root"
                 label="Root Path"
                 help="Enter the root path on your FTP connection."
-                v-model="model.root"
+                v-model="model.root">
             </ui-input-group>
 
             <ui-toggle

@@ -26,7 +26,6 @@
                 </ui-table>
             </ui-card-body>
         </ui-card>
-        </div>
     </div>
 </template>
 

@@ -86,7 +86,6 @@
                 <p>A <a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank">Google Maps API key</a> is required in order to view the map component and retrieve latitude and longitude coordinates for your address. 
                 Once you've obtained one, please visit the <router-link to="/settings/google_maps">Google Maps settings page</router-link> to enter your API key.</p>
             </div>
-        </div>
     </ui-field-group>
 </template>
 

@@ -22,7 +22,7 @@
                         </ui-toggle>
                     </sidebar-section>
 
-                    <sidebar-section
+                    <sidebar-section>
                         <ui-definition-list v-if="resource">
                             <ui-definition name="Status">
                                 <fa-icon :icon="['fas', 'circle']" class="fa-fw text-xs" :class="{'text-success-500': form.status, 'text-danger-500': ! form.status}"></fa-icon> {{ form.status ? 'Enabled' : 'Disabled' }}
