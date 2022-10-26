@@ -18,7 +18,7 @@
                 id="backup"
                 disabled
                 name="checkbox"
-                v-model="update.backup == 'complete'">
+                :value="update.backup == 'complete'">
                     Backing up your data...
                     <fa-icon
                         v-if="update.backup == 'active'"
@@ -33,7 +33,7 @@
                 id="composer"
                 disabled
                 name="checkbox"
-                v-model="update.composer == 'complete'">
+                :value="update.composer == 'complete'">
                     Updating composer dependencies...
                     <fa-icon
                         v-if="update.composer == 'active'"
@@ -48,7 +48,7 @@
                 id="finalize"
                 disabled
                 name="checkbox"
-                v-model="update.finalize == 'complete'">
+                :value="update.finalize == 'complete'">
                     Finalizing some things...
                     <fa-icon
                         v-if="update.finalize == 'active'"

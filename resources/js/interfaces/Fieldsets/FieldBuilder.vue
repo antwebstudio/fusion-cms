@@ -59,7 +59,7 @@
                 </template>
             </ui-modal>
 
-            <ui-modal name="move-field" title="Move Field" v-model="!! field.move">
+            <ui-modal name="move-field" title="Move Field" :value="!! field.move">
                 <ui-select-group
                     name="move_to"
                     label="Move to"

@@ -6,7 +6,7 @@
             label="Rows"
             help="Starting rows in a new table."
             autocomplete="off"
-            v-model="settings.initRows || 1"
+            v-model="settings.initRows"
             :min="1"
             :has-error="errors.has('settings.initRows')"
             :error-message="errors.get('settings.initRows')">
@@ -18,7 +18,7 @@
             label="Columns"
             help="Starting columns in a new table."
             autocomplete="off"
-            v-model="settings.initCols || 1"
+            v-model="settings.initCols"
             :min="1"
             :has-error="errors.has('settings.initCols')"
             :error-message="errors.get('settings.initCols')">
