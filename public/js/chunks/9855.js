@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfusioncms=self.webpackChunkfusioncms||[]).push([[9855],{9855:(e,n,s)=>{s.r(n),s.d(n,{default:()=>u});var t=s(3802);const c={name:"link-fieldtype-settings"};const u=(0,s(3744).Z)(c,[["render",function(e,n,s,c,u,i){return(0,t.openBlock)(),(0,t.createElementBlock)("div")}]])}}]);

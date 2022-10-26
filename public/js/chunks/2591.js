@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfusioncms=self.webpackChunkfusioncms||[]).push([[2591],{2591:(e,n,s)=>{s.r(n),s.d(n,{default:()=>u});var t=s(3802);const c={name:"audio-fieldtype-settings"};const u=(0,s(3744).Z)(c,[["render",function(e,n,s,c,u,o){return(0,t.openBlock)(),(0,t.createElementBlock)("div")}]])}}]);

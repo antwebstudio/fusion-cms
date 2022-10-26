@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfusioncms=self.webpackChunkfusioncms||[]).push([[9992],{9992:(e,n,s)=>{s.r(n),s.d(n,{default:()=>o});var t=s(3802);const c={name:"markdown-fieldtype-settings"};const o=(0,s(3744).Z)(c,[["render",function(e,n,s,c,o,r){return(0,t.openBlock)(),(0,t.createElementBlock)("div")}]])}}]);

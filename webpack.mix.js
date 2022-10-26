@@ -7,7 +7,16 @@ const sourceMap = production ? false : 'inline-source-map'
 
 mix.setPublicPath('public')
     .js('resources/js/gravity.js', 'js')
-    .vue()
+    .vue({
+        version: 3,
+        options: {
+          compilerOptions: {
+            compatConfig: {
+              MODE: 3,
+            },
+          },
+        },
+      })
     .sass('resources/scss/gravity.scss', 'css', { implementation: require('sass') })
     .version()
     .webpackConfig({
@@ -15,6 +24,8 @@ mix.setPublicPath('public')
         resolve: {
             alias: {
                 '@': path.resolve(__dirname, 'resources/js/'),
+                vue: "@vue/compat",
+                "@vue/composition-api": "@vue/compat",
             },
         },
         output: {

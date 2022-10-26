@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkfusioncms=self.webpackChunkfusioncms||[]).push([[8589],{8589:(e,n,s)=>{s.r(n),s.d(n,{default:()=>i});var t=s(3802);const c={name:"dictionary-fieldtype-settings"};const i=(0,s(3744).Z)(c,[["render",function(e,n,s,c,i,o){return(0,t.openBlock)(),(0,t.createElementBlock)("div")}]])}}]);
