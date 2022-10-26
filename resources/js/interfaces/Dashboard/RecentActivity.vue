@@ -13,11 +13,11 @@
                 :per-page="10"
                 :endpoint="endpoint"
             >
-                <template slot="causer.name" slot-scope="table">
+                <template v-slot:causer.name="table">
                     <router-link :to="{ name: 'users.edit', params: {user: table.record.causer.id} }">{{ table.record.causer.name }}</router-link>
                 </template>
 
-                <template slot="description" slot-scope="table">
+                <template v-slot:description="table">
                     <div class="flex items-center">
                         <div class="mr-4 w-3">
                             <fa-icon v-if="table.record.properties.icon" :icon="['fas', table.record.properties.icon]" class="fa-fw"></fa-icon>
@@ -33,7 +33,7 @@
                     </div>
                 </template>
 
-                <template slot="created_at" slot-scope="table">
+                <template v-slot:created_at="table">
                     <ui-datetime :timestamp="table.record.created_at"></ui-datetime>
                 </template>
             </ui-table>

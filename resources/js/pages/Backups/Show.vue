@@ -97,7 +97,7 @@
             <ui-modal name="delete-backup" title="Delete Backup" key="delete_backup">
                 <p>Are you sure you want to permenantly delete this backup?</p>
 
-                <template slot="footer">
+                <template v-slot:footer>
                     <ui-button v-modal:delete-backup @click="destroyBackup(backup.id)" variant="danger" class="ml-3">Delete</ui-button>
                     <ui-button v-modal:delete-backup>Cancel</ui-button>
                 </template>

@@ -132,7 +132,7 @@
                 <ui-modal name="verify-user" title="Verification Email" key="verify_user">
                     <p>Are you sure you want to re-send the verification email to this user?</p>
 
-                    <template slot="footer">
+                    <template v-slot:footer>
                         <ui-button v-modal:verify-user @click="emailVerification" class="ml-3" variant="primary">Confirm</ui-button>
                         <ui-button v-modal:verify-user variant="secondary">Cancel</ui-button>
                     </template>
@@ -141,7 +141,7 @@
                 <ui-modal name="password-user" title="Password Reset" key="password_user">
                     <p>Are you sure you want to send this user a password reset notification?</p>
 
-                    <template slot="footer">
+                    <template v-slot:footer>
                         <ui-button v-modal:password-user @click="passwordReset" class="ml-3" variant="primary">Confirm</ui-button>
                         <ui-button v-modal:password-user variant="secondary">Cancel</ui-button>
                     </template>
@@ -150,7 +150,7 @@
                 <ui-modal name="expire-password" title="Expire Password" key="password_expire">
                     <p>Are you sure you want to force user to reset their password upon next login?</p>
 
-                    <template slot="footer" slot-scope="user">
+                    <template v-slot:footer="user">
                         <ui-button v-modal:expire-password @click="passwordExpire" class="ml-3" variant="primary">Confirm</ui-button>
                         <ui-button v-modal:expire-password variant="secondary">Cancel</ui-button>
                     </template>
@@ -159,7 +159,7 @@
                 <ui-modal name="delete-user" title="Delete User" key="delete_user">
                     <p>Are you sure you want to permenantly delete this user?</p>
 
-                    <template slot="footer">
+                    <template v-slot:footer>
                         <ui-button v-modal:delete-user @click="destroy" variant="danger" class="ml-3">Delete</ui-button>
                         <ui-button v-modal:delete-user variant="secondary">Cancel</ui-button>
                     </template>

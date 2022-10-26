@@ -47,7 +47,7 @@
 
         <ui-modal name="selection-modal" title="Choose an existing video file">
             <ui-table :endpoint="endpoint" id="video-files" sort-by="name" sort-in="desc" :per-page="10">
-                <template slot="name" slot-scope="table">
+                <template v-slot:name="table">
                     <ui-radio
                         :id="`selection-${table.record.id}`"
                         name="selection"
@@ -57,15 +57,15 @@
                     </ui-radio>
                 </template>
 
-                <template slot="bytes" slot-scope="table">
+                <template v-slot:bytes="table">
                     <span class="help">{{ table.record.bytes | bytes }}</span>
                 </template>
 
-                <template slot="extension" slot-scope="table">
+                <template v-slot:extension="table">
                     <span class="help">{{ table.record.extension }}</span>
                 </template>
 
-                <template slot="created_at" slot-scope="table">
+                <template v-slot:created_at="table">
                     <ui-date :timestamp="table.record.created_at"></ui-date>
                 </template>
             </ui-table>

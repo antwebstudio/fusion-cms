@@ -21,11 +21,11 @@
                     :endpoint="endpoint"
                     :per-page="50"
                 >
-                    <template slot="name" slot-scope="table">
+                    <template v-slot:name="table">
                         <router-link :to="{ name: 'scripts.edit', params: {script: table.record.id} }">{{ table.record.name }}</router-link>
                     </template>
 
-                    <template slot="actions" slot-scope="table">
+                    <template v-slot:actions="table">
                         <ui-actions :id="'script_' + table.record.id + '_actions'" :key="'script_' + table.record.id + '_actions'">
                             <ui-dropdown-link :to="{ name: 'scripts.edit', params: {script: table.record.id} }">Edit</ui-dropdown-link>
 
@@ -48,7 +48,7 @@
             <ui-modal name="delete-script" title="Delete Script" key="delete_script">
                 <p>Are you sure you want to permenantly delete this script?</p>
 
-                <template slot="footer" slot-scope="script">
+                <template v-slot:footer="script">
                     <ui-button v-modal:delete-script @click="destroy(script.data.id)" variant="danger" class="ml-3">Delete</ui-button>
                     <ui-button v-modal:delete-script variant="secondary">Cancel</ui-button>
                 </template>

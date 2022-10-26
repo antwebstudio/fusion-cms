@@ -31,7 +31,7 @@
                     :endpoint="endpoint"
                 >
 
-                    <template slot="name" slot-scope="table">
+                    <template v-slot:name="table">
                         <div class="flex items-center">
                             <ui-status :value="table.record.status" class="mr-2"></ui-status>
 
@@ -40,11 +40,11 @@
                         </div>
                     </template>
 
-                    <template slot="handle" slot-scope="table">
+                    <template v-slot:handle="table">
                         {{ table.record.handle }}
                     </template>
 
-                    <template slot="actions" slot-scope="table">
+                    <template v-slot:actions="table">
                         <ui-actions :id="'fieldset_' + table.record.id + '_actions'" :key="'fieldset_' + table.record.id + '_actions'">
                             <ui-dropdown-link :to="{ name: 'fieldsets.edit', params: {fieldset: table.record.id} }" v-if="$can('fieldsets.update')">Edit</ui-dropdown-link>
 
@@ -67,7 +67,7 @@
             <ui-modal name="delete-fieldset" title="Delete Fieldset" key="delete_fieldset">
                 <p>Are you sure you want to permenantly delete this fieldset?</p>
 
-                <template slot="footer" slot-scope="fieldset">
+                <template v-slot:footer="fieldset">
                     <ui-button v-modal:delete-fieldset @click="destroy(fieldset.data.id)" variant="danger" class="ml-3">Delete</ui-button>
                     <ui-button v-modal:delete-fieldset variant="secondary">Cancel</ui-button>
                 </template>
