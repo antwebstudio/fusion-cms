@@ -14,21 +14,21 @@
 		<ui-card>
             <ui-card-body>
             	<ui-table :refresh="5000" :key="'backups'" class="backup-table" id="backups" :endpoint="endpoint" sort-by="name" sort-in="desc" :per-page="50">
-            		<template slot="name" slot-scope="table">
+            		<template v-slot:name="table">
                         <ui-status :value="table.record.state == 'success'" class="mr-2"></ui-status>
 
                         <router-link :to="{ name: 'backups.show', params: {backup: table.record.id} }">{{ table.record.name }}</router-link>
                     </template>
 
-            		<template slot="size" slot-scope="table">
+            		<template v-slot:size="table">
                         <code>{{ filesize(table.record.size) }}</code>
                     </template>
 
-                    <template slot="created_at" slot-scope="table">
+                    <template v-slot:created_at="table">
                         {{ $moment(table.record.created_at).fromNow() }}
                     </template>
 
-                    <template slot="actions" slot-scope="table">
+                    <template v-slot:actions="table">
                         <ui-actions :id="'backup_' + table.record.id + '_actions'" :key="'backup_' + table.record.id + '_actions'">
 							<ui-dropdown-link
 								v-if="$can('backups.view')"
@@ -70,7 +70,7 @@
 			<ui-modal name="confirm-backup" title="Backup Now" key="confirm_backup">
                 <p>This will perform a full backup of your website. Backups can take up to one minute per GB of data.</p>
 
-                <template slot="footer">
+                <template v-slot:footer>
                     <ui-button v-modal:confirm-backup @click="runBackup()" variant="primary" class="ml-3">Backup</ui-button>
                     <ui-button v-modal:confirm-backup>Cancel</ui-button>
                 </template>
@@ -80,7 +80,7 @@
 			<ui-modal name="delete-backup" title="Delete Backup" key="delete_backup">
                 <p>Are you sure you want to permenantly delete this backup?</p>
 
-                <template slot="footer" slot-scope="backup">
+                <template v-slot:footer="backup">
                     <ui-button v-modal:delete-backup @click="destroyBackup(backup.data.id)" variant="danger" class="ml-3">Delete</ui-button>
                     <ui-button v-modal:delete-backup>Cancel</ui-button>
                 </template>

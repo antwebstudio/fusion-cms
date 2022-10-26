@@ -32,26 +32,26 @@
                     :no-search="isOwner"
                     no-actions show-page-status show-page-numbers show-page-nav show-page-ends>
 
-                        <template slot="name" slot-scope="table">
+                        <template v-slot:name="table">
                             <div class="flex items-center">
                                 <ui-status :value="table.record.status" class="mr-2"></ui-status>
                                 <router-link :to="{ name: 'users.show', params: {user: table.record.id} }">{{ table.record.name }}</router-link>
                             </div>
                         </template>
 
-                        <template slot="email" slot-scope="table">
+                        <template v-slot:email="table">
                             {{ table.record.email }}
                         </template>
 
-                        <template slot="role" slot-scope="table">
+                        <template v-slot:role="table">
                             <ui-badge>{{ table.record.role.name }}</ui-badge>
                         </template>
 
-                        <template slot="created_at" slot-scope="table">
+                        <template v-slot:created_at="table">
                             <ui-date :timestamp="table.record.created_at"></ui-date>
                         </template>
 
-                        <template slot="email_verified_at" slot-scope="table">
+                        <template v-slot:email_verified_at="table">
                             <ui-badge v-if="table.record.email_verified_at" variant="success">Yes</ui-badge>
                             <ui-badge v-else variant="danger">No</ui-badge>
                         </template>
@@ -73,11 +73,11 @@
                     sort-by="name"
                     no-actions show-page-status show-page-numbers show-page-nav show-page-ends>
 
-                        <template slot="name" slot-scope="table">
+                        <template v-slot:name="table">
                             <code>{{ table.record.name }}</code>
                         </template>
 
-                        <template slot="description" slot-scope="table">
+                        <template v-slot:description="table">
                             <p>{{ table.record.description }}</p>
                         </template>
                 </ui-table>

@@ -52,7 +52,7 @@
 
             <section-card title="Permissions" description="Permissions allow you to restrict which areas of the controle panel this user can access." v-if="hasPermissions(form.name)">
                 <ui-table key="permissions-table" ref="permissions" id="permissions-table" endpoint="/datatable/permissions" sort-by="name" no-actions show-page-status>
-                    <template slot="name" slot-scope="table">
+                    <template v-slot:name="table">
                         <code v-if="isOwner">{{ table.record.name }}</code>
 
                         <ui-checkbox v-else :id="'roles-checkbox-' + table.record.name" name="permissions" :native-value="table.record.name" v-model="permissions">
@@ -60,7 +60,7 @@
                         </ui-checkbox>
                     </template>
 
-                    <template slot="description" slot-scope="table">
+                    <template v-slot:description="table">
                         <p>{{ table.record.description }}</p>
                     </template>
                 </ui-table>

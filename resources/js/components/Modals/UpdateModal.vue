@@ -64,7 +64,7 @@
             <ui-button @click="refresh" type="button" class="button button--primary">Refresh FusionCMS</ui-button>
         </div>
 
-        <template slot="footer">
+        <template v-slot:footer>
             <ui-button @click="confirm" type="button" class="button button--primary">Confirm</ui-button>
             <ui-button @click="close" type="button" class="mr-3">Cancel</ui-button>
         </template>

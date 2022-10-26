@@ -30,7 +30,7 @@
 
         <section-card id="user_panel_activity" title="User Activity" description="See what this user has been doing around the site." tabindex="-1">
             <ui-table :key="'activities-' + user.id" class="activities-table" id="activities" :endpoint="endpoint" sort-by="created_at" sort-in="desc" :per-page="10" v-if="user.id">
-                <template slot="description" slot-scope="table">
+                <template v-slot:description="table">
                     <div class="flex items-center">
                         <div class="mr-4 w-3">
                             <fa-icon v-if="table.record.properties.icon" :icon="['fas', table.record.properties.icon]" class="fa-fw"></fa-icon>
@@ -46,7 +46,7 @@
                     </div>
                 </template>
 
-                <template slot="created_at" slot-scope="table">
+                <template v-slot:created_at="table">
                     <ui-datetime :timestamp="table.record.created_at"></ui-datetime>
                 </template>
             </ui-table>

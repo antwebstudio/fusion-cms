@@ -41,7 +41,7 @@
                         </ui-toolbar-group>
                     </template>
 
-                    <template slot="name" slot-scope="table">
+                    <template v-slot:name="table">
                         <div class="flex items-center">
                             <ui-status :value="table.record.status" class="mr-2"></ui-status>
                             <router-link :to="{ name: 'users.show', params: {user: table.record.id} }" v-if="$can('users.view')">{{ table.record.name }}</router-link>
@@ -49,25 +49,25 @@
                         </div>
                     </template>
 
-                    <template slot="email" slot-scope="table">
+                    <template v-slot:email="table">
                         {{ table.record.email }}
                     </template>
 
-                    <template slot="role" slot-scope="table">
+                    <template v-slot:role="table">
                         <router-link :to="{ name: 'roles.show', params: {role: table.record.role.id} }" v-if="$can('roles.view')">{{ table.record.role.name }}</router-link>
                         <span v-else>{{ table.record.role.name }}</span>
                     </template>
 
-                    <template slot="created_at" slot-scope="table">
+                    <template v-slot:created_at="table">
                         <ui-date :timestamp="table.record.created_at"></ui-date>
                     </template>
 
-                    <template slot="email_verified_at" slot-scope="table">
+                    <template v-slot:email_verified_at="table">
                         <ui-badge v-if="table.record.email_verified_at" variant="success">Yes</ui-badge>
                         <ui-badge v-else variant="danger">No</ui-badge>
                     </template>
 
-                    <template slot="actions" slot-scope="table">
+                    <template v-slot:actions="table">
                         <ui-actions :id="'user_' + table.record.id + '_actions'" :key="'user_' + table.record.id + '_actions'">
                             <ui-dropdown-link :to="{ name: 'users.show', params: {user: table.record.id} }" v-if="$can('users.view')">View</ui-dropdown-link>
 
@@ -108,7 +108,7 @@
             <ui-modal name="verify-user" title="Verification Email">
                 <p>Are you sure you want to re-send the verification email to this user?</p>
 
-                <template slot="footer" slot-scope="user">
+                <template v-slot:footer="user">
                     <ui-button v-modal:verify-user @click="emailVerification(user.data.id)" variant="primary" class="ml-3">Confirm</ui-button>
                     <ui-button v-modal:verify-user variant="secondary">Cancel</ui-button>
                 </template>
@@ -117,7 +117,7 @@
             <ui-modal name="password-user" title="Password Reset">
                 <p>Are you sure you want to send this user a password reset notification?</p>
 
-                <template slot="footer" slot-scope="user">
+                <template v-slot:footer="user">
                     <ui-button v-modal:password-user @click="passwordReset(user.data.id)" variant="primary" class="ml-3">Confirm</ui-button>
                     <ui-button v-modal:password-user variant="secondary">Cancel</ui-button>
                 </template>
@@ -126,7 +126,7 @@
             <ui-modal name="expire-password" title="Expire Password">
                 <p>Are you sure you want to force user to reset their password upon next login?</p>
 
-                <template slot="footer" slot-scope="user">
+                <template v-slot:footer="user">
                     <ui-button v-modal:expire-password @click="passwordExpire(user.data.id)" variant="primary" class="ml-3">Confirm</ui-button>
                     <ui-button v-modal:expire-password variant="secondary">Cancel</ui-button>
                 </template>
@@ -135,7 +135,7 @@
             <ui-modal name="delete-user" title="Delete User">
                 <p>Are you sure you want to permenantly delete this user?</p>
 
-                <template slot="footer" slot-scope="user">
+                <template v-slot:footer="user">
                     <ui-button v-modal:delete-user @click="destroy(user.data.id)" variant="danger" class="ml-3">Delete</ui-button>
                     <ui-button v-modal:delete-user variant="secondary">Cancel</ui-button>
                 </template>

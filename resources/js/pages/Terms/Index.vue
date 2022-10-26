@@ -21,7 +21,7 @@
                     :endpoint="endpoint"
                     :key="taxonomy.handle + '_table'"
                 >
-                    <template slot="name" slot-scope="table">
+                    <template v-slot:name="table">
                         <div class="flex items-center">
                             <ui-status :value="table.record.status" class="mr-2"></ui-status>
 
@@ -29,16 +29,16 @@
                         </div>
                     </template>
 
-                    <template slot="slug" slot-scope="table">
+                    <template v-slot:slug="table">
                         <code>{{ table.record.slug }}</code>
                     </template>
 
-                    <template slot="status" slot-scope="table">
+                    <template v-slot:status="table">
                         <span class="badge badge--success" v-if="table.record.status === 1">Enabled</span>
                         <span class="badge badge--danger" v-else>Disabled</span>
                     </template>
 
-                    <template slot="actions" slot-scope="table">
+                    <template v-slot:actions="table">
                         <ui-actions :id="'term_' + table.record.id + '_actions'" :key="'term_' + table.record.id + '_actions'">
                             <ui-dropdown-link @click.prevent :to="{ name: 'terms.edit', params: {taxonomy: taxonomy.id, id: table.record.id} }">Edit</ui-dropdown-link>
 
@@ -60,7 +60,7 @@
             <ui-modal name="delete-term" title="Delete Term" key="delete_term">
                 <p>Are you sure you want to permenantly delete this term?</p>
 
-                <template slot="footer" slot-scope="term">
+                <template v-slot:footer="term">
                     <ui-button v-modal:delete-term @click="destroy(term.data.id)" variant="danger" class="ml-3">Delete</ui-button>
                     <ui-button v-modal:delete-term>Cancel</ui-button>
                 </template>

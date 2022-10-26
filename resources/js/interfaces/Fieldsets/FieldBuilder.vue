@@ -54,7 +54,7 @@
             <ui-modal name="add-field" title="Add Field" v-model="field.add" extra-large>
                 <fieldtype-picker @click="add" :value="field.add"></fieldtype-picker>
 
-                <template slot="footer">
+                <template v-slot:footer>
                     <ui-button @click.prevent="field.add = false">Close</ui-button>
                 </template>
             </ui-modal>
@@ -69,7 +69,7 @@
                     :options="moveOptions">
                 </ui-select-group>
 
-                <template slot="footer">
+                <template v-slot:footer>
                     <ui-button variant="primary" @click.prevent="move">Move</ui-button>
                     <ui-button variant="secondary" class="mr-2" @click.prevent="field.move = false">Cancel</ui-button>
                 </template>

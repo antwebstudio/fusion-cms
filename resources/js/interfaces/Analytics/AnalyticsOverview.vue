@@ -14,7 +14,7 @@
                                     <fa-icon icon="question"></fa-icon>
                                 </span>
                             </template>
-                            <template slot="content">
+                            <template v-slot:content>
                                 <span id="analytic-visitors">Total unique visitors, or sessions, accessing all pages of the site.</span>
                             </template>
                         </ui-tooltip>
@@ -33,7 +33,7 @@
                                     <fa-icon icon="question"></fa-icon>
                                 </span>
                             </template>
-                            <template slot="content">
+                            <template v-slot:content>
                                 <span id="analytic-total-views">Total number of pages viewed by all visitors.</span>
                             </template>
                         </ui-tooltip>
@@ -52,7 +52,7 @@
                                     <fa-icon icon="question"></fa-icon>
                                 </span>
                             </template>
-                            <template slot="content">
+                            <template v-slot:content>
                                 <span id="analytic-bounce-rate"> Percentage of visits or sessions where the user leaves after viewing a single page.</span>
                             </template>
                         </ui-tooltip>
@@ -71,7 +71,7 @@
                                     <fa-icon icon="question"></fa-icon>
                                 </span>
                             </template>
-                            <template slot="content">
+                            <template v-slot:content>
                                 <span id="analytic-duration">Average length of time that a user spends on the site before leaving.</span>
                             </template>
                         </ui-tooltip>

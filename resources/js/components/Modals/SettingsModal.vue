@@ -7,7 +7,7 @@
 			</div>
 		</div>
 
-		<template slot="footer">
+		<template v-slot:footer>
 			<div class="buttons">
 				<ui-button @click.prevent="close">Close</ui-button>
 				<ui-button type="submit" variant="primary" @click.prevent="submit">Save Settings</ui-button>

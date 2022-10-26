@@ -25,7 +25,7 @@
                           :table="table"
                           :endpoint="endpoint"
                 >
-                    <template slot="name" slot-scope="table">
+                    <template v-slot:name="table">
                         <div class="flex items-center">
                             <ui-status :value="table.record.status" class="mr-2"></ui-status>
 
@@ -34,19 +34,19 @@
                         </div>
                     </template>
 
-                    <template slot="handle" slot-scope="table">
+                    <template v-slot:handle="table">
                         {{ table.record.handle }}
                     </template>
 
-                    <template slot="type" slot-scope="table">
+                    <template v-slot:type="table">
                         <span class="badge">{{ table.record.type }}</span>
                     </template>
 
-                    <template slot="description" slot-scope="table">
+                    <template v-slot:description="table">
                         <span class="text-gray-800 text-sm">{{ table.record.description }}</span>
                     </template>
 
-                    <template slot="actions" slot-scope="table">
+                    <template v-slot:actions="table">
                         <ui-actions :id="'matrix_' + table.record.id + '_actions'" :key="'matrix_' + table.record.id + '_actions'">
                             <ui-dropdown-link :to="{ name: 'matrices.edit', params: {matrix: table.record.id} }" v-if="$can('matrices.update')">Edit</ui-dropdown-link>
 
@@ -69,7 +69,7 @@
             <ui-modal name="delete-matrix" title="Delete Matrix" key="delete_matrix">
                 <p>Are you sure you want to permenantly delete this matrix?</p>
 
-                <template slot="footer" slot-scope="matrix">
+                <template v-slot:footer="matrix">
                     <ui-button v-modal:delete-matrix @click="destroy(matrix.data.id)" variant="danger" class="ml-3">Delete</ui-button>
                     <ui-button v-modal:delete-matrix variant="secondary">Cancel</ui-button>
                 </template>
