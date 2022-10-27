@@ -67,7 +67,7 @@
             },
 
             children: {
-                type: Object|Boolean,
+                type: [Object, Boolean],
                 default: false,
             },
 

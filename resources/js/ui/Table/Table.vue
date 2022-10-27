@@ -275,7 +275,7 @@
                 default: true
             },
             refresh: {
-                type: Number|Boolean,
+                type: [Number, Boolean],
                 default: false
             },
             noRecords: {

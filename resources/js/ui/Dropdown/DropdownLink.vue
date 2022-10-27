@@ -22,7 +22,7 @@
             to: {
                 required: false,
                 default: '',
-                type: Array|Object|String,
+                type: [Array, Object, String],
             },
 
             target: {

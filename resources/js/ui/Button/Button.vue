@@ -51,7 +51,7 @@
             href: String,
             loading: Boolean,
             to: {
-                type: Array|Object|String,
+                type: [Array, Object, String],
                 default: ''
             },
             disabled: Boolean,
