@@ -74,7 +74,7 @@
                     next((vm) => {
                         vm.roles = roles
 
-                        vm.$emit('updateHead')
+                        window.emitter.emit('updateHead')
                     })
                 }
             })

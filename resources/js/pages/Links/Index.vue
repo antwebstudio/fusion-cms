@@ -152,7 +152,7 @@
              next(function(vm) {
                  vm.navigation = response.data.data
                  vm.links = response.data.data.links
-                 vm.$emit('updateHead')
+                 window.emitter.emit('updateHead')
              })
          })
      },

@@ -118,7 +118,7 @@
                         vm.user = user
                         vm.roles = roles
 
-                        vm.$emit('updateHead')
+                        window.emitter.emit('updateHead')
                     })
                 }
             })

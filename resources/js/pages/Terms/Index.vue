@@ -126,7 +126,7 @@
                 next(function(vm) {
                     vm.taxonomy = response.data.data
 
-                    vm.$emit('updateHead')
+                    window.emitter.emit('updateHead')
                 })
             })
         },

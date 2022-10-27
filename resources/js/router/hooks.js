@@ -9,6 +9,11 @@ export const before = (to, from, next) => {
     if ('requiresAuth' in to.meta) {
     	store.commit('auth/setRequiresAuth', to.meta.requiresAuth)
     }
+    
+    store.dispatch('auth/authenticate', {
+        guestNext: { name: 'login', query: { redirect: location.pathname } },
+        adminNext: { name: 'dashboard' }
+    })
 
     // Don't disable navigation guard if only the query or hash is changing
     if (to.path != from.path) {

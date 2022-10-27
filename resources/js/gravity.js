@@ -12,6 +12,8 @@ import '@/components'
 import '@/fieldtypes'
 import '@/helpers'
 import '@/plugins'
+import mitt from 'mitt'
+window.emitter = mitt()
 
 /**
  * Finally, we create a fresh Fusion instance.

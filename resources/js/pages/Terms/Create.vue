@@ -85,7 +85,7 @@
                         vm.taxonomy = taxonomy
                         vm.form = new Form(fields, true)
 
-                        vm.$emit('updateHead')
+                        window.emitter.emit('updateHead')
                     })
                 }
             })

@@ -73,7 +73,7 @@
                         vm.group  = group
                         vm.form   = new Form(group.settings)
 
-                        vm.$emit('updateHead')
+                        window.emitter.emit('updateHead')
                     })
                 }
             })

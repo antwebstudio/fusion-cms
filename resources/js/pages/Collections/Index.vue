@@ -116,7 +116,7 @@
                 next(function(vm) {
                     vm.collection = response.data.data
 
-                    vm.$emit('updateHead')
+                    window.emitter.emit('updateHead')
                 })
             }).catch(function(error) {
                 next('/')

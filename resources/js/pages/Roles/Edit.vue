@@ -72,8 +72,8 @@
                         vm.role = role
                         vm.form = new Form(fields, true)
 
-                        vm.$emit('updateHead')
-                        vm.$emit('updateAuth')
+                        emitter.emit('updateHead')
+                        emitter.emit('updateAuth')
                     })
                 }
             })

@@ -74,7 +74,7 @@
                         vm.collection = collection
                         vm.form = new Form(form, true)
 
-                        vm.$emit('updateHead')
+                        window.emitter.emit('updateHead')
                     })
                 })
                 .catch(() => {

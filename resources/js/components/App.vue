@@ -38,10 +38,6 @@
             this.$store.commit('fusion/setVersion', this.version)
             this.$store.commit('fusion/setConfig', this.config)
 
-            this.$store.dispatch('auth/authenticate', {
-                guestNext: { name: 'login', query: { redirect: location.pathname } },
-                adminNext: { name: 'dashboard' }
-            })
         }
     }
 </script>

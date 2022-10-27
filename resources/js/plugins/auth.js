@@ -1,5 +1,6 @@
-import Vue from 'vue'
 import { mapGetters } from 'vuex'
+import mitt from 'mitt'
+const emitter = mitt()
 
 function AuthPlugin(Vue) {
     function initialize() {
@@ -47,11 +48,11 @@ function AuthPlugin(Vue) {
         created: function() {
             let self = this
 
-            self.$on('updateAuth', function() {
+            emitter.on('updateAuth', function() {
                 initialize.call(this)
             })
         },
     })
 }
 
-Vue.use(AuthPlugin)
+export default AuthPlugin

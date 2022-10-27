@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { createApp } from 'vue'
 
 import store from '@/store'
 import router from '@/router'
@@ -6,6 +7,8 @@ import forms from '@/mixins/forms'
 import setting from '@/mixins/setting'
 
 import * as Directives from '@/directives'
+
+import auth from '@/plugins/auth'
 
 export default class Fusion {
     constructor (config) {
@@ -37,13 +40,13 @@ export default class Fusion {
             callback(Vue, this.router, this.store)
         })
 
-        this.vue = new Vue({
-            el: '#gravity',
+        this.vue = createApp()
 
-            router: this.router,
+        this.vue.use(auth)
+        this.vue.use(this.router)
+        this.vue.use(this.store)
 
-            store: this.store
-        })
+       	this.vue.mount('#gravity')  
 
         this.bootedCallbacks.forEach((callback) => {
             callback(this.vue)

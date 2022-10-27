@@ -99,7 +99,7 @@
                         }, true)
 
                         vm.$nextTick(() => {
-                            vm.$emit('updateHead')
+                            window.emitter.emit('updateHead')
                         })
                     })
                 }

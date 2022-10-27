@@ -159,7 +159,7 @@
                         vm.form   = new Form({
                             'name': backup.name
                         }, true)
-                        vm.$emit('updateHead')
+                        window.emitter.emit('updateHead')
                     })
                 }
             })

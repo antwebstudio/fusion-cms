@@ -84,7 +84,7 @@
                             'value': 0
                         })
 
-                        vm.$emit('updateHead')
+                        window.emitter.emit('updateHead')
                     })
                 }
             })

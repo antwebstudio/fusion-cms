@@ -68,7 +68,7 @@
                         vm.entry = entry
                         vm.form = new Form(fields, true)
 
-                        vm.$emit('updateHead')
+                        window.emitter.emit('updateHead')
                     })
                 }
             })

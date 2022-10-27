@@ -1,12 +1,9 @@
-import Router from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import Vue from 'vue'
 import { before, resolve, after } from '@/router/hooks'
 
-Vue.use(Router)
-
-const router = new Router({
-    mode: 'history',
-    base: window.config.path,
+const router = createRouter({
+    history: createWebHistory(window.config.path),
     routes: [
         {
             path: '/',
@@ -582,7 +579,7 @@ const router = new Router({
         },
 
         {
-            path: '*',
+            path: '/:pathMatch(.*)*',
             redirect: '/404'
         },
     ],

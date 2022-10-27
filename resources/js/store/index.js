@@ -1,5 +1,4 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { createStore as _createStore } from 'vuex'
 import auth from './auth'
 import blueprint from './blueprint'
 import disks from './disks'
@@ -12,9 +11,7 @@ import navigation from './navigation'
 import notifications from './notifications'
 import settings from './settings'
 
-Vue.use(Vuex)
-
-export default new Vuex.Store({
+export default _createStore({
     modules: {
         auth,
         blueprint,

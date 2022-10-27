@@ -149,7 +149,7 @@
                             vm.totalVisitors = totalVisitors
                             vm.totalPageViews = totalPageViews
 
-                            vm.$emit('updateHead')
+                            window.emitter.emit('updateHead')
                         })
                     })
                 }
