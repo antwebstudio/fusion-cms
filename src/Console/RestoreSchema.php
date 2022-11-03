@@ -56,10 +56,10 @@ class RestoreSchema extends Command
     public function handle()
     {
         $rawJson = file_get_contents(base_path($this->option('file')));
-        $json = json_decode($rawJson, true);
+        // $json = json_decode($rawJson, true);
 
-        $this->matrices = Matrix::get()->keyBy('handle');
-        $this->taxonomies = Taxonomy::get()->keyBy('handle');
+        // $this->matrices = Matrix::get()->keyBy('handle');
+        // $this->taxonomies = Taxonomy::get()->keyBy('handle');
 
         // Matrix::unsetEventDispatcher();
         // Taxonomy::unsetEventDispatcher();
@@ -69,11 +69,11 @@ class RestoreSchema extends Command
         // Replicator::unsetEventDispatcher();
 
         // \DB::transaction(function () use($json) { // Not useful as the operation will involve schema changes, and hence commit of transaction will be triggered in the middle.
-            $fieldset = collect($json['fieldsets'])->keyBy('handle');
+            // $fieldset = collect($json['fieldsets'])->keyBy('handle');
 
-            $this->title('Fieldset and fields');
-            $this->restoreFieldsetAndFields($json['fieldsets']);
-            $this->title('Matrices and Taxonomies');
+            // $this->title('Fieldset and fields');
+            // $this->restoreFieldsetAndFields($json['fieldsets']);
+            // $this->title('Matrices and Taxonomies');
             
             $importer = new SchemaImporter;
             $importer->restoreOldVersionSchema($rawJson);
