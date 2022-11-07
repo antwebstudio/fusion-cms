@@ -47,5 +47,6 @@ class EventServiceProvider extends ServiceProvider
         \Fusion\Models\Section::observe(\Fusion\Observers\SectionObserver::class);
         \Fusion\Models\Setting::observe(\Fusion\Observers\SettingObserver::class);
         \Fusion\Models\Taxonomy::observe(\Fusion\Observers\TaxonomyObserver::class);
+        \Fusion\Models\Extension::observe(\Fusion\Observers\ExtensionObserver::class);
     }
 }
