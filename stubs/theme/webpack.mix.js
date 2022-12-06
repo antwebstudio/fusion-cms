@@ -1,4 +1,5 @@
 let mix = require('laravel-mix')
+let path = require('path');
 
 /*
  |--------------------------------------------------------------------------
@@ -12,7 +13,7 @@ let mix = require('laravel-mix')
  */
 
 mix.setPublicPath('./public')
-   .js('resources/js/theme.js', 'js')
+   .js('resources/js/theme.js', 'js').vue()
    .sass('resources/scss/theme.scss', 'css')
 
 // Full API
