@@ -3,9 +3,8 @@
         :name="field.handle"
         :fieldId="`${field.handle}-field`"
         :label="field.name"
-        :help="field.help"
-        :has-error="hasError"
-        :error-message="errorMessage">
+        :has-error="hasError(field.handle)"
+        :error-message="errorMessage(field.handle)">
 
         <div class="table-wrapper" v-if="model">
             <table :id="`${field.handle}-table`" class="table table-auto" aria-live="polite">
@@ -40,7 +39,7 @@
                                 </td>
 
                                 <td v-for="(col, cIdx) in row.cols" :key="`${col._id}-${cIdx}`">
-                                    <ui-input :name="`cell-${col._id}`" v-model="col.value"></ui-input>
+                                    <ui-textarea :name="`cell-${col._id}`" v-model="col.value"></ui-textarea>
                                 </td>
 
                                 <td>
