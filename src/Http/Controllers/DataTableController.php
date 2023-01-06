@@ -221,7 +221,7 @@ abstract class DataTableController extends Controller
                 // - page    (defaults to `PAGE_NUM`)
                 ->paginate(
                     $request->query('perPage', self::PER_PAGE),
-                    self::getDisplayableColumns(),
+                    array_merge(self::getDisplayableColumns(), $this->getDisplayableColumns()),
                     get_class($this),
                     $request->query('page', self::PAGE_NUM)
                 );
