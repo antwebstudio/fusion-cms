@@ -49,6 +49,10 @@ class ResponseRequest extends Request
             'identifiable_ip_address' => 'sometimes',
         ];
 
+        if ($this->form->enable_recaptcha) {
+            $rules[recaptchaFieldName()] = recaptchaRuleName();
+        }
+
         $rules += $this->fields->flatMap(function ($field) {
             return $field->type()->rules($field, $this->{$field->handle});
         })->toArray();
@@ -66,5 +70,12 @@ class ResponseRequest extends Request
         return $this->fields->flatMap(function ($field) {
             return $field->type()->attributes($field, $this->{$field->handle});
         })->toArray();
+    }
+
+    public function messages()
+    {
+        return [
+            'recaptcha' => 'Failed to pass recaptcha test, please try again. ',
+        ];
     }
 }

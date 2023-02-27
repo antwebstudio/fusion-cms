@@ -21,6 +21,20 @@ if (!function_exists('render_form')) {
     }
 }
 
+if (!function_exists('render_captcha')) {
+    /**
+     * Render the given form.
+     *
+     * @return string
+     */
+    function render_captcha(Form $form)
+    {
+        if ($form) {
+            return view('forms.components.recaptcha', ['form' => $form]);
+        }
+    }
+}
+
 if (!function_exists('honeypot_fields')) {
     /**
      * Render the honeypot fields.
