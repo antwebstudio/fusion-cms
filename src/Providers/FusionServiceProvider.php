@@ -27,7 +27,6 @@ class FusionServiceProvider extends ServiceProvider
         $this->bootRoutes();
         $this->bootGates();
         $this->bootCustomRules();
-        $this->bootGlide();
 
         if (app_installed()) {
             $this->bootTheme();
@@ -49,6 +48,7 @@ class FusionServiceProvider extends ServiceProvider
         $this->registerProviders();
         $this->registerFusion();
         $this->registerMiddleware();
+        $this->registerGlide(); // Must not move this to boot() as it will cause the glide not configurable by other packages/addons
 
         $this->commands([
             \Fusion\Console\MakeThemeCommand::class,
@@ -124,7 +124,7 @@ class FusionServiceProvider extends ServiceProvider
         Validator::extend('permissionrequirements', 'Fusion\Rules\PermissionRequirements@passes');
     }
 
-    protected function bootGlide()
+    protected function registerGlide()
     {
         $this->app->bind('glide', function() {
             $request    = app('request');
