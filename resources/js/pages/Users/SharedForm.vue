@@ -204,7 +204,7 @@
                 return _.map(roles, (role) => {
                     return {
                         label: role.name,
-                        value: role.handle
+                        value: role.id
                     }
                 })
             },
