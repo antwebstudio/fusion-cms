@@ -131,6 +131,6 @@ class Matrix extends Model implements Structure
         return $query
             ->where('sidebar', true)
             ->where('parent_id', 0)
-            ->orderBy('name');
+            ->orderBy('order');
     }
 }
