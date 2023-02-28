@@ -71,7 +71,7 @@ class UserRequest extends Request
         $rules = [
             'name'          => ['required'],
             'email'         => ['required', 'email', 'unique:users,email,'.$id],
-            'role'          => ['sometimes', 'exists:roles,handle'],
+            'role'          => ['sometimes', 'exists:roles,id'],
             'status'        => ['sometimes', 'boolean'],
             'subscriptions' => 'sometimes',
             'order'           => 'sometimes',
