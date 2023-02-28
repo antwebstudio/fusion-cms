@@ -26,7 +26,11 @@ class ResponseController extends Controller
         }
 
         if (isset($form->send_to) && trim($form->send_to) != '') {
-            Mail::to($form->send_to)->send(new FormMail($response));
+            try {
+                Mail::to($form->send_to)->send(new FormMail($response));
+            } catch (\Swift_TransportException  $ex) {
+                throw \Illuminate\Validation\ValidationException::withMessages(['*' => $ex->getMessage()]);
+            }
         }
 
         if (!$form->redirect_on_submission) {
