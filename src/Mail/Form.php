@@ -22,6 +22,7 @@ class Form extends Mailable
     {
         //
         $this->response = $response;
+        $this->response->refresh(); // Needed, so that email sent out will contain file link for file fieldtype
     }
 
     /**
