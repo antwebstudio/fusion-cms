@@ -6,8 +6,8 @@
     @endphp
     @if(is_array($value))
         @foreach ($value as $v)
-            @if(is_array($v) && $v['isFile'] ?? false)
-                <p>{{ $field->name }} : <a href="{{ $v['url'] ?? '' }}">Download</a>
+            @if(is_array($v) && $v['isFile'] ?? false && $v['url'] ?? '')
+                <p>{{ $field->name }} : <a href="{{ url($v['url'] ?? '') }}">Download</a>
             @else
                 <p>{{ $field->name }} : {{ $v }}</p>
             @endif
