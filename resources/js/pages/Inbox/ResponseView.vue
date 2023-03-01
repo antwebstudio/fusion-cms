@@ -9,7 +9,7 @@
                     <fa-icon :icon="['fas', 'trash-alt']" fixed-width></fa-icon> -->
                 </div>
 
-                <div class="text-gray-500 flex items-center">
+                <div class="text-gray-500 flex items-center" v-if="response.identifiable_ip_address">
                     <fa-icon :icon="['fas', 'server']" fixed-width></fa-icon> <span class="text-xs font-mono ml-2">{{ response.identifiable_ip_address }}</span>
                 </div>
             </div>
@@ -57,10 +57,10 @@
                                 <li v-for="(file, index) in response[field.handle]" :key="`file.${index}`">
                                     <div class="p-2 sm:px-4">
                                         <div class="flex items-center justify-between">
-                                            <router-link :to="'/files/' + file.uuid">
+                                            <a target="_blank" :href="file.url">
                                                 <img v-if="file.type == 'image'" class="upload__file--preview max-w-12" :src="file.url" :alt="file.name"/>
                                                 <img v-else class="upload__file--preview max-w-12" :src="`/vendor/fusion/img/${file.type}-large.svg`" :alt="file.name"/>
-                                            </router-link>
+                                            </a>
 
                                             <div class="upload__file--name" v-text="file.name" />
 

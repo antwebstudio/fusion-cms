@@ -31,6 +31,7 @@ class Form extends Mailable
      */
     public function build()
     {
-        return $this->markdown('forms.mail', ['response' => $this->response]);
+        $subject = $this->response->form->name.': '.$this->response->identifiable_email_address;
+        return $this->subject($subject)->markdown('forms.mail', ['response' => $this->response]);
     }
 }
