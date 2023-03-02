@@ -2,16 +2,17 @@
 
 namespace Fusion\Providers;
 
-use Fusion\Facades\Theme;
 use Fusion\Models\Role;
 use Fusion\Models\User;
+use Fusion\Facades\Theme;
 use Fusion\Services\Addons\Manifest;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
 
 class FusionServiceProvider extends ServiceProvider
 {
@@ -126,9 +127,9 @@ class FusionServiceProvider extends ServiceProvider
 
     protected function registerGlide()
     {
-        $this->app->bind('glide', function() {
+        $this->app->bind('glide', function($app, $params) {
             $request    = app('request');
-            $filesystem = app('filesystem')->getDriver();
+            $filesystem = Storage::disk($params['disk'])->getDriver();
         
             return \League\Glide\ServerFactory::create([
                 'response'          => new \League\Glide\Responses\LaravelResponseFactory($request),
