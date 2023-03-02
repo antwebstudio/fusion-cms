@@ -53,5 +53,5 @@ function fusion()
 
 function glide($disk = 'public')
 {
-    return app('glide');
+    return app('glide', ['disk' => $disk]);
 }
