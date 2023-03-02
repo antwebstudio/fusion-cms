@@ -27,9 +27,10 @@ class ExtensionObserver implements BuilderObserver
                 ->references('id')->on('extensions')
                 ->onDelete('cascade');
 
-            $table->foreign('related_id')
-                ->references('id')->on($model->getBuilderTable())
-                ->onDelete('cascade');
+            // Error caused by the following lines
+            // $table->foreign('related_id')
+            //     ->references('id')->on($model->getBuilderTable()) // error caused as refer to the wrong table
+            //     ->onDelete('cascade');
         });
     }
 
