@@ -105,7 +105,7 @@
                 name: user.name,
                 email: user.email,
                 status: user.status,
-                role: user.role.handle,
+                role: user.role.id,
                 password: '',
                 password_confirmation: '',
                 subscriptions: user.subscriptions,
