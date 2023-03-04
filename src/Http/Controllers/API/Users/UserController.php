@@ -95,10 +95,12 @@ class UserController extends Controller
         $attributes  = $request->validated();
 
         // password (optional)..
-        if ($request->isOwningUser() && isset($attributes['password'])) {
+        if ($request->isOwningUser() && isset($attributes['password']) && trim($attributes['password']) != '') {
             $attributes['password'] = bcrypt($attributes['password']);
 
             $user->logPasswordChange();
+        } else {
+                unset($attributes['password']);
         }
 
         $user->update($attributes);
