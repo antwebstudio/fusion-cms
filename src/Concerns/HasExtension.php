@@ -13,7 +13,7 @@ trait HasExtension
             /**
              * Pull new instance w/ relations.
              */
-            $model = static::find($model->id);
+            $model = static::withoutGlobalScopes()->find($model->id);
 
             /**
              * Persist extending field data..
