@@ -11,11 +11,11 @@ class UserController extends DataTableController
     public function builder()
     {
         if (request()->route('role')) {
-            return User::whereHas('roles', function ($query) {
+            return app(User::class)->whereHas('roles', function ($query) {
                 $query->where('name', request()->route('role'));
             });
         } else {
-            return User::query();
+            return app(User::class)->query();
         }
     }
 
@@ -62,7 +62,7 @@ class UserController extends DataTableController
      */
     public function getExemptFromBulkActions()
     {
-        return User::whereHas('roles', function ($query) {
+        return app(User::class)->whereHas('roles', function ($query) {
             $query->where('name', 'Owner');
         })->get()->pluck('id');
     }
@@ -114,7 +114,7 @@ class UserController extends DataTableController
     {
         activity()->withoutLogs(function () {
             foreach (request()->get('records') as $record) {
-                User::find($record)->update([
+                app(User::class)->find($record)->update([
                     'status' => true,
                 ]);
             }
@@ -127,7 +127,7 @@ class UserController extends DataTableController
     {
         activity()->withoutLogs(function () {
             foreach (request()->get('records') as $record) {
-                User::find($record)->update([
+                app(User::class)->find($record)->update([
                     'status' => false,
                 ]);
             }
@@ -140,7 +140,7 @@ class UserController extends DataTableController
     {
         activity()->withoutLogs(function () {
             foreach (request()->get('records') as $record) {
-                User::find($record)->delete();
+                app(User::class)->find($record)->delete();
             }
         });
 
@@ -151,7 +151,7 @@ class UserController extends DataTableController
     {
         activity()->withoutLogs(function () {
             foreach (request()->get('records') as $record) {
-                User::find($record)->sendEmailVerificationNotification();
+                app(User::class)->find($record)->sendEmailVerificationNotification();
             }
         });
 
@@ -162,7 +162,7 @@ class UserController extends DataTableController
     {
         activity()->withoutLogs(function () {
             foreach (request()->get('records') as $record) {
-                $user = User::find($record);
+                $user = app(User::class)->find($record);
 
                 $user->sendPasswordResetNotification(
                     Password::broker()->createToken($user)
