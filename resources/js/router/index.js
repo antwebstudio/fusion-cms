@@ -12,6 +12,9 @@ const router = new Router({
             path: '/',
             component: () => import('@/pages/Dashboard'),
             name: 'dashboard',
+            redirect: window.config.dashboard_path ? () => {
+                return window.config.dashboard_path
+            } : null,
             meta: {
                 requiresAuth: true,
                 layout: 'admin'
