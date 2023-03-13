@@ -15,6 +15,8 @@ return [
 
     'path' => 'admin',
 
+    'dashboard_path' => '', // No need to include "admin" prefix here
+
     /*
     |--------------------------------------------------------------------------
     | Authentication provider
