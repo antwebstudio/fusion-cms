@@ -36,6 +36,10 @@ class MatrixObserver implements BuilderObserver
             $table->timestamp('expire_at')->nullable();
             $table->float('order')->nullable()->index();
             $table->timestamps();
+
+            if ($model->soft_delete) {
+                $table->softDeletes();
+            }
         });
     }
 
@@ -78,6 +82,24 @@ class MatrixObserver implements BuilderObserver
             Schema::table($model->getBuilderTable(), function (Blueprint $table) {
                 $table->dropColumn('id');
             });
+        }
+
+        // Create softdelete column if converting from non-softdelete to softdelete
+        if (! $old->soft_delete and $model->soft_delete) {
+            Schema::table($model->getBuilderTable(), function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
+        
+        // Drop softdelete column if converting from soft delete to non-softdelete
+        if ($old->soft_delete and ! $model->soft_delete) {
+            try {
+                Schema::table($model->getBuilderTable(), function (Blueprint $table) {
+                    $table->dropSoftDeletes();
+                });
+            } catch (\Illuminate\Database\QueryException $ex) {
+
+            }
         }
     }
 

@@ -15,6 +15,10 @@ class Matrix extends Builder
     public function __construct($handle)
     {
         $this->source = Model::where('handle', $handle)->firstOrFail();
+
+        if ($this->source->soft_delete) {
+            $this->traits['*'][] = \Illuminate\Database\Eloquent\SoftDeletes::class;
+        }
     }
 
     /**
