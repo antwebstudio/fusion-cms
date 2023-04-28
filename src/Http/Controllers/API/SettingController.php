@@ -67,6 +67,9 @@ class SettingController extends Controller
                 $relationship->type()->persistRelationship($setting->settings, $relationship);
             }
         }
+
+        // Let new setting to take effect after the value of setting is updated
+        cache()->flush();
     }
 
 
