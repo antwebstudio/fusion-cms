@@ -16,7 +16,7 @@
             :aria-required="required" 
             :aria-describedby="message ? formattedId + '_message' : null"
             @input="$emit('input', $event.target.value)"
-            v-model="value"/>
+            />
 
         <ui-button icon size="small" class="field-password__button" @click="toggleVisibility()">
             <fa-icon v-if="revealed" icon="eye-slash"></fa-icon>
