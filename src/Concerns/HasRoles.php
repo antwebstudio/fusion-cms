@@ -37,7 +37,7 @@ trait HasRoles
      */
     public function level($levelCheck)
     {
-        return $this->role->level == 0 ? true : $this->role->level < $levelCheck;
+        return $this->role->level == 0 ? true : $this->role->level <= $levelCheck;
     }
 
     /**

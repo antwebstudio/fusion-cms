@@ -37,7 +37,7 @@ function AuthPlugin(Vue) {
             },
 
             $level(level) {
-                return this.$user.role.level === 0 ? true : this.$user.role.level < level
+                return this.$user.role.level === 0 ? true : this.$user.role.level <= level
             }
         },
 

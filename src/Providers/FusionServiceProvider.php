@@ -2,16 +2,17 @@
 
 namespace Fusion\Providers;
 
-use Fusion\Facades\Theme;
 use Fusion\Models\Role;
 use Fusion\Models\User;
+use Fusion\Facades\Theme;
 use Fusion\Services\Addons\Manifest;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
 
 class FusionServiceProvider extends ServiceProvider
 {
@@ -48,6 +49,7 @@ class FusionServiceProvider extends ServiceProvider
         $this->registerProviders();
         $this->registerFusion();
         $this->registerMiddleware();
+        $this->registerGlide(); // Must not move this to boot() as it will cause the glide not configurable by other packages/addons
 
         $this->commands([
             \Fusion\Console\MakeThemeCommand::class,
@@ -121,6 +123,22 @@ class FusionServiceProvider extends ServiceProvider
         Validator::extend('securepassword', 'Fusion\Rules\SecurePassword@passes');
         Validator::extend('serverrequirements', 'Fusion\Rules\ServerRequirements@passes');
         Validator::extend('permissionrequirements', 'Fusion\Rules\PermissionRequirements@passes');
+    }
+
+    protected function registerGlide()
+    {
+        $this->app->bind('glide', function($app, $params) {
+            $request    = app('request');
+            $filesystem = Storage::disk($params['disk'])->getDriver();
+        
+            return \League\Glide\ServerFactory::create([
+                'response'          => new \League\Glide\Responses\LaravelResponseFactory($request),
+                'source'            => $filesystem,
+                'watermarks'        => $filesystem,
+                'cache'             => $filesystem,
+                'cache_path_prefix' => '.cache',
+            ]);
+        });
     }
 
     /**

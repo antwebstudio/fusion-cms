@@ -125,20 +125,31 @@
                             </span>
                         </th>
 
-                        <th v-show="hasSelections" :colspan="displayable.length > 2 ? displayable.length - 1 : displayable.length">
-                            <span class="table__heading">
+                        <th v-show="hasSelections" :colspan="hasActions ? displayable.length + 1 : displayable.length">
+                            <span class="table__heading flex">
                                 {{ this.selected.length }} record{{ this.selected.length > 1 ? 's' : '' }} selected
+                            
+                                <slot name="bulkActions" :allowedBulkActions="allowedBulkActions" :selected="selected" :parent="this">
+                                    <div class="ml-auto">
+                                        <select name="bulk-actions" id="bulk-actions" class="field-select field-select--sm field-select--bordered" v-model="action" @change="showBulkActionConfirmation = true">
+                                            <option selected disabled :value="null">Bulk Actions</option>
+
+                                            <option v-for="(action, index) in allowedBulkActions" :key="action.name" :value="index">{{ action.name }}</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <portal to="modals">
+                                        <ui-modal v-if="action !== null" name="confirm-bulk-action" :title="'Confirm Bulk ' + allowedBulkActions[action].name" v-model="showBulkActionConfirmation">
+                                            <p>Are you sure you want to perform this action against <b>{{ selected.length }}</b> record{{selected.length > 1 ? 's' : '' }}?</p>
+
+                                            <template v-slot:footer>
+                                                <ui-button @click.prevent="confirmBulkAction" :loading="working" class="ml-3" variant="primary">Confirm</ui-button>
+                                                <ui-button @click.prevent="cancelBulkAction" v-if="! working" variant="secondary">Cancel</ui-button>
+                                            </template>
+                                        </ui-modal>
+                                    </portal>
+                                </slot>
                             </span>
-                        </th>
-
-                        <th v-show="hasSelections" :colspan="displayable.length > 2 ? 2 : 1" class="w-48">
-                            <div class="bulk-actions">
-                                <select name="bulk-actions" id="bulk-actions" class="field-select field-select--sm field-select--bordered" v-model="action" @change="showBulkActionConfirmation = true">
-                                    <option selected disabled :value="null">Bulk Actions</option>
-
-                                    <option v-for="(action, index) in allowedBulkActions" :key="action.name" :value="index">{{ action.name }}</option>
-                                </select>
-                            </div>
                         </th>
 
                         <th v-show="hasActions && ! hasSelections" class="w-20 col-actions">&nbsp;</th>
@@ -166,7 +177,7 @@
 
                             <slot :name="column" :record="record">
                                 <component
-                                    v-if="column_types[column]" 
+                                    v-if="column_types[column] && isComponentExist(column_types[column])" 
                                     :is="column_types[column]"
                                     :value="record[column]"
                                     :record="record"
@@ -237,17 +248,6 @@
                 <p>No results found.</p>
             </slot>
         </div>
-
-        <portal to="modals">
-            <ui-modal v-if="action !== null" name="confirm-bulk-action" :title="'Confirm Bulk ' + this.allowedBulkActions[action].name" v-model="showBulkActionConfirmation">
-                <p>Are you sure you want to perform this action against <b>{{ this.selected.length }}</b> record{{this.selected.length > 1 ? 's' : '' }}?</p>
-
-                <template v-slot:footer>
-                    <ui-button @click.prevent="confirmBulkAction" :loading="working" class="ml-3" variant="primary">Confirm</ui-button>
-                    <ui-button @click.prevent="cancelBulkAction" v-if="! working" variant="secondary">Cancel</ui-button>
-                </template>
-            </ui-modal>
-        </portal>
     </div>
 </template>
 
@@ -536,6 +536,8 @@
                     if (this.refresh && ! self._timer) {
                         this._timer = setTimeout(() => this.getRecords(), this.refresh)
                     }
+
+                    this.$emit('loaded', this.records)
                 })
             },
 
@@ -613,6 +615,10 @@
                 bus().$on('refresh-datatable-' + this.id, (data) => {
                     this.getRecords()
                 })
+            },
+
+            isComponentExist(componentName) {
+                return componentName in this.$options.components
             }
         },
 

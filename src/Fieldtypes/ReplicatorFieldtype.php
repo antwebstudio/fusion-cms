@@ -151,10 +151,10 @@ class ReplicatorFieldtype extends Fieldtype
      *
      * @return void
      */
-    public function persistRelationship($model, Field $field)
+    public function persistRelationship($model, Field $field, $value = null)
     {
         $replicator = Replicator::find($field->settings['replicator']);
-        $replicants = $this->persistReplicants($replicator, $field);
+        $replicants = $this->persistReplicants($replicator, $field, $value);
         $sections   = $replicator->sections;
 
         $sections->each(function ($section) use ($model, $replicator, $replicants) {
@@ -181,6 +181,16 @@ class ReplicatorFieldtype extends Fieldtype
             // update `replicators_pivot` table..
             $model->{$handle}()->newPivotStatementForId($existing)->where('section_id', $section->id)->delete();
             $model->{$handle}()->attach($attached);
+        });
+    }
+    
+    public function destroyRelationship($model, Field $field)
+    {
+        $replicator = Replicator::find($field->settings['replicator']);
+        $sections   = $replicator->sections;
+        $sections->each(function ($section) use ($model, $replicator, $field) {
+            $handle = "rp_{$section->handle}_{$replicator->uniqid}";
+            $model->{$handle}()->wherePivot('section_id', $section->id)->detach();
         });
     }
 
@@ -265,9 +275,9 @@ class ReplicatorFieldtype extends Fieldtype
      *
      * @return \Illuminate\Support\Collection
      */
-    private function persistReplicants(Replicator $replicator, Field $field)
+    private function persistReplicants(Replicator $replicator, Field $field, $value = null)
     {
-        return collect(request()->input($field->handle, []))
+        return collect($value ?? request()->input($field->handle, []))
             ->map(function ($input) use ($replicator) {
                 $section = Section::findOrFail($input['section']['id']);
                 $builder = $replicator->getBuilder($section);
@@ -289,11 +299,11 @@ class ReplicatorFieldtype extends Fieldtype
                         /**
                          * Merge replicator field into Request object.
                          */
-                        request()->merge([
-                            $field->handle => $input['fields'][$field->handle],
-                        ]);
+                        // request()->merge([
+                        //     $field->handle => $input['fields'][$field->handle],
+                        // ]);
 
-                        $field->type()->persistRelationship($replicant, $field);
+                        $field->type()->persistRelationship($replicant, $field, $input['fields'][$field->handle] ?? null);
                     }
                 });
 
