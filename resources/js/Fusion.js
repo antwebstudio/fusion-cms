@@ -5,6 +5,7 @@ import store from '@/store'
 import router from '@/router'
 import forms from '@/mixins/forms'
 import setting from '@/mixins/setting'
+import PortalVue from 'portal-vue'
 
 import * as Directives from '@/directives'
 
@@ -45,6 +46,7 @@ export default class Fusion {
         this.vue.use(auth)
         this.vue.use(this.router)
         this.vue.use(this.store)
+        this.vue.use(PortalVue)
 
        	this.vue.mount('#gravity')  
 
