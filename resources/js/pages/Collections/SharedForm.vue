@@ -44,22 +44,23 @@
 
                     <sidebar-section
                         v-for="section in sections.sidebar"
-                        v-if="section.fields.length > 0"
                         :key="section.handle"
                         :id="'collection_panel_' + section.handle"
                         :title="section.name"
                         :description="section.description"
                         tabindex="-1">
 
-                        <component
-                            v-for="field in section.fields"
-                            :key="field.handle"
-                            :is="field.type.id + '-fieldtype'"
-                            :field="field"
-                            :has-error="form.errors.has(field.handle)"
-                            :error-message="form.errors.get(field.handle)"
-                            v-model="form[field.handle]">
-                        </component>
+                        <div v-if="section.fields.length > 0">
+                            <component
+                                v-for="field in section.fields"
+                                :key="field.handle"
+                                :is="field.type.id + '-fieldtype'"
+                                :field="field"
+                                :has-error="form.errors.has(field.handle)"
+                                :error-message="form.errors.get(field.handle)"
+                                v-model="form[field.handle]">
+                            </component>
+                        </div>
                     </sidebar-section>
 
                     <status-card v-if="entry" id="collection_panel_status_card" :entry="entry" tabindex="-1"></status-card>
@@ -133,20 +134,21 @@
 
             <section-card
                 v-for="section in sections.body"
-                v-if="section.fields.length > 0"
                 :key="section.handle"
                 :id="'collection_panel_' + section.handle"
                 :title="section.name"
                 :description="section.description"
                 tabindex="-1">
 
-                <component v-for="field in section.fields"
-                           :key="field.handle"
-                           :is="field.type.id + '-fieldtype'"
-                           :field="field"
-                           :errors="form.errors"
-                           v-model="form[field.handle]">
-                </component>
+                <div v-if="section.fields.length > 0">
+                    <component v-for="field in section.fields"
+                            :key="field.handle"
+                            :is="field.type.id + '-fieldtype'"
+                            :field="field"
+                            :errors="form.errors"
+                            v-model="form[field.handle]">
+                    </component>
+                </div>
             </section-card>
         </div>
     </div>

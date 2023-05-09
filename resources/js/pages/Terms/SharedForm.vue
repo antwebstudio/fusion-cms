@@ -25,22 +25,23 @@
 
                     <sidebar-section
                         v-for="section in sections.sidebar"
-                        v-if="section.fields.length > 0"
                         :key="section.handle"
                         :id="'term_panel_' + section.handle"
                         :title="section.name"
                         :description="section.description"
                         tabindex="-1">
 
-                        <component
-                            v-for="field in section.fields"
-                            :key="field.handle"
-                            :is="field.type.id + '-fieldtype'"
-                            :field="field"
-                            :has-error="form.errors.has(field.handle)"
-                            :error-message="form.errors.get(field.handle)"
-                            v-model="form[field.handle]">
-                        </component>
+                        <div v-if="section.fields.length > 0">
+                            <component
+                                v-for="field in section.fields"
+                                :key="field.handle"
+                                :is="field.type.id + '-fieldtype'"
+                                :field="field"
+                                :has-error="form.errors.has(field.handle)"
+                                :error-message="form.errors.get(field.handle)"
+                                v-model="form[field.handle]">
+                            </component>
+                        </div>
                     </sidebar-section>
 
                     <status-card v-if="term" id="term_panel_status_card" :entry="term" tabindex="-1"></status-card>
@@ -118,13 +119,15 @@
                 :description="section.description"
                 tabindex="-1">
 
-                <component v-for="field in section.fields"
-                           :key="field.handle"
-                           :is="field.type.id + '-fieldtype'"
-                           :field="field"
-                           :errors="form.errors"
-                           v-model="form[field.handle]">
-                </component>
+                <div v-if="section.fields.length > 0">
+                    <component v-for="field in section.fields"
+                            :key="field.handle"
+                            :is="field.type.id + '-fieldtype'"
+                            :field="field"
+                            :errors="form.errors"
+                            v-model="form[field.handle]">
+                    </component>
+                </div>
             </section-card>
         </div>
     </div>
