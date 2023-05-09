@@ -3,7 +3,6 @@
             :to="to"
             class="button"
             :class="[{ 'button--icon': icon, 'button--rounded': rounded, 'disabled': disabled }, variantClass, sizeClass]"
-            v-on="$listeners"
             v-bind="$attrs">
 
             <slot></slot>
@@ -14,7 +13,6 @@
             :href="href"
             class="button"
             :class="[{ 'button--icon': icon, 'button--rounded': rounded, 'disabled': disabled }, variantClass, sizeClass]"
-            v-on="$listeners"
             v-bind="$attrs">
 
             <slot></slot>
@@ -26,7 +24,6 @@
             class="button"
             :class="[{ 'button--icon': icon, 'button--rounded': rounded, 'disabled': disabled }, variantClass, sizeClass]"
             :disabled="disabled || loading"
-            v-on="$listeners"
             v-bind="$attrs">
 
             <slot></slot>

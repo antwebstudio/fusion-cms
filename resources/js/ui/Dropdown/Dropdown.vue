@@ -2,9 +2,9 @@
     <renderless-dropdown>
         <div class="dropdown"
             slot-scope="props"
-            :class="{'dropdown--open': props.isOpen, 'dropdown--right': right, 'dropdown--up': up}"
-            v-click-outside="props.close">
-            <button :disabled="disabled" :id="id" class="z-0" :class="[{ 'button': !borderless, 'button--icon': icon }, sizeClass]" @click="props.toggle" aria-haspopup="true" :aria-expanded="props.isOpen ? 'true' : 'false'">
+            :class="{'dropdown--open': $props.isOpen, 'dropdown--right': right, 'dropdown--up': up}"
+            v-click-outside="$props.close">
+            <button :disabled="disabled" :id="id" class="z-0" :class="[{ 'button': !borderless, 'button--icon': icon }, sizeClass]" @click="$props.toggle" aria-haspopup="true" :aria-expanded="$props.isOpen ? 'true' : 'false'">
                 <slot></slot>
                 <fa-icon v-if="! noArrow" icon="angle-down" class="dropdown__arrow"></fa-icon>
             </button>
