@@ -1,9 +1,11 @@
 <script>
+    import { h } from 'vue'
+
     export default {
         name: 'renderless-table',
 
         data() {
-            return {
+            return {    
                 isLoading: false,
                 sortField: '',
                 sortOrder: '',
@@ -30,7 +32,7 @@
         },
 
         render() {
-            return this.$scopedSlots.default({
+            return h(this.$slots.default, {
                 isLoading: this.isLoading,
                 sortField: this.sortField,
                 sortOrder: this.sortOrder,

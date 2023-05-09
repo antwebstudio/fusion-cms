@@ -36,7 +36,7 @@
             </div>
 
             <ui-treeview v-show="isOpen(node)" :key="index" :nodes="node.children" :depth="depth + 1" v-model="computedValue" v-if="isFolder(node)" :nested="true">
-                <template v-for="slot in Object.keys($scopedSlots)" v-slot[slot]="scope"><slot :name="slot" v-bind="scope"/></template>
+                <template v-for="slot in Object.keys($slots)" v-slot[slot]="scope"><slot :name="slot" v-bind="scope"/></template>
             </ui-treeview>
         </li>
     </ul>

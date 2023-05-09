@@ -1,4 +1,6 @@
 <script>
+    import { h } from 'vue'
+
     export default {
         name: 'renderless-checkbox',
 
@@ -45,7 +47,7 @@
         },
 
         render() {
-            return this.$scopedSlots.default({
+            return h(this.$slots.default, {
                 checked: this.checked,
                 onChange: this.onChange,
                 nativeValue: this.nativeValue,

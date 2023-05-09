@@ -404,7 +404,7 @@
             },
 
             hasActions() {
-                return !!this.$slots.actions || !!this.$scopedSlots.actions
+                return !!this.$slots.actions
             },
 
             hasBulkActions() {

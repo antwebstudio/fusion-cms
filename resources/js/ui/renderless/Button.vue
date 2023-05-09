@@ -1,4 +1,6 @@
 <script>
+    import { h } from 'vue'
+
     export default {
         name: 'renderless-button',
 
@@ -23,7 +25,7 @@
         },
 
         render() {
-            return this.$scopedSlots.default({
+            return h(this.$slots.default, {
                 isLoading: this.isLoading,
             })
         }

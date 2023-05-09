@@ -1,5 +1,6 @@
 <script>
     import { Sortable } from '@shopify/draggable'
+    import { h } from 'vue'
 
     export default {
         name: 'ui-sortable-list',
@@ -55,7 +56,7 @@
         },
 
         render() {
-            return this.$scopedSlots.default({
+            return h(this.$slots.default, {
                 items: this.value
             })
         }

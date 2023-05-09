@@ -1,4 +1,6 @@
 <script>
+    import { h } from 'vue'
+
     export default {
         name: 'renderless-dropdown',
 
@@ -41,7 +43,7 @@
         },
 
         render() {
-            return this.$scopedSlots.default({
+            return h(this.$slots.default, {
                 isOpen: this.isOpen,
                 toggle: this.toggle,
                 open: this.open,

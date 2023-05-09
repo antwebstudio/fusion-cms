@@ -1,4 +1,6 @@
 <script>
+    import { h } from 'vue'
+
     export default {
         name: 'p-renderless-radio',
 
@@ -80,7 +82,7 @@
         },
 
         render() {
-            return this.$scopedSlots.default({
+            return h(this.$slots.default, {
                 name: this.name,
                 id: this.id,
                 value: this.value,
