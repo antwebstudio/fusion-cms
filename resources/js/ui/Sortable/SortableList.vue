@@ -1,6 +1,8 @@
+<template>
+    <slot :items="value"></slot>
+</template>
 <script>
     import { Sortable } from '@shopify/draggable'
-    import { h } from 'vue'
 
     export default {
         name: 'ui-sortable-list',
@@ -54,11 +56,5 @@
                 this.$emit('input', this.move(this.value, oldIndex, newIndex))
             })
         },
-
-        render() {
-            return h(this.$slots.default, {
-                items: this.value
-            })
-        }
     }
 </script>

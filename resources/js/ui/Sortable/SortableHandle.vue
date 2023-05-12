@@ -1,3 +1,8 @@
+<template>
+    <div>
+        <slot></slot>
+    </div>
+</template>
 <script>
     export default {
         name: 'ui-sortable-handle',
@@ -7,9 +12,5 @@
         mounted() {
             this.$el.classList.add(this.sortableListHandleClass)
         },
-
-        render() {
-            return this.$slots.default[0]
-        }
     }
 </script>

@@ -1,6 +1,7 @@
+<template>
+    <slot :checked="checked" :onChange="onChange" :nativeValue="nativeValue"></slot>
+</template>
 <script>
-    import { h } from 'vue'
-
     export default {
         name: 'renderless-checkbox',
 
@@ -45,13 +46,5 @@
                 this.newValue = value
             }
         },
-
-        render() {
-            return h(this.$slots.default, {
-                checked: this.checked,
-                onChange: this.onChange,
-                nativeValue: this.nativeValue,
-            })
-        }
     }
 </script>

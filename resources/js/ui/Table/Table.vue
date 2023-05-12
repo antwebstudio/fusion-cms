@@ -202,7 +202,7 @@
                             <fa-icon :icon="['fas', 'grip-vertical']"></fa-icon>
                         </VueNestableHandle>
                         <div class="flex flex-1 items-center justify-between">
-                            <div class="p-3 flex items-center" :class="{'font-bold': (item.url == '' || item.url == '#')}">
+                            <div class="p-3 flex items-center" :class="{'font-bold': item ? (item.url == '' || item.url == '#') : false}">
                                 <ui-status v-show="show_status" :value="item.status" class="mr-2"></ui-status>
                                 <router-link :to="{ name: link_name, params: {[link_param]: item.id} }">{{ item.name }}</router-link>
                             </div>
@@ -255,7 +255,7 @@
     import _ from 'lodash'
     import axios from 'axios'
  import queryString from 'query-string'
- import { VueNestable, VueNestableHandle } from 'vue-nestable'
+ import { VueNestable, VueNestableHandle } from 'fbki-vue3-nestable'
 
     export default {
         name: 'ui-table',

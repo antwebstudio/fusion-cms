@@ -18,9 +18,9 @@
             </div>
 
             <div class="header__account">
-                <renderless-dropdown id="account-menu-button">
-                    <div class="dropdown dropdown--right" slot-scope="props" :class="{'dropdown--open': $props.isOpen}" v-click-outside="$props.close">
-                        <button class="nav-button nav-button--full" @click.prevent="$props.toggle()">
+                <renderless-dropdown id="account-menu-button" v-slot="props">
+                    <div class="dropdown dropdown--right" :class="{'dropdown--open': props.isOpen}" v-click-outside="props.close">
+                        <button class="nav-button nav-button--full" @click.prevent="props.toggle()">
                             <mq-layout mq="xl+">
                                 <span>{{ greeting }}, <strong>{{ $user.name }}</strong></span>
                             </mq-layout>

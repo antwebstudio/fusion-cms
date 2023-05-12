@@ -1,6 +1,7 @@
+<template>
+    <slot :isLoading="isLoading"></slot>
+</template>
 <script>
-    import { h } from 'vue'
-
     export default {
         name: 'renderless-button',
 
@@ -23,11 +24,5 @@
                 this.isLoading = value
             }
         },
-
-        render() {
-            return h(this.$slots.default, {
-                isLoading: this.isLoading,
-            })
-        }
     }
 </script>

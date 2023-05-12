@@ -1,3 +1,6 @@
+<template>
+    <slot :isLoading="isLoading" :sortField="sortField" :sortOrder="sortOrder" :perPage="perPage" :total="total" :page="page"></slot>
+</template>
 <script>
     import { h } from 'vue'
 
@@ -30,16 +33,5 @@
                 }
             },
         },
-
-        render() {
-            return h(this.$slots.default, {
-                isLoading: this.isLoading,
-                sortField: this.sortField,
-                sortOrder: this.sortOrder,
-                perPage: this.perPage,
-                total: this.total,
-                page: this.page
-            })
-        }
     }
 </script>

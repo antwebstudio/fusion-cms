@@ -1,6 +1,7 @@
+<template>
+    <slot :isOpen="isOpen" :open="open" :close="close" :toggle="toggle"></slot>
+</template>
 <script>
-    import { h } from 'vue'
-
     export default {
         name: 'renderless-dropdown',
 
@@ -41,14 +42,5 @@
         created() {
             this.listenForEscape()
         },
-
-        render() {
-            return h(this.$slots.default, {
-                isOpen: this.isOpen,
-                toggle: this.toggle,
-                open: this.open,
-                close: this.close,
-            })
-        }
     }
 </script>

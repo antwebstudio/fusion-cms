@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { createApp } from 'vue'
+import { createApp, configureCompat } from 'vue'
 
 import store from '@/store'
 import router from '@/router'
@@ -16,15 +16,16 @@ export default class Fusion {
         this.config = config
         this.router = router
         this.store = store
-        this.vue = null
+        this.vue = createApp()
+        window.Vue = Vue
 
         // Mixins
-        Vue.mixin(forms)
-        Vue.mixin(setting)
+        this.vue.mixin(forms)
+        this.vue.mixin(setting)
 
         // Directives
         Object.values(Directives).forEach((Directive) => {
-            Vue.use(Directive)
+            this.vue.use(Directive)
         })
 
         // Callbacks
@@ -38,10 +39,8 @@ export default class Fusion {
 
     boot () {
         this.bootingCallbacks.forEach((callback) => {
-            callback(Vue, this.router, this.store)
+            callback(this.vue, this.router, this.store)
         })
-
-        this.vue = createApp()
 
         this.vue.use(auth)
         this.vue.use(this.router)

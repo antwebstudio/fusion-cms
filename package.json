@@ -19,7 +19,7 @@
         "@popperjs/core": "^2.0.6",
         "@shopify/draggable": "^1.0.0-beta.8",
         "@simonwep/pickr": "^1.2.3",
-        "@vue/compat": "^3.2.41",
+        "@vue/compat": "3.2.45",
         "apexcharts": "^3.15.6",
         "autoprefixer": "^10.2.5",
         "autosize": "^4.0.2",
@@ -31,6 +31,7 @@
         "dragula": "^3.7.2",
         "dropzone": "^5.5.1",
         "easymde": "^2.12.1",
+        "fbki-vue3-nestable": "^3.0.12",
         "flatpickr": "^4.6.2",
         "form-data": "^2.3.3",
         "fuzzysort": "^1.1.4",
@@ -48,9 +49,10 @@
         "portal-vue": "^3.0.0",
         "postcss-import": "^14.0.0",
         "tailwindcss": "^2.2.19",
+        "tiny-emitter": "^2.1.0",
         "tooltip.js": "^1.3.3",
         "uniqid": "^5.2.0",
-        "vue": "^3.2.41",
+        "vue": "3.2.45",
         "vue-apexcharts": "^1.5.2",
         "vue-feather-icons": "^5.0.0",
         "vue-head": "^2.1.2",
@@ -68,7 +70,7 @@
         "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
         "@babel/plugin-syntax-dynamic-import": "^7.2.0",
         "@types/webpack-env": "^1.18.0",
-        "@vue/compiler-sfc": "^3.2.41",
+        "@vue/compiler-sfc": "3.2.45",
         "browser-sync": "^2.26.7",
         "browser-sync-webpack-plugin": "^2.3",
         "glob-all": "^3.1.0",
@@ -80,6 +82,6 @@
         "resolve-url-loader": "^3.1.2",
         "sass": "^1.54.0",
         "sass-loader": "^11.0",
-        "vue-loader": "^17.0.0"
+        "vue-loader": "^17.1.0"
     }
 }
