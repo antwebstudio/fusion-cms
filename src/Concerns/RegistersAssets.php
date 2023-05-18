@@ -11,7 +11,7 @@ trait RegistersAssets
      *
      * @var string
      */
-    protected $assetRegex = '/.\.(css|js)$/i';
+    protected $assetRegex = '/.\.(css|js)(\?id=[0-9a-z]{32})?$/i';
 
     /**
      * Regex pattern to match CSS assets.
