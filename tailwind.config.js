@@ -21,11 +21,14 @@ const screens = {
 }
 
 module.exports = {
-    purge: [
-        './**/*.html',
-        './**/*.vue',
-        './**/*.blade.php',
-    ],
+    purge: {
+        content: [
+            './**/*.html',
+            './**/*.vue',
+            './**/*.blade.php',
+        ],
+        layers: ['components', 'base'],
+    },
     theme: {
         cursors: cursors,
 
