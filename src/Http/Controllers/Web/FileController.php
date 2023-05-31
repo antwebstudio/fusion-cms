@@ -18,7 +18,7 @@ class FileController extends Controller
         $params      = request()->all();
         $params['t'] = $file->updated_at->format('U');
 
-        if ($name !== $file->name) {
+        if ($name !== $file->name && $name !== $file->name.'.'.$file->extension) {
             return redirect()->to('/file/'.$uuid.'/'.$file->name.'?'.http_build_query($params));
         }
 
@@ -28,6 +28,24 @@ class FileController extends Controller
 
         if (Str::startsWith($file->mimetype, 'video')) {
             return $this->videoResponse($file->location, $file->mimetype);
+        }
+
+        // Create cache for non-image and non-video files
+        if (Storage::disk($file->disk->handle)->getDriver()->getAdapter() instanceof \League\Flysystem\Adapter\Local) {
+            $sourcePath = Storage::disk($file->disk->handle)->path($file->location);
+            $cachePath = glide($file->disk->handle)->getCachePath($file->location).'.'.$file->extension;
+            $cachePath = Storage::disk('local')->path($cachePath);
+            
+            if (!\File::isDirectory(dirname($cachePath))) {
+                \File::makeDirectory(dirname($cachePath), 0755, true);
+            }
+
+            \File::link($sourcePath, $cachePath);
+        } else if ($file->bytes < config('filesystem.max_size_to_cache', 100 * 1024)) {
+            $source = Storage::disk($file->disk->handle)->get($file->location);
+            $cache = Storage::disk('local');
+            $cachePath = glide($file->disk->handle)->getCachePath($file->location);
+            $cache->put($cachePath, $source);
         }
 
         return Storage::disk($file->disk->handle)->response(
