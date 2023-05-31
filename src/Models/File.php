@@ -77,7 +77,7 @@ class File extends Model
      */
     public function getUrlAttribute()
     {
-        return "/file/{$this->uuid}/{$this->name}";
+        return "/file/{$this->uuid}/{$this->name}.{$this->extension}";
     }
 
     /**
