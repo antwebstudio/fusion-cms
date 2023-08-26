@@ -18,7 +18,7 @@ class UserEventSubscriber
      */
     public function handleUserFailedLogin($event)
     {
-        if ($user = User::where('email', $event->credentials['email'])->first()) {
+        if ($event->user) {
             // Log the activity
             $event->user->logFailedLogin();
         }
