@@ -35,6 +35,8 @@ class Menu
      */
     public function get($key, $default = null)
     {
+        $this->process();
+
         if (is_array($key)) {
             return $this->getMany($key);
         }
@@ -78,6 +80,15 @@ class Menu
 
         foreach ($keys as $key => $value) {
             Arr::set($this->items, $key, $value);
+        }
+    }
+
+    protected function process()
+    {
+        foreach ($this->items as $key => $item) {
+            if (is_callable($item)) {
+                $this->items[$key] = call_user_func_array($item, []);
+            }
         }
     }
 }
