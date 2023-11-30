@@ -20,8 +20,12 @@
         </div>
 
         {{-- FusionCMS Config --}}
+        @php
+            $config = config('fusion');
+            $config['locale'] = config('app.locale');
+        @endphp
         <script>window.environment = '{{ app()->environment() }}'</script>
-        <script>window.config = @json(config('fusion'))</script>
+        <script>window.config = @json($config)</script>
 
         {{-- Scripts --}}
         <script src="{{ mix('js/gravity.js', 'vendor/fusion') }}"></script>

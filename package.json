@@ -54,6 +54,7 @@
         "vue-apexcharts": "^1.5.2",
         "vue-feather-icons": "^5.0.0",
         "vue-head": "^2.1.2",
+        "vue-i18n": "^8.28.2",
         "vue-moment": "^4.0.0",
         "vue-mq": "^1.0.1",
         "vue-nestable": "^2.6.0",

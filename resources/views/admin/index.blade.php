@@ -1,9 +1,15 @@
 @extends('layouts.admin')
 
+@php
+	$config = [
+		'locale' => config('app.locale'),
+	];
+@endphp
+
 @section('content')
 	@auth
-		<app :user="{{ auth()->user()->append('permitted') }}" version="{{ FUSION_VERSION }}"></app>
+		<app :user="{{ auth()->user()->append('permitted') }}" :config='@json($config)' version="{{ config('app.version', FUSION_VERSION) }}"></app>
 	@else
-		<app version="{{ FUSION_VERSION }}"></app>
+		<app :config='@json($config)' version="{{ config('app.version', FUSION_VERSION) }}"></app>
 	@endauth
 @endsection
