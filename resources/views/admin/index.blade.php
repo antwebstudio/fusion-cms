@@ -3,6 +3,7 @@
 @php
 	$config = [
 		'name' => config('fusion.name'),
+		'locale' => config('app.locale'),
 		'demo_username' => config('fusion.demo.username', ''),
 		'demo_password' => config('fusion.demo.password', ''),
 	];
