@@ -89,9 +89,9 @@ class Addon
         }
 
         $reflect  = new ReflectionClass($this->provider);
-        $rootPath = Str::before($reflect->getFileName(), 'src/');
+        $rootPath = Str::before($reflect->getFileName(), 'src'.DIRECTORY_SEPARATOR);
 
-        return rtrim($rootPath, '/').'/';
+        return rtrim($rootPath, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
     }
 
     /**
