@@ -89,7 +89,13 @@
 
         <div v-show="loading" class="pb-2">Loading...</div>
 
-        <div v-show="order === 'Order' " class="table-wrapper" v-if="records.length" :class="{'loading': loading}">
+        <div v-show="hasError" class="p-2 flex flex-col border py-4">
+            <div class="mx-auto"><h2>Error</h2></div>
+            <p class="mx-auto text-center">Please try again later</p>
+            <div class="mx-auto"><a @click="getRecords" class="button">Retry</a></div>
+        </div>
+
+        <div v-show="order === 'Order' " class="table-wrapper" v-if="records.length && ! hasError" :class="{'loading': loading}">
             <table :id="id" class="table" aria-live="polite">
                 <!-- Table Head -->
                 <thead>
@@ -213,7 +219,7 @@
         </div>
 
         <!-- Pagination -->
-        <div class="pagination-group" v-if="this.pagination.totalPages > 1">
+        <div class="pagination-group" v-if="this.pagination.totalPages > 1 && ! hasError">
             <div v-if="showPageStatus" class="pagination-group__item">
                 <ui-pagination-status
                     :total="this.pagination.totalPages"
@@ -364,6 +370,7 @@
                 initialLoad: true,
                 loading: true,
                 working: false,
+                hasError: false,
                 displayable: [],
                 column_names: [],
                 column_types: [],
@@ -518,6 +525,7 @@
 
             getRecords() {
                 this.loading = true
+                this.hasError = false
 
                 return axios.get(`${this.endpoint}?${this.getQueryParameters()}`).then((response) => {
                     this.records = response.data.records.data
@@ -538,6 +546,9 @@
                     }
 
                     this.$emit('loaded', this.records)
+                }).catch((error) => {
+                    this.hasError = true
+                    this.loading = false
                 })
             },
 
