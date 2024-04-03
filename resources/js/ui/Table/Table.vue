@@ -193,7 +193,7 @@
                             </slot>
                         </td>
 
-                        <td class="'table__actions w-20 col-actions'" v-if="hasActions">
+                        <td class="'table__actions md:w-20 col-actions'" v-if="hasActions">
                             <slot name="actions" :record="record"></slot>
                         </td>
                     </tr>
