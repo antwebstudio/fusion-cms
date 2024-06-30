@@ -147,7 +147,7 @@ class SyncSettings
                     'help'       => $item['description'] ?? '',
                     'order'      => ++$order,
                     'validation' => $this->determineValidation($item),
-                    'settings'   => array_merge($fieldtype->getSettings(), [
+                    'settings'   => array_merge($fieldtype->getSettings(), ($item['settings'] ?? []), [
                         'default'   => $item['default'] ?? '',
                         'override'  => $item['override'] ?? false,
                         'options'   => $this->formatSettingOptions($item['options'] ?? []),
