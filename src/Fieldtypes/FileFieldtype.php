@@ -116,6 +116,18 @@ class FileFieldtype extends Fieldtype
             // --
             $model->{$field->handle}()->detach($oldValues);
             $model->{$field->handle}()->attach($newValues);
+        } else if (request()->filled($field->handle)) {
+			$oldValues = isset($model->{$field->handle}) ? $model->{$field->handle}->pluck('id') : [];
+            $newValues = collect($value ?? request()->input($field->handle))
+            ->mapWithKeys(function ($value) use ($field) {
+                return [
+                    $value['id'] => [
+                        'field_id' => $field->id,
+                    ],
+                ];
+            });
+            $model->{$field->handle}()->wherePivot('field_id', $field->id)->detach($oldValues);
+            $model->{$field->handle}()->attach($newValues);
         }
     }
 
