@@ -268,7 +268,7 @@ class FusionServiceProvider extends ServiceProvider
     private function routeAPIConfiguration()
     {
         return [
-            'middleware' => ['api', 'auth:sanctum'],
+            'middleware' => 'api',
             'namespace'  => 'Fusion\Http\Controllers\API',
             'prefix'     => 'api',
         ];

@@ -119,7 +119,7 @@ class CollectionController extends Controller
      */
     public function destroy(Request $request, $matrixSlug, $id)
     {
-        $this->authorize('entries.destroy');
+        $this->authorize('entries.delete');
 
         $matrix = Matrix::where('slug', $matrixSlug)->firstOrFail();
         $model  = Builders\Matrix::resolve($matrix->handle);
