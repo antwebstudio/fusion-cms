@@ -159,7 +159,7 @@ class Role extends Model implements RoleContract
         $permissionClass = $this->getPermissionClass();
 
         if (is_string($permission)) {
-            $permission = $permissionClass->findByHandle($permission, $this->getDefaultGuardName());
+            $permission = $permissionClass->findByName($permission, $this->getDefaultGuardName());
         }
 
         if (is_int($permission)) {
