@@ -54,8 +54,10 @@
                 </template>
 
                 <template slot="role" slot-scope="table">
-                    <router-link :to="{ name: 'roles.show', params: {role: table.record.role.id} }" v-if="$can('roles.view')">{{ table.record.role.name }}</router-link>
-                    <span v-else>{{ table.record.role.name }}</span>
+                    <span v-if="table.record.role">
+                        <router-link :to="{ name: 'roles.show', params: {role: table.record.role.id} }" v-if="$can('roles.view')">{{ table.record.role.name }}</router-link>
+                        <span v-else>{{ table.record.role.name }}</span>
+                    </span>
                 </template>
 
                 <template slot="created_at" slot-scope="table">
