@@ -132,7 +132,7 @@ class FusionServiceProvider extends ServiceProvider
             $filesystem = Storage::disk($params['disk'])->getDriver();
         
             return \League\Glide\ServerFactory::create([
-                'response'          => new \League\Glide\Responses\LaravelResponseFactory($request),
+                'response'          => new \League\Glide\Responses\SymfonyResponseFactory($request),
                 'source'            => $filesystem,
                 'watermarks'        => $filesystem,
                 'cache'             => $filesystem,

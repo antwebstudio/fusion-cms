@@ -107,7 +107,7 @@ class Role extends Model implements RoleContract
         return $role;
     }
 
-    public static function findById(int $id, $guardName = null): RoleContract
+    public static function findById(string|int $id, ?string $guardName = null): RoleContract
     {
         $guardName = $guardName ?? Guard::getDefaultName(static::class);
 
@@ -150,7 +150,7 @@ class Role extends Model implements RoleContract
      *
      * @return bool
      */
-    public function hasPermissionTo($permission): bool
+    public function hasPermissionTo($permission, ?string $guardName = null): bool
     {
         if (config('permission.enable_wildcard_permission', false)) {
             return $this->hasWildcardPermission($permission, $this->getDefaultGuardName());

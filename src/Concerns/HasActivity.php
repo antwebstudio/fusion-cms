@@ -2,6 +2,7 @@
 
 namespace Fusion\Concerns;
 
+use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -31,5 +32,10 @@ trait HasActivity
                 $record->delete();
             });
         });
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
     }
 }
