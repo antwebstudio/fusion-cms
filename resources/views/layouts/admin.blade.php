@@ -6,7 +6,7 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>FusionCMS</title>
+        <title>{{ config('app.name', 'FusionCMS') }}</title>
 
         {{-- Styles --}}
         <link rel="stylesheet" href="{{ mix('css/gravity.css', 'vendor/fusion') }}">
