@@ -18,14 +18,14 @@ trait RegistersAssets
      *
      * @var string
      */
-    protected $cssRegex = '/.\.css$/i';
+    protected $cssRegex = '/.\.css(\?id=[0-9a-z]{32})?$/i';
 
     /**
      * Regex pattern to match JS assets.
      *
      * @var string
      */
-    protected $jsRegex = '/.\.js$/i';
+    protected $jsRegex = '/.\.js(\?id=[0-9a-z]{32})?$/i';
 
     /**
      * @var Illuminate\Support\Collection
