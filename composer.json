@@ -49,19 +49,19 @@
         "php": "^7.3|^8.0",
         "biscolab/laravel-recaptcha": "^6.0",
         "composer/semver": "^3.0",
-        "doctrine/dbal": "^2.9",
-        "illuminate/support": "^9.0",
-        "laravel/sanctum": "^2.3",
-        "laravel/scout": "^8.0|^9.0",
-        "laravel/ui": "^3.0",
+        "doctrine/dbal": "^2.9|^3.5",
+        "illuminate/support": "^9.0|^10.0",
+        "laravel/sanctum": "^3.0",
+        "laravel/scout": "^8.0|^9.0|^10.0",
+        "laravel/ui": "^4.0",
         "league/glide": "^2.0|^3.0",
         "league/glide-symfony": "^2.0|^3.0",
         "spatie/laravel-activitylog": "^4.0",
-        "spatie/laravel-analytics": "^4.0",
-        "spatie/laravel-backup": "^8.0",
+        "spatie/laravel-analytics": "^5.0",
+        "spatie/laravel-backup": "^9.0",
         "spatie/laravel-permission": "^6.0",
-        "spatie/laravel-query-builder": "^5.0",
-        "spatie/laravel-searchable": "^1.7",
+        "spatie/laravel-query-builder": "^6.0",
+        "spatie/laravel-searchable": "^1.0",
         "symfony/http-client": "^7.1",
         "symfony/mailgun-mailer": "^7.1",
         "symfony/yaml": "^6.0"
@@ -74,9 +74,7 @@
         "symfony/css-selector": "^4.3",
         "symfony/dom-crawler": "^4.3"
     },
-	"repositories": [
-	],
-
+    "repositories": [],
     "config": {
         "sort-packages": true
     },
