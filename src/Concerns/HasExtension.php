@@ -4,6 +4,7 @@ namespace Fusion\Concerns;
 
 use Fusion\Database\Eloquent\Relations\HasOneExtension;
 use Fusion\Models\Extension;
+use Illuminate\Support\Str;
 
 trait HasExtension
 {
@@ -39,6 +40,18 @@ trait HasExtension
                 })->toArray();
 
                 $model->extension->update($attributes);
+            } else {
+                $extension = Extension::firstOrCreate([
+                    'name'   => Str::studly($model->getTable()),
+                    'handle' => $model->getTable(),
+                ]);
+
+                \Fusion\Models\Extensions\LibraryBook::firstOrCreate([
+                    'extension_id' => $extension->id,
+                    'related_id'   => $model->id,
+                ]);
+
+                // $model->load('extension');
             }
         });
     }

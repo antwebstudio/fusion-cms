@@ -28,6 +28,13 @@ class HasOneExtension extends HasOne
             'handle' => $parent->getTable(),
         ]);
 
+        if ($parent->exists) {
+            \Fusion\Models\Extensions\LibraryBook::firstOrCreate([
+                'extension_id' => $this->extension->id,
+                'related_id'   => $parent->id,
+            ]);
+        }
+
         parent::__construct($this->extension->getBuilder()->query(), $parent, 'related_id', 'id');
     }
 
@@ -39,7 +46,7 @@ class HasOneExtension extends HasOne
     public function addConstraints()
     {
         if (static::$constraints && $this->parent->exists) {
-            $this->query->firstOrCreate([
+            $this->query->where([
                 'extension_id' => $this->extension->id,
                 'related_id'   => $this->getParentKey(),
             ]);
