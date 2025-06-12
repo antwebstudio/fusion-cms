@@ -96,7 +96,7 @@ abstract class Builder
     {
         $namespace = $this->getNamespace();
 
-        if (!class_exists($namespace, false)) {
+        if (!file_exists($this->getBuildPath())) {
             return $this->refresh();
         }
 
