@@ -29,7 +29,7 @@ class SyncModels
             $matrices = $modelType::get();
             foreach ($matrices as $matrix) {
                 try {
-                    $matrix->getBuilder();
+                    $matrix->refreshBuilder();
                 } catch (\Illuminate\Contracts\Container\BindingResolutionException $ex) {
                     // Need to catch class not found exception to run this command successfully
                 }
