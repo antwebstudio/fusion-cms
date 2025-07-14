@@ -2,7 +2,7 @@
 
 namespace Fusion\Providers;
 
-use Fusion\Models\Role;
+use Spatie\Permission\Models\Role;
 use Fusion\Models\User;
 use Fusion\Facades\Theme;
 use Fusion\Services\Addons\Manifest;
