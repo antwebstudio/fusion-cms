@@ -67,6 +67,9 @@ trait CachesQueries
      */
     protected function newBaseQueryBuilder()
     {
+        if (!config('fusion.cache_query.enabled', true)) {
+            return $this->getConnection()->query();
+        }
         $connection = $this->getConnection();
         $grammar    = $connection->getQueryGrammar();
 

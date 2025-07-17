@@ -86,4 +86,8 @@ return [
             'excluded' => [],
         ],
     ],
+
+    'cache_query' => [
+        'enabled' => env('FUSION_MODEL_CACHE_QUERY_ENABLED', true),
+    ]
 ];
