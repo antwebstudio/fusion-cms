@@ -77,7 +77,7 @@
             </div>
         </div>
 
-        <template v-slot:sidebar>
+        <!-- <template v-slot:sidebar> -->
             <div class="card">
                 <div class="card__body">
                     <ui-slug-group
@@ -156,7 +156,7 @@
                     {{ $moment(file.created_at.date).format('L') }}
                 </ui-definition>
             </ui-definition-list>
-        </template>
+        <!-- </template> -->
     </form-container>
 </template>
 
