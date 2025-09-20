@@ -22,7 +22,9 @@ class FileController extends Controller
         $params      = request()->all();
         $params['t'] = $file->updated_at->format('U');
 
-        if ($name !== $file->name && $name !== $file->name.'.'.$file->extension) {
+        $useFileExtension = config('fusion.use_file_extension_in_url', true); // Some server will not send url with image extension to Laravel, causing 404 error, set to false to prevent that
+
+        if ($name !== $file->name && $name !== ($useFileExtension ? $file->name.'.'.$file->extension : $file->name)) {
             return redirect()->to('/file/'.$uuid.'/'.$file->name.'?'.http_build_query($params));
         }
 
@@ -37,7 +39,10 @@ class FileController extends Controller
         // Create cache for non-image and non-video files
         if (Storage::disk($file->disk->handle)->getDriver()->getAdapter() instanceof \League\Flysystem\Adapter\Local) {
             $sourcePath = Storage::disk($file->disk->handle)->path($file->location);
-            $cachePath = glide($file->disk->handle)->getCachePath($file->location).'.'.$file->extension;
+            $cachePath = glide($file->disk->handle)->getCachePath($file->location);
+            if ($useFileExtension) {
+                $cachePath .= '.'.$file->extension;
+            }
             $cachePath = Storage::disk('local')->path($cachePath);
             
             if (!\File::isDirectory(dirname($cachePath))) {

@@ -77,7 +77,10 @@ class File extends Model
      */
     public function getUrlAttribute()
     {
-        return "/file/{$this->uuid}/{$this->name}.{$this->extension}";
+        if (config('fusion.use_file_extension_in_url', true)) {
+            return "/file/{$this->uuid}/{$this->name}.{$this->extension}";
+        }
+        return "/file/{$this->uuid}/{$this->name}";
     }
 
     /**
