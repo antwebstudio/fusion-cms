@@ -309,6 +309,9 @@ const router = new Router({
             path: '/users',
             component: () => import('@/pages/Users/Index'),
             name: 'users',
+            redirect: window.config.user_list_path ? () => {
+                return window.config.user_list_path
+            } : null,
             meta: {
                 requiresAuth: true,
                 layout: 'admin'
