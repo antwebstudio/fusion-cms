@@ -106,7 +106,7 @@ class UserController extends Controller
         $user->update($attributes);
 
         if (isset($attributes['role'])) {
-            $user->syncRoles($attributes['role']);
+            $user->syncRoles((int)$attributes['role']);
         }
 
         // handle role setting..
