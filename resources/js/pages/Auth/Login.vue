@@ -36,7 +36,7 @@
                             v-model="form.password">
                         </ui-input-group>
 
-                        <ui-button variant="primary" class="w-full" @click.prevent="submit">Login</ui-button>
+                        <ui-button :loading="form.isLoading()" variant="primary" class="w-full" @click.prevent="submit">Login</ui-button>
                     </form>
                 </div>
             </div>
