@@ -25,6 +25,7 @@ export default class Form {
 		this.orig     = data
         this.errors   = new Errors()
         this.hasChanges = false
+        this.loading = false
 
         // --
         let form = this
@@ -100,13 +101,18 @@ export default class Form {
 
     submit(rType, url, data) {
         return new Promise((resolve, reject) => {
+            this.loading = true
             axios[rType](url, data)
                 .then(response => {
+                    this.loading = false
+
                     this.onSuccess(response.data)
-                    
+
                     resolve(response.data)
                 })
                 .catch(errors => {
+                    this.loading = false
+
                     this.onFailure(errors.response.data)
 
                     reject(errors.response.data)
@@ -125,5 +131,9 @@ export default class Form {
 
     onFailure(errors) {
         this.errors.record(errors)
+    }
+
+    isLoading() {
+        return this.loading
     }
 }
