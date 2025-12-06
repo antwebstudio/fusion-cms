@@ -49,6 +49,7 @@
 </template>
 
 <script>
+    import { mapGetters }    from 'vuex'
 	import Form from '@/services/Form'
 
 	export default {
