@@ -46,7 +46,9 @@ trait HasExtension
                     'handle' => $model->getTable(),
                 ]);
 
-                \Fusion\Models\Extensions\LibraryBook::firstOrCreate([
+                $builder = $extension->getBuilder();
+
+                $builder::firstOrCreate([
                     'extension_id' => $extension->id,
                     'related_id'   => $model->id,
                 ]);
