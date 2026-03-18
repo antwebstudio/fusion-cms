@@ -49,6 +49,13 @@ class FileReplaceController extends Controller
                 'height'    => $height ?? null,
             ]);
 
+            // Delete thumbnail cache
+            $thumbnailCacheDir = glide($disk->handle)->getCachePath($file->location, ['fit' => 1]);
+            $thumbnailCacheDir = dirname(dirname($thumbnailCacheDir));
+            glide($disk->handle)->getCache()->deleteDir(
+                $thumbnailCacheDir
+            );
+
             glide($disk->handle)->deleteCache($file->location);
         }
 
