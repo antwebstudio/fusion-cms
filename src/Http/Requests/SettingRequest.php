@@ -25,7 +25,9 @@ class SettingRequest extends Request
 
         if ($blueprint = $this->route('group')->blueprint) {
             $rules += $blueprint->fields->flatMap(function ($field) {
-                return $field->type()->rules($field, $this->{$field->handle});
+                $rule = $field->type()->rules($field, $this->{$field->handle});
+                
+                return isset($rule) && $rule != [] ? $rule : [$field->handle => 'nullable'];
             })->toArray();
         }
 
