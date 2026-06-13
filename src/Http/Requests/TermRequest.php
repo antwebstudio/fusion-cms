@@ -79,7 +79,9 @@ class TermRequest extends Request
         ];
 
         $rules += $this->fields->flatMap(function ($field) {
-            return $field->type()->rules($field, $this->{$field->handle});
+            $rule = $field->type()->rules($field, $this->{$field->handle});
+            
+            return isset($rule) && $rule != [] ? $rule : [$field->handle => 'nullable'];
         })->toArray();
 
         return $rules;
