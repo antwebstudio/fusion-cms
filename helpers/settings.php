@@ -9,12 +9,16 @@ if (!function_exists('settings_available')) {
      */
     function settings_available()
     {
+        static $available = null;
+        if ($available !== null) {
+            return $available;
+        }
         try {
-            return DB::table('settings')->count() > 0;
+            return $available = (DB::table('settings')->count() > 0);
         } catch (Exception $exception) {
         }
 
-        return false;
+        return $available = false;
     }
 }
 
