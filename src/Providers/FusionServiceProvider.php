@@ -217,6 +217,10 @@ class FusionServiceProvider extends ServiceProvider
     private function bootViews()
     {
         View::getFinder()->addLocation(fusion_path('resources/views'));
+        View::addNamespace('seo', [
+            resource_path('views/vendor/seo'),
+            fusion_path('resources/views/seo'),
+        ]);
     }
 
     /**
