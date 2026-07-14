@@ -94,7 +94,10 @@
             this.fetchTaxonomy()
             this.resetForm()
 
-            this.model = _.map(this.value, 'id') || []
+            const value = this.value || []
+            if (value.length && typeof value[0] === 'object') {
+                this.model = _.map(value, 'id')
+            }
         }
     }
 </script>
