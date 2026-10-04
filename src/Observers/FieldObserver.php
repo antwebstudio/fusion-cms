@@ -80,7 +80,8 @@ class FieldObserver
                 Schema::table(
                     $field->fieldable->getBuilderTable(),
                     function ($table) use ($new) {
-                        call_user_func_array([$table, $new['column']], [$new['handle']])->change();
+                        // Laravel 11+ no longer retains existing column attributes on change().
+                        call_user_func_array([$table, $new['column']], [$new['handle']])->nullable()->change();
                     }
                 );
             }
