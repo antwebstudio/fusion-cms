@@ -43,11 +43,13 @@ class Model extends EloquentModel
     /**
      * Set the casts attributes for the model.
      *
+     * Named setCasts() since Laravel 11 reserves casts() for cast definitions.
+     *
      * @param array $casts
      *
      * @return $this
      */
-    public function casts(array $casts)
+    public function setCasts(array $casts)
     {
         $this->casts = $casts;
 

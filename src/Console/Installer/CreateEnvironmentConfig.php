@@ -3,6 +3,7 @@
 namespace Fusion\Console\Installer;
 
 use Artisan;
+use Illuminate\Encryption\Encrypter;
 use Config;
 use File;
 
@@ -81,12 +82,9 @@ class CreateEnvironmentConfig
      */
     private function generateRandomKey()
     {
-        Artisan::call('key:generate', ['--show' => true]);
-
-        $output = Artisan::output();
-        $output = trim(preg_replace('/\s+/', ' ', $output));
-
-        return $output;
+        // Generated directly rather than via `key:generate --show`, whose output is
+        // swallowed when the installer runs with Symfony Console's global --silent.
+        return 'base64:'.base64_encode(Encrypter::generateKey(config('app.cipher')));
     }
 
     /**
