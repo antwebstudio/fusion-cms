@@ -350,7 +350,8 @@ class ReplicatorObserver
 
             // update datatype
             if ($oldDataType !== $newDataType) {
-                call_user_func_array([$table, $newDataType], [$newField->handle])->change();
+                // Laravel 11+ no longer retains existing column attributes on change().
+                call_user_func_array([$table, $newDataType], [$newField->handle])->nullable()->change();
             }
         });
     }
