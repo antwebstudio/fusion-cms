@@ -216,7 +216,7 @@ trait RegistersAssets
      *
      * @return array
      */
-    protected function sort($assets = [], $type)
+    protected function sort($assets, $type)
     {
         $list = [];
 
