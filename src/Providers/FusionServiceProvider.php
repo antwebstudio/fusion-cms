@@ -107,7 +107,7 @@ class FusionServiceProvider extends ServiceProvider
              * Unauthenticated users undergo auth check.
              *  based on `guest` Role.
              */
-            return Role::whereName('guest')
+            return Role::where('handle', 'guest')
                 ->firstOrFail()
                 ->hasPermissionTo($ability);
         });
@@ -294,7 +294,9 @@ class FusionServiceProvider extends ServiceProvider
     private function routeAPIConfiguration()
     {
         return [
-            'middleware' => 'api',
+            // Several API actions rely on this group for authentication
+            // (they have no authorize() call of their own).
+            'middleware' => ['api', 'auth:sanctum'],
             'namespace'  => 'Fusion\Http\Controllers\API',
             'prefix'     => 'api',
         ];

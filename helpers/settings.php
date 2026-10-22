@@ -13,6 +13,10 @@ if (!function_exists('settings_available')) {
         if ($available !== null) {
             return $available;
         }
+        if (env('FUSION_PREUPDATE')) {
+            return $available = false;
+        }
+
         try {
             return $available = (DB::table('settings')->count() > 0);
         } catch (Exception $exception) {
