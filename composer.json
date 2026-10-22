@@ -26,6 +26,7 @@
             "helpers/menus.php",
             "helpers/misc.php",
             "helpers/paths.php",
+            "helpers/recaptcha.php",
             "helpers/relationships.php",
             "helpers/seo.php",
             "helpers/settings.php",
@@ -47,7 +48,6 @@
     "prefer-stable": true,
     "require": {
         "php": "^8.3",
-        "biscolab/laravel-recaptcha": "^6.0",
         "composer/semver": "^3.0",
         "illuminate/support": "^13.0",
         "laravel/sanctum": "^4.0",

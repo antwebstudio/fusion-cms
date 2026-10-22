@@ -123,6 +123,9 @@ class FusionServiceProvider extends ServiceProvider
         Validator::extend('securepassword', 'Fusion\Rules\SecurePassword@passes');
         Validator::extend('serverrequirements', 'Fusion\Rules\ServerRequirements@passes');
         Validator::extend('permissionrequirements', 'Fusion\Rules\PermissionRequirements@passes');
+        Validator::extend('recaptcha', function ($attribute, $value) {
+            return recaptchaVerify($value, request()->ip());
+        });
     }
 
     protected function registerGlide()
