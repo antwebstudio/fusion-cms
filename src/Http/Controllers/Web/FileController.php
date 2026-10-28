@@ -35,7 +35,7 @@ class FileController extends Controller
         }
 
         // Create cache for non-image and non-video files
-        if (Storage::disk($file->disk->handle)->getAdapter() instanceof \League\Flysystem\Local\LocalFilesystemAdapter) {
+        if (Storage::disk($file->disk->handle)->getDriver()->getAdapter() instanceof \League\Flysystem\Adapter\Local) {
             $sourcePath = Storage::disk($file->disk->handle)->path($file->location);
             $cachePath = glide($file->disk->handle)->getCachePath($file->location).'.'.$file->extension;
             $cachePath = Storage::disk('local')->path($cachePath);

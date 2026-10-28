@@ -14,13 +14,32 @@ class Setting
     protected $items;
 
     /**
+     * Fields that override config values, keyed by setting key.
+     *
+     * @var array
+     */
+    protected $overrides;
+
+    /**
      * Constructor.
      *
      * @param array $items
+     * @param array $overrides
      */
-    public function __construct(array $items = [])
+    public function __construct(array $items = [], array $overrides = [])
     {
-        $this->items = $items;
+        $this->items     = $items;
+        $this->overrides = $overrides;
+    }
+
+    /**
+     * Get fields that override config values.
+     *
+     * @return array
+     */
+    public function overrides()
+    {
+        return $this->overrides;
     }
 
     /**
@@ -127,14 +146,22 @@ class Setting
      */
     public static function make()
     {
-        $items = SettingGroup::all()->flatMap(function ($group) {
-            return collect($group->blueprint->fields ?? [])
-                ->mapWithKeys(function ($field) use ($group) {
-                    return ["{$group->handle}.{$field->handle}" => $group->settings->{$field->handle} ?? $field->settings['default'] ?? null];
-                });
-        })->all();
+        $items     = [];
+        $overrides = [];
 
-        return new static($items);
+        SettingGroup::with('blueprint.fields')->get()->each(function ($group) use (&$items, &$overrides) {
+            foreach ($group->blueprint->fields ?? [] as $field) {
+                $key = "{$group->handle}.{$field->handle}";
+
+                $items[$key] = $group->settings->{$field->handle} ?? $field->settings['default'] ?? null;
+
+                if ($field->settings['override'] !== false) {
+                    $overrides[$key] = $field;
+                }
+            }
+        });
+
+        return new static($items, $overrides);
     }
 
     /**

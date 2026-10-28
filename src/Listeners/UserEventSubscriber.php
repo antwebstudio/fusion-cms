@@ -62,7 +62,7 @@ class UserEventSubscriber
                 event(new Verified($event->user));
             }
         } else {
-            Onboard::dispatchNow($event->user);
+            Onboard::dispatchSync($event->user);
         }
 
         notify('new_user_registration', $event->user);
@@ -114,7 +114,7 @@ class UserEventSubscriber
      */
     public function handleUserVerification($event)
     {
-        Onboard::dispatchNow($event->user);
+        Onboard::dispatchSync($event->user);
     }
 
     /**

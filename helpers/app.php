@@ -2,14 +2,16 @@
 
 function app_installed()
 {
-    // Set while converting an older database (see antweb/fusioncms-preupdate),
-    // so nothing queries tables that don't exist yet.
-    if (env('FUSION_PREUPDATE')) {
-        return false;
+    // Only remember a positive result, so a fresh install
+    // is picked up as soon as settings are seeded.
+    static $installed = false;
+
+    if ($installed) {
+        return true;
     }
 
     try {
-        return DB::table('settings')->count() > 0;
+        return $installed = DB::table('settings')->count() > 0;
     } catch (Exception $exception) {
     }
 

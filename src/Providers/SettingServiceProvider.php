@@ -46,31 +46,27 @@ class SettingServiceProvider extends ServiceProvider
      */
     private function bootConfigOverrides()
     {
-        Setting::all()->each(function ($group) {
-            if ($group->blueprint) {
-                $group->blueprint->fields->each(function ($field) use ($group) {
-                    if ($field->settings['override'] !== false) {
-                        $key = $field->settings['override'];
-                        $value = setting("{$group->handle}.{$field->handle}");
+        // Reuse the fields already loaded by the setting service
+        // instead of querying every group's blueprint again.
+        foreach (app('setting')->overrides() as $setting => $field) {
+            $key = $field->settings['override'];
+            $value = setting($setting);
 
-                        if (is_a($value, Collection::class)) {
-                            $value = $value->all();
-                        }
-
-                        // For file types we want to pass the path of the file
-                        // through to override config values.
-                        //
-                        // TODO: Think of a more sustainable way to configure
-                        // these instances so other fields can determine how
-                        // they should override config values.
-                        if ($field->type == 'file' and isset($value[0])) {
-                            $value = storage_path('app/public/'.$value[0]->location);
-                        }
-
-                        config([$key => $value]);
-                    }
-                });
+            if (is_a($value, Collection::class)) {
+                $value = $value->all();
             }
-        });
+
+            // For file types we want to pass the path of the file
+            // through to override config values.
+            //
+            // TODO: Think of a more sustainable way to configure
+            // these instances so other fields can determine how
+            // they should override config values.
+            if ($field->type == 'file' and isset($value[0])) {
+                $value = storage_path('app/public/'.$value[0]->location);
+            }
+
+            config([$key => $value]);
+        }
     }
 }

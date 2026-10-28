@@ -34,10 +34,7 @@ class ConfigServiceProvider extends ServiceProvider
         $this->resetBackupConfigurations();
         $this->mergeFusionCMSConfigurations();
         $this->mergeFileSystemConfigurations();
-
-        if (app_installed()) {
-            $this->registerMailServices();
-        }
+        $this->registerMailServices();
     }
 
     /**

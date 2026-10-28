@@ -157,7 +157,7 @@ class BackupEventSubscriber
      */
     public function handleCleanupSuccessful($event)
     {
-        BackupSync::dispatchNow($event->backupDestination);
+        BackupSync::dispatchSync($event->backupDestination);
 
         notify('cleanup_was_successful', $event);
     }
@@ -170,7 +170,7 @@ class BackupEventSubscriber
     public function handleCleanupFailed($event)
     {
         if ($destination = $event->backupDestination) {
-            BackupSync::dispatchNow($destination);
+            BackupSync::dispatchSync($destination);
         } else {
             Log::error('Backup cleanup has failed.', [
                 'message' => $event->exception->getMessage(),

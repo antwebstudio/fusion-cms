@@ -59,7 +59,7 @@ class UpdateController extends Controller
      */
     public function backup(Request $request)
     {
-        BackupRun::dispatchNow(['disable-notifications' => true]);
+        BackupRun::dispatchSync(['disable-notifications' => true]);
 
         return response()->json([], 200);
     }

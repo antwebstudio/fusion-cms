@@ -66,7 +66,7 @@ class MenuServiceProvider extends ServiceProvider
         ]);
 
         // matrices
-        $matrices = Matrix::sidebar()->get()->mapWithKeys(function ($item) {
+        $matrices = Matrix::sidebar()->with('children')->get()->mapWithKeys(function ($item) {
             if ($item->has('children') and $item->children->count()) {
                 $subitems = $item->children->mapWithKeys(function ($subitem) {
                     $name   = $subitem->name;

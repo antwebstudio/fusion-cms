@@ -107,7 +107,7 @@ class FusionServiceProvider extends ServiceProvider
              * Unauthenticated users undergo auth check.
              *  based on `guest` Role.
              */
-            return Role::where('handle', 'guest')
+            return Role::whereName('guest')
                 ->firstOrFail()
                 ->hasPermissionTo($ability);
         });
@@ -123,9 +123,6 @@ class FusionServiceProvider extends ServiceProvider
         Validator::extend('securepassword', 'Fusion\Rules\SecurePassword@passes');
         Validator::extend('serverrequirements', 'Fusion\Rules\ServerRequirements@passes');
         Validator::extend('permissionrequirements', 'Fusion\Rules\PermissionRequirements@passes');
-        Validator::extend('recaptcha', function ($attribute, $value) {
-            return recaptchaVerify($value, request()->ip());
-        });
     }
 
     protected function registerGlide()
@@ -294,9 +291,7 @@ class FusionServiceProvider extends ServiceProvider
     private function routeAPIConfiguration()
     {
         return [
-            // Several API actions rely on this group for authentication
-            // (they have no authorize() call of their own).
-            'middleware' => ['api', 'auth:sanctum'],
+            'middleware' => 'api',
             'namespace'  => 'Fusion\Http\Controllers\API',
             'prefix'     => 'api',
         ];
